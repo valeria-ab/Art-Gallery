@@ -1,0 +1,17 @@
+.header {
+    min-height: 80px;
+    border: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.authBlock {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+}
+
+.nightModeHandler {
+    margin-left: 40px;
+}

@@ -1,11 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { UnauthorizedUserPage } from './components/UnauthorisedUserPage/UnauthorizedUserPage';
 
 function App() {
   return (
     <div className="App">
-  <h1>Medium</h1>
+  <UnauthorizedUserPage/>
     </div>
   );
 }
