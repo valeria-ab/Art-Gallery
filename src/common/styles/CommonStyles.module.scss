@@ -1,0 +1,113 @@
+@import "./sass/fonts.scss";
+
+.h1Heading {
+    font-family: $headingFontFamily;
+    font-weight: 500;
+    size: 60px;
+    line-height: 72.66px;
+}
+.h2Heading {
+    font-family: $headingFontFamily;
+    font-weight: 500;
+    size: 48px;
+    line-height: 48px;
+}
+.h3Heading {
+    font-family: $headingFontFamily;
+    font-weight: 600;
+    size: 32px;
+    line-height: 35px;
+}
+.h4Heading {
+    font-family: $headingFontFamily;
+    font-weight: 500;
+    size: 16px;
+    line-height: 19.38px;
+}
+.h5Heading {
+    font-family: $headingFontFamily;
+    font-weight: 700;
+    size: 16px;
+    line-height: 20.48px;
+}
+.h6Heading {
+    font-family: $headingFontFamily;
+    font-weight: 500;
+    size: 12px;
+    line-height: 14.53px;
+}
+
+.paragraphTitle {
+    font-family: $paragraphFontFamily;
+    font-weight: 700;
+    size: 20px;
+    line-height: 26px;
+}
+
+.paragraphBaseLight16 {
+    font-family: $Inter;
+    font-weight: 300;
+    size: 16px;
+    line-height: 22.4px;
+}
+
+.paragraphBaseMedium16 {
+    font-family: $Inter;
+    font-weight: 500;
+    size: 16px;
+    line-height: 22.4px;
+}
+
+.paragraphSmallLight12 {
+    font-family: $Inter;
+    font-weight: 300;
+    size: 12px;
+    line-height: 16.8px;
+}
+.paragraphSmallMedium12 {
+    font-family: $Inter;
+    font-weight: 500;
+    size: 12px;
+    line-height: 16.8px;
+}
+.paragraphTinyMedium8 {
+    font-family: $Inter;
+    font-weight: 500;
+    size: 8px;
+    line-height: 9.68px;
+}
+
+.buttonBold12 {
+    font-family: $Inter;
+    font-weight: 700;
+    size: 12px;
+    line-height: 14.52px;
+    text-transform: uppercase;
+}
+
+.inputBold12 {
+    font-family: $Inter;
+    font-weight: 700;
+    size: 12px;
+    line-height: 14.52px;
+}
+
+.captionMedium16 {
+    font-family: $headingFontFamily;
+    font-weight: 500;
+    size: 16px;
+    line-height: 19.38px;
+}
+.captionMedium12 {
+    font-family: $headingFontFamily;
+    font-weight: 500;
+    size: 12px;
+    line-height: 14.53px;
+}
+.captionBoldUppercase {
+    font-family: $Inter;
+    font-weight: 700;
+    size: 8px;
+    line-height: 9.68px;
+    text-transform: uppercase;
+}
