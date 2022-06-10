@@ -9,7 +9,7 @@ export const UnauthorizedUserPage = () => {
   return (
     <div>
       <UnauthorizedUserPageHeader />
-      <UnauthorizedUserPageMain />
+      <UnauthorizedUserPageMain authors={["qqqq", "wwww"]}/>
       <UnauthorizedUserPageFooter />
     </div>
   );

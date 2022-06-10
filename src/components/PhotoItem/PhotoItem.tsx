@@ -1,48 +1,31 @@
 import React, {useState} from 'react';
-import s from './PhotoItem.module.css'
+import s from './PhotoItem.module.scss'
+import CommonStyles from '../../common/styles/CommonStyles.module.scss'
 
+type PhotoItemPropsType = {
+    title: string
+    name: string
+    picture?: any
+}
 
-const PhotoItem = React.memo(() => {
+const PhotoItem = React.memo((props: PhotoItemPropsType) => {
     const [hover, setHover] = useState(false)
-
-   
 
 
     return (
         <div className={s.photoItem__container}>
             <div className={s.photoItem}
-                onMouseOver={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
+                 onMouseOver={() => setHover(true)}
+                 onMouseLeave={() => setHover(false)}
             >
-               
-                {
-                    hover
-                        ? <div className={`${s.photoItem__Title__common} ${s.photoItem__title__hover}`}>
-                            <div className={s.photoItem__title__hover__container}>
-                                <div className={s.photoItem__title__hover__title}>picture. name</div>
-
-                                <div>
-                                    <span className={s.photoItem__title__hover__dataField}>Author: </span>
-                                    <span>currentAuthor.name</span>
-                                </div>
-                                <div>
-                                    <span className={s.photoItem__title__hover__dataField}>Created: </span>
-                                    <span>props.picture.created</span>
-                                </div>
-                                <div>
-                                    <span className={s.photoItem__title__hover__dataField}>Location: </span>
-                                    <span>currentLocation.location</span>
-                                </div>
-                            </div>
-                        </div>
-                        : <div className={`${s.photoItem__Title__common} ${s.photoItem__paintingTitle}`}>
-                            <span className={s.photoItem__paintingTitle__container}>picture name</span>
-                        </div>
-                }
-
+                <div className={s.titleContainer}>
+                    <div className={s.titleBlock}>
+                        <div className={CommonStyles.h4Heading}>Author name</div>
+                        <div className={`${CommonStyles.buttonBold12} ${s.years}`}>1850 - 1910</div>
+                    </div>
+                </div>
             </div>
         </div>
-
     );
 })
 

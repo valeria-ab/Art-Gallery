@@ -2,13 +2,19 @@ import React from 'react';
 import PhotoItem from '../../PhotoItem/PhotoItem';
 import s from './UnauthorizedUserPageMain.module.scss'
 
+type MainBlockPropsType = {
+    authors: Array<any>
+}
 
-
-export const UnauthorizedUserPageMain = () => {
+export const UnauthorizedUserPageMain = (props: MainBlockPropsType) => {
   return (
     <div className={s.main}>
-      UnauthorizedUserPageMain
-      <PhotoItem/>
+      <PhotoItem name={"qqq"} title={"fff"}/>
+      <PhotoItem name={"qqq"} title={"fff"}/>
+      <PhotoItem name={"qqq"} title={"fff"}/>
+      <PhotoItem name={"qqq"} title={"fff"}/>
+      <PhotoItem name={"qqq"} title={"fff"}/>
+      <PhotoItem name={"qqq"} title={"fff"}/>
     </div>
   );
 }
