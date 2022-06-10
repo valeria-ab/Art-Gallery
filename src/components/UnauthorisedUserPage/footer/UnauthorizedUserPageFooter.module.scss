@@ -1,4 +1,24 @@
 .footer {
-    border: 1px solid;
-    min-height: 84px;
+  border: 1px solid;
+  padding: 40px 0;
+  min-height: 166px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.leftBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 485px;
+}
+
+.icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 120px;
+}
+.developerName {
+  opacity: 0.7;
 }
