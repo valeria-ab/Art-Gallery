@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import { UnauthorizedUserPage } from './components/UnauthorisedUserPage/UnauthorizedUserPage';
+import UnauthorizedUserPage from './components/UnauthorisedUserPage/UnauthorizedUserPage';
 
 function App() {
   return (
     <div className="App">
-  <UnauthorizedUserPage/>
+      <UnauthorizedUserPage />
     </div>
   );
 }
