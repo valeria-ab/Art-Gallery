@@ -1,20 +1,22 @@
 import React from 'react';
 import PhotoItem from '../../PhotoItem/PhotoItem';
-import s from './UnauthorizedUserPageMain.module.scss'
+import s from './UnauthorizedUserPageMain.module.scss';
+import { ArtistStaticResponseType } from '../../../utils/api';
 
 type MainBlockPropsType = {
-    authors: Array<any>
-}
+  artists: Array<ArtistStaticResponseType>;
+};
 
-export const UnauthorizedUserPageMain = (props: MainBlockPropsType) => {
-  return (
-    <div className={s.main}>
-      <PhotoItem name={"qqq"} title={"fff"}/>
-      <PhotoItem name={"qqq"} title={"fff"}/>
-      <PhotoItem name={"qqq"} title={"fff"}/>
-      <PhotoItem name={"qqq"} title={"fff"}/>
-      <PhotoItem name={"qqq"} title={"fff"}/>
-      <PhotoItem name={"qqq"} title={"fff"}/>
-    </div>
-  );
-}
+export const UnauthorizedUserPageMain = ({ artists }: MainBlockPropsType) => (
+  <div className={s.main}>
+    {artists.map((a) => (
+      <PhotoItem
+        key={a._id}
+        name={a.name}
+        title={a.description}
+        yearsOfLife={a.yearsOfLife}
+        picture={a.mainPainting.image.src}
+      />
+    ))}
+  </div>
+);

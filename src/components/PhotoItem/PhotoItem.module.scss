@@ -69,10 +69,17 @@
 @media screen and (min-width: 1366px) {
   .photoItem,
   .photoItem__img {
-    min-width: 360px;
-    min-height: 275px;
+    //min-width: 360px;
+    //min-height: 275px;
+    width: 500px;
+    height: 400px;
   }
   .photoItem__container {
     width: 32%;
   }
+}
+
+.photoItem__img {
+  width: 500px;
+  height: 400px;
 }

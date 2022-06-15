@@ -1,13 +1,24 @@
-import React from 'react';
-import './App.css';
+import React, { useEffect } from 'react';
+import './App.scss';
+import { useDispatch } from 'react-redux';
 import UnauthorizedUserPage from './components/UnauthorisedUserPage/UnauthorizedUserPage';
+import { getArtistsTC } from './store/gallery-reducer';
+import { AppDispatch } from './store/store';
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getArtistsTC());
+  }, []);
+
   return (
     <div className="App">
-      <UnauthorizedUserPage />
+      <div className="AppContainer">
+        <UnauthorizedUserPage />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
