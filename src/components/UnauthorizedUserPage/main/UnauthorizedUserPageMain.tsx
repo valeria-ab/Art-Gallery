@@ -1,10 +1,10 @@
 import React from 'react';
 import PhotoItem from '../../PhotoItem/PhotoItem';
 import s from './UnauthorizedUserPageMain.module.scss';
-import { ArtistStaticResponseType } from '../../../utils/api';
+import { ArtistResponseType } from '../../../utils/api';
 
 type MainBlockPropsType = {
-  artists: Array<ArtistStaticResponseType>;
+  artists: Array<ArtistResponseType>;
 };
 
 export const UnauthorizedUserPageMain = ({ artists }: MainBlockPropsType) => (
@@ -12,6 +12,7 @@ export const UnauthorizedUserPageMain = ({ artists }: MainBlockPropsType) => (
     {artists.map((a) => (
       <PhotoItem
         key={a._id}
+        id={a._id}
         name={a.name}
         title={a.description}
         yearsOfLife={a.yearsOfLife}

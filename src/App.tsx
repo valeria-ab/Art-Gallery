@@ -1,24 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.scss';
-import { useDispatch } from 'react-redux';
-import UnauthorizedUserPage from './components/UnauthorisedUserPage/UnauthorizedUserPage';
-import { getArtistsTC } from './store/gallery-reducer';
-import { AppDispatch } from './store/store';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import UnauthorizedUserPage from './components/UnauthorizedUserPage/UnauthorizedUserPage';
+import ArtistPage from './components/ArtistPage/ArtistPage';
+import Header from './components/UnauthorizedUserPage/header/UnauthorizedUserPageHeader';
 
-const App = () => {
-  const dispatch = useDispatch<AppDispatch>();
+const App = () => (
+  <div className="App">
+    <div className="AppContainer">
+      <Header />
+      <Routes>
+        <Route path="/artists/static" element={<UnauthorizedUserPage />} />
+        <Route path="/artists/static/:authorId" element={<ArtistPage />} />
+        <Route path="/" element={<Navigate to="/artists/static" />} />
 
-  useEffect(() => {
-    dispatch(getArtistsTC());
-  }, []);
-
-  return (
-    <div className="App">
-      <div className="AppContainer">
-        <UnauthorizedUserPage />
-      </div>
+        <Route path={'/*'} element={<div>Page not found</div>} />
+      </Routes>
     </div>
-  );
-};
+  </div>
+);
 
 export default App;

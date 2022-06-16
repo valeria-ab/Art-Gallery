@@ -9,7 +9,7 @@ import cancel from '../../../assets/cancel.png';
 import { IAppStore } from '../../../store/store';
 import { setIsNightModeOn } from '../../../store/gallery-reducer';
 
-const UnauthorizedUserPageHeader = () => {
+const Header = () => {
   const [popUp, setPopUp] = useState(false);
   const isNightMode = useSelector<IAppStore, boolean>(
     (state) => state.gallery.isNightModeOn,
@@ -87,4 +87,4 @@ const UnauthorizedUserPageHeader = () => {
   );
 };
 
-export default UnauthorizedUserPageHeader;
+export default Header;

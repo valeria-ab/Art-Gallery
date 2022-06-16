@@ -1,17 +1,18 @@
-import { artistsAPI, ArtistStaticResponseType } from '../utils/api';
+import { ArtistResponseType, artistsAPI } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk } from './store';
 
 export type InitialCardsStateType = {
   isNightModeOn: boolean;
-  artists: Array<ArtistStaticResponseType>;
+  baseURL: string;
+  artists: Array<ArtistResponseType>;
 };
 
 export const setIsNightModeOn = (payload: { isNightModeOn: boolean }) => ({
   type: 'GALLERY/SET-IS-NIGHT-MODE-ON',
   payload,
 } as const);
-export const setArtists = (payload: { artists: Array<ArtistStaticResponseType> }) => ({
+export const setArtists = (payload: { artists: Array<ArtistResponseType> }) => ({
   type: 'GALLERY/SET-ARTISTS',
   payload,
 } as const);
@@ -23,6 +24,8 @@ type ActionsType =
 const initialState: InitialCardsStateType = {
   isNightModeOn: false,
   artists: [],
+  baseURL: 'https://internship-front.framework.team',
+
 };
 
 export const galleryReducer = (
@@ -54,4 +57,13 @@ export const getArtistsTC = (): AppThunk => (dispatch) => {
   // .finally(() => {
   //   dispatch(setLoading({ loadingStatus: 'idle' }));
   // });
+};
+
+export const getArtistPageTC = (artistId: string): AppThunk => (dispatch) => {
+  // dispatch(setLoading({ loadingStatus: 'loading' }));
+  artistsAPI
+    .getArtistStatic(artistId)
+    .then((res:any) => {
+      dispatch(setArtists({ artists: res.data }));
+    });
 };

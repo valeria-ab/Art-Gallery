@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export const instance = axios.create({
   baseURL: 'https://internship-front.framework.team/',
@@ -6,13 +6,7 @@ export const instance = axios.create({
 
 // types
 
-export type ResponseType<D = {}> = {
-  resultCode: number;
-  messages: Array<string>;
-  fieldsErrors: Array<string>;
-  data: D;
-};
-type ImageType = {
+export type ImageType = {
   _id: string;
   src: string;
   webp: string;
@@ -20,7 +14,7 @@ type ImageType = {
   webp2x: string;
   original: string;
 };
-type MainPaintingType = {
+export type MainPaintingType = {
   _id: string;
   name: string;
   yearOfCreation: string;
@@ -34,8 +28,8 @@ export type ArtistResponseType = {
   name: string;
   description: string;
   yearsOfLife: string;
-  mainPainting?: MainPaintingType;
-  avatar?: ImageType;
+  mainPainting: MainPaintingType;
+  avatar: ImageType;
 };
 
 type UpdateMainPaintingResponseType = {
@@ -113,19 +107,19 @@ export const authAPI = {
   register(payload: RegisterDataType) {
     return instance.post<
         { payload: RegisterDataType },
-        ResponseType<RegisterResponseType>
+        AxiosResponse<RegisterResponseType>
         >('auth/register', { payload });
   },
   login(username: string, password: string) {
     return instance.post<
         { username: string, password: string},
-        ResponseType<RegisterResponseType>
+        AxiosResponse<RegisterResponseType, any>
         >('auth/login', { username, password });
   },
   refresh(payload: RefreshRequestType) {
     return instance.post<
         { payload: RefreshRequestType },
-        ResponseType<RegisterResponseType>
+        AxiosResponse<RegisterResponseType, any>
         >('auth/refresh', { payload });
   },
 };
@@ -139,7 +133,7 @@ export const artistsAPI = {
     return instance.get<ArtistResponseType>(`artists/static/${id}`);
   },
 
-  // requests for authorised user
+  // requests for authorized user
   getArtists() {
     return instance.get<Array<ArtistResponseType>>('artists');
   },
@@ -160,27 +154,27 @@ export const artistsAPI = {
   createArtist(payload: CreateArtistRequestType) {
     return instance.post<
       { payload: CreateArtistRequestType },
-      ResponseType<ArtistResponseType>
+      AxiosResponse<ArtistResponseType, any>
     >('artists', { payload });
   },
   updateArtist(id: string, payload: UpdateArtistRequestType) {
     return instance.put<
       { payload: UpdateArtistRequestType },
-      ResponseType<ArtistResponseType>
+        AxiosResponse<ArtistResponseType>
     >(`artists${id}`, { payload });
   },
   deleteArtist(id: string) {
-    return instance.delete<ResponseType<{ _id: string }>>(`artists${id}`);
+    return instance.delete<AxiosResponse<{ _id: string }>>(`artists${id}`);
   },
   updateMainPainting(id: string) {
-    return instance.patch<ResponseType<UpdateMainPaintingResponseType>>(
+    return instance.patch<AxiosResponse<UpdateMainPaintingResponseType>>(
       `artists/${id}/main-painting`,
     );
   },
   addPaintingToArtist(id: number, payload: AddPaintingToArtistRequestType) {
     return instance.post<
       { payload: AddPaintingToArtistRequestType },
-      ResponseType<MainPaintingType>
+        AxiosResponse<MainPaintingType>
     >(`artists/${id}/paintings`, { payload });
   },
   updatePainting(
@@ -190,11 +184,11 @@ export const artistsAPI = {
   ) {
     return instance.put<
       { payload: AddPaintingToArtistRequestType },
-      ResponseType<UpdatePaintingResponseType>
+        AxiosResponse<UpdatePaintingResponseType>
     >(`artists/${id}/paintings/${paintingId}`, { payload });
   },
   deletePainting(id: string, paintingId: string) {
-    return instance.delete<ResponseType<{ _id: string }>>(
+    return instance.delete<AxiosResponse<{ _id: string }>>(
       `artists/${id}/paintings/${paintingId}`,
     );
   },
@@ -203,31 +197,31 @@ export const artistsAPI = {
 export const genresAPI = {
   // requests for not authorised user
   getGenresStatic() {
-    return instance.get<ResponseType<Array<GenreResponseType>>>(
+    return instance.get<AxiosResponse<Array<GenreResponseType>>>(
       'genres/static',
     );
   },
 
-  // requests for authorised user
+  // requests for authorized user
   getGenres() {
-    return instance.get<ResponseType<Array<GenreResponseType>>>('genres');
+    return instance.get<AxiosResponse<Array<GenreResponseType>>>('genres');
   },
   getSpecifiedGenreById(id: string) {
-    return instance.get<ResponseType<GenreResponseType>>(`genres/${id}`);
+    return instance.get<AxiosResponse<GenreResponseType>>(`genres/${id}`);
   },
   createGenre(name: string) {
-    return instance.post<{ name: string }, ResponseType<GenreResponseType>>(
+    return instance.post<{ name: string }, AxiosResponse<GenreResponseType>>(
       'genres',
       { name },
     );
   },
   updateGenre(id: string, name: string) {
-    return instance.put<{ name: string }, ResponseType<GenreResponseType>>(
+    return instance.put<{ name: string }, AxiosResponse<GenreResponseType>>(
       `genres/${id}`,
       { name },
     );
   },
   deleteGenre(id: string) {
-    return instance.delete<ResponseType<{ _id: string }>>(`genres/${id}`);
+    return instance.delete<AxiosResponse<{ _id: string }>>(`genres/${id}`);
   },
 };
