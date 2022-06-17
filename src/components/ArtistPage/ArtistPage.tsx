@@ -6,6 +6,7 @@ import ArtistProfile from './ArtistProfile';
 import ArtistArtworks from './ArtistArtworks';
 import { getArtistInfoTC } from '../../store/artistPage-reducer';
 import { ArtistResponseType } from '../../utils/api';
+import s from './ArtistPage.module.scss';
 
 const ArtistPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,7 +21,7 @@ const ArtistPage = () => {
   }, [authorId]);
 
   return (
-    <div>
+    <div className={s.artistPage}>
       <ArtistProfile artistInfo={artistInfo} />
       <ArtistArtworks />
     </div>

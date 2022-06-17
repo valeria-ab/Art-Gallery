@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { UnauthorizedUserPageFooter } from './footer/UnauthorizedUserPageFooter';
 import { UnauthorizedUserPageMain } from './main/UnauthorizedUserPageMain';
 import { AppDispatch, IAppStore } from '../../store/store';
 import { ArtistResponseType } from '../../utils/api';
@@ -19,7 +18,6 @@ const UnauthorizedUserPage = React.memo(() => {
   return (
     <div>
       <UnauthorizedUserPageMain artists={artists} />
-      <UnauthorizedUserPageFooter />
     </div>
   );
 });

@@ -4,6 +4,14 @@
   margin-top: 10px;
   margin-bottom: 10px;
   position: relative;
+  &.photoItem__container-active {
+    .hoverButton {
+      display: block;
+      background-color: #1A1818;
+      height: 100%;
+      width: 100%;
+    }
+  }
   .photoItem {
     background-color: #827c7c;
     position: relative;
@@ -30,14 +38,7 @@
       }
     }
   }
-.photoItem__img {
-position: relative;
-}
-}
-photoItem__container-active {
-  .hoverButton {
-    display: block;
-  }
+
 }
 
 @media screen and (max-width: 767px) {
@@ -89,12 +90,27 @@ photoItem__container-active {
 .photoItem__img {
   width: 500px;
   height: 400px;
+  display: block;
 }
-
+.photoItem__img-active {
+  display: none;
+}
 .hoverButton {
   display: none;
+
+
+
+
+  //padding: 0 auto;
 }
 
 //.hoverButton-show {
 //    display: block;
 //}
+
+.hoverButtonSpan {
+  color: white;
+  top: 49%;
+  left: 30%;
+  position: absolute;
+}

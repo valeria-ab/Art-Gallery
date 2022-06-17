@@ -21,9 +21,12 @@ export type MainPaintingType = {
   image: ImageType;
   artist?: string;
 };
-
+ type GenreResponseType = {
+  _id: string;
+  name: string;
+};
 export type ArtistResponseType = {
-  genres: string;
+  genres: Array<GenreResponseType>;
   _id: string;
   name: string;
   description: string;
@@ -55,10 +58,6 @@ type SpecifiedPaintingByIdType = {
   image: ImageType;
 };
 
-type GenreResponseType = {
-  _id: string;
-  name: string;
-};
 type CreateArtistRequestType = {
   genres: string;
   name: string;
@@ -131,6 +130,9 @@ export const artistsAPI = {
   },
   getArtistStatic(id: string) {
     return instance.get<ArtistResponseType>(`artists/static/${id}`);
+  },
+  getProfilePicture(src: string) {
+    return instance.get<any>(`${src}`);
   },
 
   // requests for authorized user

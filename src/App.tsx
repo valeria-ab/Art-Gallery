@@ -3,7 +3,8 @@ import './App.scss';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import UnauthorizedUserPage from './components/UnauthorizedUserPage/UnauthorizedUserPage';
 import ArtistPage from './components/ArtistPage/ArtistPage';
-import Header from './components/UnauthorizedUserPage/header/UnauthorizedUserPageHeader';
+import Header from './components/Header/Header';
+import { Footer } from './components/Footer/Footer';
 
 const App = () => (
   <div className="App">
@@ -16,6 +17,7 @@ const App = () => (
 
         <Route path={'/*'} element={<div>Page not found</div>} />
       </Routes>
+      <Footer />
     </div>
   </div>
 );
