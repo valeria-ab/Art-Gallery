@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import s from './PhotoItem.module.scss';
-import CommonStyles from '../../common/styles/CommonStyles.module.scss';
 import { IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './style.scss';
@@ -40,17 +38,7 @@ const PhotoItem = ({
         console.log('onFocus');
       }}
     >
-      {/* <div */}
-      {/*  role="banner" */}
-      {/*  tabIndex={-1} */}
-      {/*  className={s.photoItem} */}
-      {/*  onFocus={() => { */}
-      {/*    console.log('onFocus'); */}
-      {/*  }} */}
-      {/*  onMouseOver={() => setHover(true)} */}
-      {/*  onMouseLeave={() => setHover(false)} */}
-      {/* > */}
-      <NavLink to={`/artists/static/${id}`} className={s.photoItem}>
+      <NavLink to={`/artists/static/${id}`} className={cx('photoItem')}>
         <img
           className={cx('photoItem__img', {
             'photoItem__img-active': hover,
@@ -59,21 +47,21 @@ const PhotoItem = ({
           alt="mainPicture"
         />
         <div className={cx('hoverButton', { 'hoverButton-show': hover })}>
-          <span className={cx('hoverButtonSpan')}>
-            Learn more
-          </span>
+          <span className={cx('hoverButtonSpan')}>Learn more</span>
         </div>
-      </NavLink>
 
-      <div className={s.titleContainer}>
-        <div className={s.titleBlock}>
-          <div className={CommonStyles.h4Heading}>{name}</div>
-          <div className={`${CommonStyles.buttonBold12} ${s.years}`}>
-            {yearsOfLife}
+        {!hover
+          && (
+          <div className={cx('titleContainer')}>
+            <div className={cx('titleBlock')}>
+              <div className={cx('name')}>{name}</div>
+              <div className={cx('years')}>
+                {yearsOfLife}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      {/* </div> */}
+          )}
+      </NavLink>
     </div>
   );
 };

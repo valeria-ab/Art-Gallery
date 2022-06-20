@@ -1,10 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import s from './ArtistPage.module.scss';
-import CommonStyles from '../../common/styles/CommonStyles.module.scss';
+import classNames from 'classnames/bind';
+// @ts-ignore
+import style from './ArtistPage.scss';
 import { IAppStore } from '../../store/store';
 import { ArtistResponseType } from '../../utils/api';
 import { Genre } from './Genre/Genre';
+
+const cx = classNames.bind(style);
 
 const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
   const { artistInfo } = props;
@@ -14,22 +17,22 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
   );
 
   return (
-    <div className={s.artistProfile}>
+    <div className={cx('artistProfile')}>
       {artistInfo.avatar && (
         <>
-          <div className={s.infoBlock}>
-            <div className={CommonStyles.h4Heading}>
-              <span className={s.infoBlock__padding}>
+          <div className={cx('infoBlock')}>
+            <div className={cx('artistInfo')}>
+              <span className={cx('infoBlock__padding')}>
                 {artistInfo.yearsOfLife}
               </span>
             </div>
-            <div className={s.artistNameContainer}>
-              <span className={`${CommonStyles.h1Heading} ${s.artistName}`}>
+            <div className={cx('artistNameContainer')}>
+              <span className={cx('artistName')}>
                 {artistInfo.name}
               </span>
             </div>
-            <div className={CommonStyles.paragraphBaseLight16}>
-              <span className={s.infoBlock__padding}>
+            <div className={cx('artistDescription')}>
+              <span className={cx('infoBlock__padding')}>
                 {artistInfo.description}
               </span>
             </div>
@@ -40,14 +43,14 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
             </div>
           </div>
 
-          <div className={s.mainPhoto}>
+          <div className={cx('mainPhoto')}>
             <img
               // src="https://internship-front.framework.team/images/62a32e09269fa5c416c53d91/original.jpg"
               // src={`${baseURL}${artistInfo.avatar.src2x}`}
               alt="artist_picture"
               // width="1000px"
               height="1001px"
-              className={s.profilePicture}
+              className={cx('profilePicture')}
             />
           </div>
         </>

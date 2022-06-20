@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import s from './Header.module.scss';
-import commonStyles from '../../common/styles/CommonStyles.module.scss';
+import classNames from 'classnames/bind';
+// @ts-ignore
+import style from './style.scss';
 import burger from '../../assets/burger.png';
 import crescent from '../../assets/crescent.png';
 import logo from '../../assets/logo.png';
@@ -10,39 +11,56 @@ import cancel from '../../assets/cancel.png';
 import { IAppStore } from '../../store/store';
 import { setIsNightModeOn } from '../../store/gallery-reducer';
 
+const cx = classNames.bind(style);
+
 const Header = () => {
-  const [popUp, setPopUp] = useState(false);
+  const [isPopUpOpened, setIsPopUpOpened] = useState(false);
   const isNightMode = useSelector<IAppStore, boolean>(
     (state) => state.gallery.isNightModeOn,
   );
   const dispatch = useDispatch();
 
+  // // функция слушателя событий
+  // function displayWindowSize() {
+  //   // ширину и высоту окна без полос прокрутки
+  //   const w = document.documentElement.clientWidth;
+  //   const h = document.documentElement.clientHeight;
+  //
+  //   // Присоединяем функции слушателя событий к событию изменения размера окна
+  //   window.addEventListener('resize', displayWindowSize);
+  //   if (w > 768 && isPopUpOpened) {
+  //     setIsPopUpOpened(false);
+  //   }
+  // }
+  //
+  // // Вызов функции в первый раз
+  // displayWindowSize();
+
   return (
-    <div className={s.header}>
-      <div className={s.headerContainer}>
+    <div className={cx('header')}>
+      <div className={cx('headerContainer')}>
         <NavLink to="/artists/static">
           <img src={logo} alt="logo" />
         </NavLink>
 
-        <div className={s.authBlock}>
-          <div className={commonStyles.h5Heading}>LOGIN</div>
-          <div className={commonStyles.h5Heading}>SIGN UP</div>
+        <div className={cx('authBlock')}>
+          <div className={cx('popUpTitles')}>LOGIN</div>
+          <div className={cx('popUpTitles')}>SIGN UP</div>
           <div
             role="button"
             tabIndex={-1}
-            className={s.nightModeHandler}
+            className={cx('nightModeHandler')}
             onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
-            // зачем тут нужен keyboard listener и какой лучше ставить?
             onKeyDown={() => {
               console.log('keyboard listener');
             }}
           >
-            <img src={crescent} alt="crescent" className={s.crescent} />
+            <img src={crescent} alt="crescent" className={cx('crescent')} />
           </div>
         </div>
         <div
-          className={s.mobileMode}
-          onClick={() => setPopUp(!popUp)}
+          className={cx('mobileMode')}
+          onClick={() => setIsPopUpOpened(!isPopUpOpened)}
           role="button"
           tabIndex={-1}
           onKeyDown={() => {
@@ -51,40 +69,38 @@ const Header = () => {
         >
           <img src={burger} alt="burger" />
         </div>
-        {popUp && (
-          <div className={s.popUp}>
+
+        <div className={cx('popUp', { popUpOnClick: isPopUpOpened })}>
+          <div
+            onClick={() => setIsPopUpOpened(!isPopUpOpened)}
+            className={cx('cancelButton')}
+            role="button"
+            tabIndex={-1}
+            onKeyDown={() => {
+              console.log('keyboard listener');
+            }}
+          >
+            <img src={cancel} alt="cancel" className={cx('cursorPointer')} />
+          </div>
+          <div className={cx('popUpContainer')}>
             <div
-              onClick={() => setPopUp(!popUp)}
-              className={s.cancelButton}
               role="button"
+              className={cx('changeModeBlock', 'cursorPointer', 'changeModeTitle')}
               tabIndex={-1}
               onKeyDown={() => {
                 console.log('keyboard listener');
               }}
+              onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
             >
-              <img src={cancel} alt="cancel" />
+              <img src={crescent} alt="crescent" className={cx('crescent')} />
+              <span>&nbsp; Dark mode</span>
             </div>
-            <div className={s.popUpContainer}>
-              <div
-                role="button"
-                tabIndex={-1}
-                onKeyDown={() => {
-                  console.log('keyboard listener');
-                }}
-                onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
-              >
-                <img src={crescent} alt="crescent" className={s.crescent} />
-                <span>&nbsp; Dark mode</span>
-              </div>
-              <div className={`${commonStyles.h1Heading} ${s.cursor}`}>
-                Log in
-              </div>
-              <div className={`${commonStyles.h1Heading} ${s.cursor}`}>
-                Sign up
-              </div>
-            </div>
+
+            <div className={cx('loginButtons', 'cursorPointer')}>Log in</div>
+            <div className={cx('loginButtons', 'cursorPointer')}>Sign up</div>
           </div>
-        )}
+        </div>
+
       </div>
     </div>
   );

@@ -3,10 +3,13 @@
 .App {
   //background-color: $primaryBlack;
 }
-//.AppContainer {
-//  width: 90%;
-//  margin: 0 auto;
-//}
+.AppContainer {
+  //width: 90%;
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+}
 
-
-
+a {
+  text-decoration: none;
+}
