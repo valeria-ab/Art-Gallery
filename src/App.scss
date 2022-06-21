@@ -1,7 +1,14 @@
 @import "./common/styles/sass/baseColors.scss";
 
 .App {
-  //background-color: $primaryBlack;
+
+}
+.dark {
+  background-color: $primaryBlack;
+  color: $primaryLightGray;
+}
+.light {
+  background-color: $primaryWhite;
 }
 .AppContainer {
   //width: 90%;
@@ -13,3 +20,4 @@
 a {
   text-decoration: none;
 }
+

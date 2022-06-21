@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
@@ -10,47 +10,45 @@ import logo from '../../assets/logo.png';
 import cancel from '../../assets/cancel.png';
 import { IAppStore } from '../../store/store';
 import { setIsNightModeOn } from '../../store/gallery-reducer';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
 const Header = () => {
   const [isPopUpOpened, setIsPopUpOpened] = useState(false);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const isNightMode = useSelector<IAppStore, boolean>(
     (state) => state.gallery.isNightModeOn,
   );
   const dispatch = useDispatch();
 
-  // // функция слушателя событий
-  // function displayWindowSize() {
-  //   // ширину и высоту окна без полос прокрутки
-  //   const w = document.documentElement.clientWidth;
-  //   const h = document.documentElement.clientHeight;
-  //
-  //   // Присоединяем функции слушателя событий к событию изменения размера окна
-  //   window.addEventListener('resize', displayWindowSize);
-  //   if (w > 768 && isPopUpOpened) {
-  //     setIsPopUpOpened(false);
-  //   }
-  // }
-  //
-  // // Вызов функции в первый раз
-  // displayWindowSize();
+  function displayWindowSize() {
+    const w = document.documentElement.clientWidth;
+    window.addEventListener('resize', displayWindowSize);
+    if (w > 768 && isPopUpOpened) {
+      setIsPopUpOpened(false);
+    }
+  }
+
+  displayWindowSize();
 
   return (
-    <div className={cx('header')}>
+    <div className={cx('header', { darkMode: theme === 'dark', lightMode: theme === 'light' })}>
       <div className={cx('headerContainer')}>
         <NavLink to="/artists/static">
           <img src={logo} alt="logo" />
         </NavLink>
 
         <div className={cx('authBlock')}>
-          <div className={cx('popUpTitles')}>LOGIN</div>
-          <div className={cx('popUpTitles')}>SIGN UP</div>
+          <div className={cx('authBlockTitles')}>LOGIN</div>
+          <div className={cx('authBlockTitles')}>SIGN UP</div>
           <div
             role="button"
             tabIndex={-1}
             className={cx('nightModeHandler')}
-            onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
+            // onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
+            onClick={toggleTheme}
+            // value={theme === themes.dark}
             onKeyDown={() => {
               console.log('keyboard listener');
             }}
@@ -85,7 +83,7 @@ const Header = () => {
           <div className={cx('popUpContainer')}>
             <div
               role="button"
-              className={cx('changeModeBlock', 'cursorPointer', 'changeModeTitle')}
+              className={cx('changeModeBlock', 'cursorPointer')}
               tabIndex={-1}
               onKeyDown={() => {
                 console.log('keyboard listener');
@@ -93,14 +91,16 @@ const Header = () => {
               onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
             >
               <img src={crescent} alt="crescent" className={cx('crescent')} />
-              <span>&nbsp; Dark mode</span>
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span className={cx('changeModeTitle')}> Dark mode</span>
             </div>
 
-            <div className={cx('loginButtons', 'cursorPointer')}>Log in</div>
+            <div className={cx('loginButtons', 'cursorPointer', 'loginMargin')}>
+              Log in
+            </div>
             <div className={cx('loginButtons', 'cursorPointer')}>Sign up</div>
           </div>
         </div>
-
       </div>
     </div>
   );
