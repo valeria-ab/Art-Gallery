@@ -1,17 +1,16 @@
 import React, { useContext, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
-import burger from '../../assets/burger.png';
+import burgerLightMode from '../../assets/burgerLightMode.png';
+import burgerDarkMode from '../../assets/burgerDarkMode.png';
 import toDarkThemeToggler from '../../assets/toDarkThemeToggler.png';
 import toLightThemeToggler from '../../assets/toLightThemeToggler.png';
 import logoLightMode from '../../assets/logoLightMode.png';
 import logoDarkMode from '../../assets/logoDarkMode.png';
 import cancelLight from '../../assets/cancelLight.png';
 import cancelDark from '../../assets/cancelDark.png';
-import { IAppStore } from '../../store/store';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
@@ -19,10 +18,6 @@ const cx = classNames.bind(style);
 const Header = () => {
   const [isPopUpOpened, setIsPopUpOpened] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const isNightMode = useSelector<IAppStore, boolean>(
-    (state) => state.gallery.isNightModeOn,
-  );
-  const dispatch = useDispatch();
 
   function displayWindowSize() {
     const w = document.documentElement.clientWidth;
@@ -70,7 +65,7 @@ const Header = () => {
             console.log('keyboard listener');
           }}
         >
-          <img src={burger} alt="burger" />
+          <img src={theme === 'light' ? burgerLightMode : burgerDarkMode} alt="burger" />
         </div>
 
         <div className={cx('popUp', { popUpOnClick: isPopUpOpened, dark: theme === 'dark', light: theme === 'light' })}>
