@@ -1,31 +1,30 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './style.scss';
-import { ThemeContext } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
 type PhotoItemPropsType = {
-    title: string;
     name: string;
     yearsOfLife: string;
     picture: string;
     id: string;
+    theme: string;
 };
 
 const PhotoItem = ({
   name,
   id,
-  title,
   yearsOfLife,
   picture,
+  theme,
 }: PhotoItemPropsType) => {
   const [hover, setHover] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+
   const baseURL = useSelector<IAppStore, string>(
     (state) => state.gallery.baseURL,
   );
