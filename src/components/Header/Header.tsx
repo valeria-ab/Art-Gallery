@@ -5,11 +5,13 @@ import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
 import burger from '../../assets/burger.png';
-import crescent from '../../assets/crescent.png';
-import logo from '../../assets/logo.png';
-import cancel from '../../assets/cancel.png';
+import toDarkThemeToggler from '../../assets/toDarkThemeToggler.png';
+import toLightThemeToggler from '../../assets/toLightThemeToggler.png';
+import logoLightMode from '../../assets/logoLightMode.png';
+import logoDarkMode from '../../assets/logoDarkMode.png';
+import cancelLight from '../../assets/cancelLight.png';
+import cancelDark from '../../assets/cancelDark.png';
 import { IAppStore } from '../../store/store';
-import { setIsNightModeOn } from '../../store/gallery-reducer';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
@@ -36,24 +38,27 @@ const Header = () => {
     <div className={cx('header', { darkMode: theme === 'dark', lightMode: theme === 'light' })}>
       <div className={cx('headerContainer')}>
         <NavLink to="/artists/static">
-          <img src={logo} alt="logo" />
+          <img src={theme === 'light' ? logoLightMode : logoDarkMode} alt="logo" />
         </NavLink>
 
         <div className={cx('authBlock')}>
-          <div className={cx('authBlockTitles')}>LOGIN</div>
-          <div className={cx('authBlockTitles')}>SIGN UP</div>
+          <div className={cx('authBlockTitles', 'cursorPointer')}>LOGIN</div>
+          <div className={cx('authBlockTitles', 'cursorPointer')}>SIGN UP</div>
           <div
             role="button"
             tabIndex={-1}
-            className={cx('nightModeHandler')}
+            className={cx('nightModeHandler', 'cursorPointer')}
             // onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
             onClick={toggleTheme}
-            // value={theme === themes.dark}
             onKeyDown={() => {
               console.log('keyboard listener');
             }}
           >
-            <img src={crescent} alt="crescent" className={cx('crescent')} />
+            <img
+              src={theme === 'light' ? toDarkThemeToggler : toLightThemeToggler}
+              alt="crescent"
+              className={cx({ toNightThemeIcon: theme === 'light', toLightThemeIcon: theme === 'dark' })}
+            />
           </div>
         </div>
         <div
@@ -68,7 +73,7 @@ const Header = () => {
           <img src={burger} alt="burger" />
         </div>
 
-        <div className={cx('popUp', { popUpOnClick: isPopUpOpened })}>
+        <div className={cx('popUp', { popUpOnClick: isPopUpOpened, dark: theme === 'dark', light: theme === 'light' })}>
           <div
             onClick={() => setIsPopUpOpened(!isPopUpOpened)}
             className={cx('cancelButton')}
@@ -78,7 +83,7 @@ const Header = () => {
               console.log('keyboard listener');
             }}
           >
-            <img src={cancel} alt="cancel" className={cx('cursorPointer')} />
+            <img src={theme === 'light' ? cancelLight : cancelDark} alt="cancel" className={cx('cursorPointer')} />
           </div>
           <div className={cx('popUpContainer')}>
             <div
@@ -88,11 +93,17 @@ const Header = () => {
               onKeyDown={() => {
                 console.log('keyboard listener');
               }}
-              onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
+              onClick={toggleTheme}
             >
-              <img src={crescent} alt="crescent" className={cx('crescent')} />
+              <img
+                src={theme === 'light' ? toDarkThemeToggler : toLightThemeToggler}
+                alt="themeIcon"
+                className={cx({ toNightThemeIcon: theme === 'light', toLightThemeIcon: theme === 'dark' })}
+              />
               <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span className={cx('changeModeTitle')}> Dark mode</span>
+              <span className={cx('changeModeTitle')}>
+                {theme === 'light' ? 'Dark mode' : 'Light mode'}
+              </span>
             </div>
 
             <div className={cx('loginButtons', 'cursorPointer', 'loginMargin')}>

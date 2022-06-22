@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './style.scss';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
 type PhotoItemPropsType = {
-  title: string;
-  name: string;
-  yearsOfLife: string;
-  picture: string;
-  id: string;
+    title: string;
+    name: string;
+    yearsOfLife: string;
+    picture: string;
+    id: string;
 };
 
 const PhotoItem = ({
@@ -24,6 +25,7 @@ const PhotoItem = ({
   picture,
 }: PhotoItemPropsType) => {
   const [hover, setHover] = useState(false);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const baseURL = useSelector<IAppStore, string>(
     (state) => state.gallery.baseURL,
   );
@@ -46,21 +48,48 @@ const PhotoItem = ({
           src={`${baseURL}${picture}`}
           alt="mainPicture"
         />
-        <div className={cx('hoverButton', { 'hoverButton-show': hover })}>
-          <span className={cx('hoverButtonSpan')}>Learn more</span>
+        <div className={cx('hoverButton', {
+          'hoverButton-show': hover,
+          hoverButton__dark: theme === 'dark',
+          hoverButton__light: theme === 'light',
+        })}
+        >
+          <span className={cx('hoverButtonSpan', {
+            hoverButtonSpan__dark: theme === 'dark',
+            hoverButtonSpan__light: theme === 'light',
+          })}
+          >
+            Learn more
+          </span>
         </div>
 
-        {!hover
-          && (
-          <div className={cx('titleContainer')}>
-            <div className={cx('titleBlock')}>
-              <div className={cx('name')}>{name}</div>
-              <div className={cx('years')}>
-                {yearsOfLife}
-              </div>
+        <div className={cx('titleContainer', {
+          titleContainer__dark: theme === 'dark',
+          titleContainer__light: theme === 'light',
+        })}
+        >
+          <div className={cx('titleBlock', {
+            titleBlock__dark: theme === 'dark',
+            titleBlock__light: theme === 'light',
+          })}
+          >
+            <div className={cx('name', {
+              name__dark: theme === 'dark',
+              name__light: theme === 'light',
+            })}
+            >
+              {name}
+            </div>
+            <div className={cx('years', {
+              years__dark: theme === 'dark',
+              years__light: theme === 'light',
+            })}
+            >
+              {yearsOfLife}
             </div>
           </div>
-          )}
+        </div>
+
       </NavLink>
     </div>
   );

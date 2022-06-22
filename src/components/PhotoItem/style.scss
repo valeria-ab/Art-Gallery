@@ -11,9 +11,19 @@
   &.photoItem__container-active {
     .hoverButton {
       display: block;
-      background-color: rgba(255, 255, 255, 0.9);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 667;
+      opacity: 0.9;
       height: 100%;
       width: 100%;
+    }
+    .hoverButton__dark {
+      background-color: $primaryBlack;
+    }
+    .hoverButton__light {
+      background-color: rgba(255, 255, 255, 0.9);
     }
   }
 
@@ -22,7 +32,6 @@
       position: absolute;
       width: 300px;
       height: 82px;
-      background-color: white;
       padding: 20px 20px 20px 0;
       left: 0;
       bottom: 0;
@@ -30,25 +39,45 @@
       .titleBlock {
         padding-left: 20px;
         height: 42px;
-        border-left: 2px solid $accentRed;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
 
         .name {
           @include h4Heading;
-          color: $primaryBlack;
         }
 
         .years {
           @include buttonBold12;
-          color: $accentRed;
         }
       }
     }
   }
 }
-
+.titleContainer__dark {
+  background-color: $primaryBlack;
+}
+.titleContainer__light {
+  background-color: $primaryWhite;
+}
+.titleBlock__dark {
+  border-left: 2px solid $accentGold;
+}
+.titleBlock__light {
+  border-left: 2px solid $accentRed;
+}
+.name__dark {
+  color: $primaryLightGray;
+}
+.name__light {
+  color: $primaryBlack;
+}
+.years__light {
+  color: $accentRed;
+}
+.years__dark {
+  color: $accentGold;
+}
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .photoItem,
   .photoItem__img,
@@ -80,9 +109,9 @@
   display: block;
 }
 
-.photoItem__img-active {
-  display: none;
-}
+//.photoItem__img-active {
+//  display: none;
+//}
 
 .hoverButton {
   display: none;
@@ -93,6 +122,12 @@
   top: 49%;
   left: 35%;
   position: absolute;
+}
+.hoverButtonSpan__dark {
+  color: $primaryLightGray;
+  border-bottom: 2px solid $primaryLightGray;
+}
+.hoverButtonSpan__light {
   color: $primaryDarkGray;
   border-bottom: 2px solid $primaryDarkGray;
 }
