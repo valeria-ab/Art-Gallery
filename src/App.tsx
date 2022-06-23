@@ -3,11 +3,11 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './App.scss';
-import UnauthorizedUserPage from './components/UnauthorizedUserPage/UnauthorizedUserPage';
-import ArtistPage from './components/ArtistPage/ArtistPage';
+import ArtistsList from './components/ArtistsList/ArtistsList';
 import Header from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { ThemeContext, themes } from './contexts/ThemeContext';
+import ArtistPage from './components/ArtistPage/ArtistPage';
 
 const cx = classNames.bind(style);
 
@@ -31,7 +31,7 @@ const App = () => {
         <div className="AppContainer">
           <Header />
           <Routes>
-            <Route path="/artists/static" element={<UnauthorizedUserPage />} />
+            <Route path="/artists/static" element={<ArtistsList />} />
             <Route path="/artists/static/:authorId" element={<ArtistPage />} />
             <Route path="/" element={<Navigate to="/artists/static" />} />
 

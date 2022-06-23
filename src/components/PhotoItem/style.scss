@@ -8,6 +8,10 @@
   background-color: #827c7c;
   position: relative;
 
+  .hoverButton {
+    display: none;
+  }
+
   &.photoItem__container-active {
     .hoverButton {
       display: block;
@@ -18,16 +22,40 @@
       opacity: 0.9;
       height: 100%;
       width: 100%;
-    }
-    .hoverButton__dark {
-      background-color: $primaryBlack;
-    }
-    .hoverButton__light {
-      background-color: rgba(255, 255, 255);
+
+      &.hoverButton__dark {
+        background-color: $primaryBlack;
+      }
+
+      &.hoverButton__light {
+        background-color: rgba(255, 255, 255);
+      }
+
+      .hoverButtonSpan {
+        @include buttonBold12;
+        top: 49%;
+        left: 35%;
+        position: absolute;
+
+        &.hoverButtonSpan__dark {
+          color: $primaryLightGray;
+          border-bottom: 2px solid $primaryLightGray;
+        }
+
+        &.hoverButtonSpan__light {
+          color: $primaryDarkGray;
+          border-bottom: 2px solid $primaryDarkGray;
+        }
+      }
     }
   }
 
   .photoItem {
+    .photoItem__img {
+      display: block;
+      min-width: 300px;
+    }
+
     .titleContainer {
       position: absolute;
       width: 300px;
@@ -36,6 +64,14 @@
       left: 0;
       bottom: 0;
 
+      &.titleContainer__dark {
+        background-color: $primaryBlack;
+      }
+
+      &.titleContainer__light {
+        background-color: $primaryWhite;
+      }
+
       .titleBlock {
         padding-left: 20px;
         height: 42px;
@@ -43,46 +79,47 @@
         flex-direction: column;
         justify-content: space-between;
 
+        &.titleBlock__dark {
+          border-left: 2px solid $accentGold;
+        }
+
+        &.titleBlock__light {
+          border-left: 2px solid $accentRed;
+        }
+
         .name {
           @include h4Heading;
+
+          &.name__dark {
+            color: $primaryLightGray;
+          }
+
+          &.name__light {
+            color: $primaryBlack;
+          }
         }
 
         .years {
           @include buttonBold12;
+
+          &.years__light {
+            color: $accentRed;
+          }
+
+          &.years__dark {
+            color: $accentGold;
+          }
         }
       }
     }
   }
 }
-.titleContainer__dark {
-  background-color: $primaryBlack;
-}
-.titleContainer__light {
-  background-color: $primaryWhite;
-}
-.titleBlock__dark {
-  border-left: 2px solid $accentGold;
-}
-.titleBlock__light {
-  border-left: 2px solid $accentRed;
-}
-.name__dark {
-  color: $primaryLightGray;
-}
-.name__light {
-  color: $primaryBlack;
-}
-.years__light {
-  color: $accentRed;
-}
-.years__dark {
-  color: $accentGold;
-}
+
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .photoItem,
   .photoItem__img,
   .photoItem__container {
-    width: 280px;
+    //width: 280px;
     height: 185px;
   }
 }
@@ -103,31 +140,4 @@
     width: 392px;
     height: 260px;
   }
-}
-
-.photoItem__img {
-  display: block;
-}
-
-//.photoItem__img-active {
-//  display: none;
-//}
-
-.hoverButton {
-  display: none;
-}
-
-.hoverButtonSpan {
-  @include buttonBold12;
-  top: 49%;
-  left: 35%;
-  position: absolute;
-}
-.hoverButtonSpan__dark {
-  color: $primaryLightGray;
-  border-bottom: 2px solid $primaryLightGray;
-}
-.hoverButtonSpan__light {
-  color: $primaryDarkGray;
-  border-bottom: 2px solid $primaryDarkGray;
 }

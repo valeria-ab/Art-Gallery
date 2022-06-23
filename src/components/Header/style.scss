@@ -6,7 +6,7 @@
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 666666;
+  z-index: 6666;
   width: 100%;
 }
 .darkMode {
@@ -14,6 +14,7 @@
 }
 .lightMode {
   background-color: $primaryWhite;
+  color: $primaryDarkGray
 }
 .fwtLink {
   text-decoration: underline;
@@ -31,7 +32,6 @@
   justify-content: space-between;
   align-items: center;
   height: 12vh;
-  //background-color: #5d2222;
 }
 
 .authBlock {
@@ -46,67 +46,35 @@
 .mobileMode {
   display: none;
 }
-
-@media screen and (max-width: 768px) {
-  .authBlock {
-    display: none;
-  }
-  .mobileMode {
-    display: inline-block;
-    cursor: pointer;
-  }
-  .loginButtons {
-    @include h1Heading
-  }
-}
-
-@media screen and (min-width: 769px) {
-  //.authBlock {
-  //  display: flex;
-  //}
-  .popUp {
-    display: none;
-  }
-}
-@media screen and (max-width: 768px) and (min-width: 401px) {
-  .loginButtons {
-    @include h1Heading;
-  }
-
-}
-
-@media screen and (max-width: 400px) {
-  .authBlock {
-    display: none;
-  }
-  .mobileMode {
-    display: inline-block;
-    cursor: pointer;
-  }
-  .popUp {
-    width: 80%;
-  }
-  .loginButtons {
-    @include h3Heading
-  }
-}
-
 .nightModeHandler {
   margin-left: 40px;
 }
-
-.popUp {
+.burgerMenu {
   display: none;
   height: 100vh;
-  z-index: 100;
-  width: 70%;
+  z-index: 9999;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: $primaryDarkGray;
+}
+.burgerMenuOpacityBlock {
+  width: 30%;
+  opacity: 0.5;
+  height: 100vh;
+}
+.burgerMenuContent {
+  z-index: 10000;
+  width: 75%;
+  height: 100vh;
+  color: $primaryDarkGray;
   position: absolute;
   top: 0;
   right: 0;
-  color: $primaryDarkGray;
   padding: 25px;
 }
-.popUpOnClick {
+.burgerMenuOnClick {
   display: block;
 }
 .dark {
@@ -116,16 +84,13 @@
 .light {
   background-color: $primaryWhite;
 }
-//.popUpTitles {
-//  @include h5Heading;
-//}
 
 .cancelButton {
   float: right;
   padding-top: 30px;
 }
 
-.popUpContainer {
+.burgerMenuContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -152,4 +117,44 @@
 }
 .loginMargin {
   margin-bottom: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .authBlock {
+    display: none;
+  }
+  .mobileMode {
+    display: inline-block;
+    cursor: pointer;
+  }
+  .loginButtons {
+    @include h1Heading
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .burgerMenu {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) and (min-width: 401px) {
+  .loginButtons {
+    @include h1Heading;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .authBlock {
+    display: none;
+  }
+  .mobileMode {
+    display: inline-block;
+    cursor: pointer;
+  }
+  .burgerMenuContent {
+    width: 90%;
+  }
+  .loginButtons {
+    @include h3Heading
+  }
 }

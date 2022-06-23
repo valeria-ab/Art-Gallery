@@ -16,24 +16,38 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 const cx = classNames.bind(style);
 
 const Header = () => {
-  const [isPopUpOpened, setIsPopUpOpened] = useState(false);
+  const [isBurgerMenuOpened, setIsBurgerMenuOpened] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
 
+  // тут не закроешь просто css-ом потому что, если у стиля будет условие,
+  // завясящее от true/false (в нашем случает от isBurgerMenuOpened), то при
+  // уменьшении ширины экрана значение isBurgerMenuOpened не изменится само собой
+  // и следовательно стиль {display: none} не сработает
+
   function displayWindowSize() {
+    // функция, закрывающая окно burgerMenu при достижении определённой ширины экрана
     const w = document.documentElement.clientWidth;
     window.addEventListener('resize', displayWindowSize);
-    if (w > 768 && isPopUpOpened) {
-      setIsPopUpOpened(false);
+    if (w > 768 && isBurgerMenuOpened) {
+      setIsBurgerMenuOpened(false);
     }
   }
 
   displayWindowSize();
 
   return (
-    <div className={cx('header', { darkMode: theme === 'dark', lightMode: theme === 'light' })}>
+    <div
+      className={cx('header', {
+        darkMode: theme === 'dark',
+        lightMode: theme === 'light',
+      })}
+    >
       <div className={cx('headerContainer')}>
         <NavLink to="/artists/static">
-          <img src={theme === 'light' ? logoLightMode : logoDarkMode} alt="logo" />
+          <img
+            src={theme === 'light' ? logoLightMode : logoDarkMode}
+            alt="logo"
+          />
         </NavLink>
 
         <div className={cx('authBlock')}>
@@ -43,7 +57,6 @@ const Header = () => {
             role="button"
             tabIndex={-1}
             className={cx('nightModeHandler', 'cursorPointer')}
-            // onClick={() => dispatch(setIsNightModeOn({ isNightModeOn: true }))}
             onClick={toggleTheme}
             onKeyDown={() => {
               console.log('keyboard listener');
@@ -52,59 +65,95 @@ const Header = () => {
             <img
               src={theme === 'light' ? toDarkThemeToggler : toLightThemeToggler}
               alt="crescent"
-              className={cx({ toNightThemeIcon: theme === 'light', toLightThemeIcon: theme === 'dark' })}
+              className={cx({
+                toNightThemeIcon: theme === 'light',
+                toLightThemeIcon: theme === 'dark',
+              })}
             />
           </div>
         </div>
         <div
           className={cx('mobileMode')}
-          onClick={() => setIsPopUpOpened(!isPopUpOpened)}
+          onClick={() => setIsBurgerMenuOpened(!isBurgerMenuOpened)}
           role="button"
           tabIndex={-1}
           onKeyDown={() => {
             console.log('keyboard listener');
           }}
         >
-          <img src={theme === 'light' ? burgerLightMode : burgerDarkMode} alt="burger" />
+          <img
+            src={theme === 'light' ? burgerLightMode : burgerDarkMode}
+            alt="burgerMenu"
+          />
         </div>
 
-        <div className={cx('popUp', { popUpOnClick: isPopUpOpened, dark: theme === 'dark', light: theme === 'light' })}>
+        <div
+          className={cx('burgerMenu', {
+            burgerMenuOnClick: isBurgerMenuOpened,
+          })}
+        >
           <div
-            onClick={() => setIsPopUpOpened(!isPopUpOpened)}
-            className={cx('cancelButton')}
-            role="button"
-            tabIndex={-1}
-            onKeyDown={() => {
-              console.log('keyboard listener');
-            }}
+            className={cx('burgerMenuOpacityBlock', {
+              dark: theme === 'dark',
+              light: theme === 'light',
+            })}
           >
-            <img src={theme === 'light' ? cancelLight : cancelDark} alt="cancel" className={cx('cursorPointer')} />
+            {' '}
           </div>
-          <div className={cx('popUpContainer')}>
+          <div
+            className={cx('burgerMenuContent', {
+              dark: theme === 'dark',
+              light: theme === 'light',
+            })}
+          >
             <div
+              onClick={() => setIsBurgerMenuOpened(!isBurgerMenuOpened)}
+              className={cx('cancelButton')}
               role="button"
-              className={cx('changeModeBlock', 'cursorPointer')}
               tabIndex={-1}
               onKeyDown={() => {
                 console.log('keyboard listener');
               }}
-              onClick={toggleTheme}
             >
               <img
-                src={theme === 'light' ? toDarkThemeToggler : toLightThemeToggler}
-                alt="themeIcon"
-                className={cx({ toNightThemeIcon: theme === 'light', toLightThemeIcon: theme === 'dark' })}
+                src={theme === 'light' ? cancelLight : cancelDark}
+                alt="cancel"
+                className={cx('cursorPointer')}
               />
-              <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span className={cx('changeModeTitle')}>
-                {theme === 'light' ? 'Dark mode' : 'Light mode'}
-              </span>
             </div>
+            <div className={cx('burgerMenuContainer')}>
+              <div
+                role="button"
+                className={cx('changeModeBlock', 'cursorPointer')}
+                tabIndex={-1}
+                onKeyDown={() => {
+                  console.log('keyboard listener');
+                }}
+                onClick={toggleTheme}
+              >
+                <img
+                  src={
+                    theme === 'light' ? toDarkThemeToggler : toLightThemeToggler
+                  }
+                  alt="themeIcon"
+                  className={cx({
+                    toNightThemeIcon: theme === 'light',
+                    toLightThemeIcon: theme === 'dark',
+                  })}
+                />
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span className={cx('changeModeTitle')}>
+                  {theme === 'light' ? 'Dark mode' : 'Light mode'}
+                </span>
+              </div>
 
-            <div className={cx('loginButtons', 'cursorPointer', 'loginMargin')}>
-              Log in
+              <div
+                className={cx('loginButtons', 'cursorPointer', 'loginMargin')}
+              >
+                Log in
+              </div>
+              <div className={cx('loginButtons', 'cursorPointer')}>Sign up</div>
             </div>
-            <div className={cx('loginButtons', 'cursorPointer')}>Sign up</div>
           </div>
         </div>
       </div>
