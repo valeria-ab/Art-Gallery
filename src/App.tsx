@@ -30,6 +30,7 @@ const App = () => {
       <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
         <div className="AppContainer">
           <Header />
+          {/* <Modal theme={currentTheme} /> */}
           <Routes>
             <Route path="/artists/static" element={<ArtistsList />} />
             <Route path="/artists/static/:authorId" element={<ArtistPage />} />

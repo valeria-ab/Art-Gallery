@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
@@ -8,16 +8,13 @@ type ButtonPropsType = {
   title: string;
   theme: string;
 };
-export const Button = ({ title, theme }: ButtonPropsType) => {
-  const [qqq, setqqq] = useState(1);
-  return (
-    <div
-      className={cx('button', {
-        button__darkMode: theme === 'dark',
-        button__lightMode: theme === 'light',
-      })}
-    >
-      <span className={cx('value')}>{title}</span>
-    </div>
-  );
-};
+export const Button = ({ title, theme }: ButtonPropsType) => (
+  <div
+    className={cx('button', {
+      button__darkMode: theme === 'dark' && title !== 'cancel',
+      button__lightMode: theme === 'light' && title !== 'cancel',
+    })}
+  >
+    <span className={cx('value', { cancel: title === 'cancel' })}>{title}</span>
+  </div>
+);
