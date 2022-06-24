@@ -5,23 +5,28 @@ import style from './style.scss';
 
 const cx = classNames.bind(style);
 type ButtonPropsType = {
-  title: string;
+    value: string;
   theme: string;
+    type: 'filled' | 'outlined';
+    width: string;
 };
-export const Button = ({ title, theme }: ButtonPropsType) => (
+export const Button = ({
+  value, theme, type, width,
+}: ButtonPropsType) => (
   <div
     className={cx('button', {
-      button__darkMode: theme === 'dark' && title !== 'cancel',
-      button__lightMode: theme === 'light' && title !== 'cancel',
+      button__darkMode: theme === 'dark' && type === 'filled',
+      button__lightMode: theme === 'light' && type === 'filled',
     })}
+    style={{ width }}
   >
     <span
       className={cx('value', {
-        cancel: title === 'cancel',
-        cancel__light: theme === 'light' && title === 'cancel',
+        outlined: value === 'cancel',
+        outlined__light: theme === 'light' && type === 'outlined',
       })}
     >
-      {title}
+      {value}
     </span>
   </div>
 );

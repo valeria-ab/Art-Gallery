@@ -1,6 +1,7 @@
 import { ArtistResponseType, artistsAPI } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk } from './store';
+import { setAppStatus } from './app-reducer';
 
 export type InitialCardsStateType = {
   artistInfo: ArtistResponseType;
@@ -34,10 +35,13 @@ export const artistPageReducer = (
 // thunk
 
 export const getArtistInfoTC = (artistId: string): AppThunk => (dispatch) => {
-  // dispatch(setLoading({ loadingStatus: 'loading' }));
+  dispatch(setAppStatus({ status: 'loading' }));
   artistsAPI
     .getArtistStatic(artistId)
     .then((res) => {
       dispatch(setArtistInfo({ artistInfo: res.data }));
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
     });
 };

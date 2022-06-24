@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { useSelector } from 'react-redux';
 // @ts-ignore
 import style from './App.scss';
 import ArtistsList from './components/ArtistsList/ArtistsList';
 import Header from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { ThemeContext, themes } from './contexts/ThemeContext';
-import ArtistPage from './components/ArtistPage/ArtistPage';
+import ArtistPage from './components/ArtistProfile/ArtistPage';
+import { DeleteModal } from './components/Modals/delete/DeleteModal';
+import { IAppStore } from './store/store';
+import { RequestStatusType } from './store/app-reducer';
+import { Loader } from './components/loader/Loader';
 
 const cx = classNames.bind(style);
 
@@ -26,11 +31,17 @@ const App = () => {
     light: currentTheme === 'light',
   });
 
+  const loadingStatus = useSelector<IAppStore, RequestStatusType>(
+    (state) => state.app.status,
+  );
+
+  if (loadingStatus === 'loading') { return <Loader />; }
   return (
     <div className={componentClassName}>
       <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
         <div className="AppContainer">
           <Header />
+          <DeleteModal theme={currentTheme} primaryTitle="dfdf" secondaryTitle="dfdf" />
           <Routes>
             <Route path="/artists/static" element={<ArtistsList />} />
             <Route path="/artists/static/:authorId" element={<ArtistPage />} />

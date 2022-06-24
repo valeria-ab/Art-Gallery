@@ -5,30 +5,32 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Button } from '../components/Button/Button';
 
 export default {
-  title: 'Example/Button',
+  value: 'Example/Button',
   component: Button,
 } as ComponentMeta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof Button> = (args) => (
+  <Button {...args} />
+);
 
 export const DeleteLight = Template.bind({});
 DeleteLight.args = {
   theme: 'light',
-  title: 'delete',
+  value: 'delete',
 };
 export const DeleteDark = Template.bind({});
 DeleteDark.args = {
   theme: 'dark',
-  title: 'delete',
+  value: 'delete',
 };
 
 export const CancelLight = Template.bind({});
 CancelLight.args = {
   theme: 'dark',
-  title: 'cancel',
+  value: 'cancel',
 };
 export const CancelDark = Template.bind({});
 CancelDark.args = {
   theme: 'light',
-  title: 'cancel',
+  value: 'cancel',
 };

@@ -46,8 +46,8 @@ export const DeleteModal = ({ theme, primaryTitle, secondaryTitle }: ModalPropsT
         afterwards.
       </div>
       <div className={cx('buttons')}>
-        <Button title="delete" theme={theme} />
-        <Button title="cancel" theme={theme} />
+        <Button value="delete" theme={theme} type="filled" width="200px" />
+        <Button value="cancel" theme={theme} type="outlined" width="200px" />
       </div>
     </div>
   </div>

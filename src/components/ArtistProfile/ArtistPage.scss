@@ -15,9 +15,7 @@
 }
 
 .infoBlock {
-  background-color: $primaryWhite;
   z-index: 101;
-  border: 1px solid;
   position: absolute;
   //width: 604px;
   width: 40%;
@@ -26,7 +24,12 @@
 
   top: 240px;
 }
-
+.infoBlock__light {
+  background-color: $primaryWhite;
+}
+.infoBlock__dark {
+  background-color: $primaryWhite;
+}
 .artistNameContainer {
   border-left: 2px solid $accentRed;
 }
@@ -43,7 +46,6 @@
 .infoBlock__padding {
   display: inline-block;
   padding: 80px;
-  border: 1px solid;
 }
 
 .mainPhoto {
@@ -76,4 +78,20 @@
 
 .artistInfo {
   @include h4Heading
+}
+.comeBackButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+height: 25px;
+  width: 70px;
+  margin-left: 5%;
+}
+.learnMoreButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 96px;
+  height: 16px;
+  margin-bottom: 20px;
 }

@@ -2,7 +2,7 @@
 @import "./src/common/styles/CommonStyles";
 
 .button {
-  width: 200px;
+  //width: 200px;
   border-radius: 30px;
   height: 47px;
   display: flex;
@@ -22,10 +22,10 @@ background-color: $accentGold;
   color: $primaryWhite;
   display: inline-block;
 }
-.cancel {
+.outlined {
  border-bottom: 1px solid $primaryWhite;
 }
-.cancel__light {
+.outlined__light {
   color: $primaryDarkGray;
   border-bottom: 1px solid $primaryDarkGray;
 }
