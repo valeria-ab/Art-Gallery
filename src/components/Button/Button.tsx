@@ -15,6 +15,13 @@ export const Button = ({ title, theme }: ButtonPropsType) => (
       button__lightMode: theme === 'light' && title !== 'cancel',
     })}
   >
-    <span className={cx('value', { cancel: title === 'cancel' })}>{title}</span>
+    <span
+      className={cx('value', {
+        cancel: title === 'cancel',
+        cancel__light: theme === 'light' && title === 'cancel',
+      })}
+    >
+      {title}
+    </span>
   </div>
 );

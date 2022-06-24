@@ -14,10 +14,11 @@ const cx = classNames.bind(style);
 const App = () => {
   const [currentTheme, setCurrentTheme] = useState(themes.light);
   const toggleTheme = () => {
-    setCurrentTheme(
-      (prevCurrentTheme) => (prevCurrentTheme === themes.light
-        ? themes.dark : themes.light),
-    );
+    setCurrentTheme((prevCurrentTheme) => (
+      prevCurrentTheme === themes.light
+        ? themes.dark
+        : themes.light
+    ));
   };
 
   const componentClassName = cx('App', {
@@ -30,7 +31,6 @@ const App = () => {
       <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
         <div className="AppContainer">
           <Header />
-          {/* <Modal theme={currentTheme} /> */}
           <Routes>
             <Route path="/artists/static" element={<ArtistsList />} />
             <Route path="/artists/static/:authorId" element={<ArtistPage />} />
