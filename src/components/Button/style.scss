@@ -1,0 +1,31 @@
+@import "./src/common/styles/sass/baseColors.scss";
+@import "./src/common/styles/CommonStyles";
+
+.button {
+  width: 200px;
+  border-radius: 30px;
+  height: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  cursor: pointer;
+}
+.button__darkMode {
+background-color: $accentGold;
+}
+.button__lightMode {
+  background-color: $primaryBlack;
+}
+.value {
+  @include buttonBold12;
+  text-transform: uppercase;
+  color: $primaryWhite;
+  display: inline-block;
+}
+.cancel {
+ border-bottom: 1px solid $primaryWhite;
+}
+.cancel__light {
+  color: $primaryDarkGray;
+  border-bottom: 1px solid $primaryDarkGray;
+}

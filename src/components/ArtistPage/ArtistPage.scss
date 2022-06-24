@@ -1,0 +1,79 @@
+@import "../../common/styles/sass/baseColors";
+@import "../../common/styles/CommonStyles";
+
+.artistPage {
+
+}
+
+.artistProfile {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 90vh;
+  width: 100%;
+}
+
+.infoBlock {
+  background-color: $primaryWhite;
+  z-index: 101;
+  border: 1px solid;
+  position: absolute;
+  //width: 604px;
+  width: 40%;
+  //height: 552px;
+  left: 100px;
+
+  top: 240px;
+}
+
+.artistNameContainer {
+  border-left: 2px solid $accentRed;
+}
+
+.artistName {
+  @include h1Heading;
+  display: inline-block;
+  color: $accentRed;
+  padding-left: 80px;
+}
+.artistDescription {
+  @include paragraphBaseLight16
+}
+.infoBlock__padding {
+  display: inline-block;
+  padding: 80px;
+  border: 1px solid;
+}
+
+.mainPhoto {
+  //min-height: 300px;
+  //min-width: 300px;
+  background-color: #1A1818;
+  position: absolute;
+  //width: 1000px;
+  //height: 1001px;
+  //left: 440px;
+  margin-left: 80px;
+  right: 0;
+  top: 100px;
+  width: 60%;
+}
+
+.profilePicture {
+  //width: 1000px;
+  //height: 1001px;
+
+  //width: 863px;
+  //height: 948px;
+  //width: 60%;
+  right: 0;
+  top: 180px;
+}
+
+.artWorks {
+}
+
+.artistInfo {
+  @include h4Heading
+}
