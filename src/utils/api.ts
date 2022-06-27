@@ -44,10 +44,10 @@ type UpdateMainPaintingResponseType = {
   originalname: string;
 };
 
-type AuthorPaintingsType = {
+export type AuthorPaintingsType = {
   _id: string;
   name: string;
-  yearsOfLife: string;
+  yearOfCreation: string;
   image: ImageType;
 };
 

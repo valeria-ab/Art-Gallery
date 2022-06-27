@@ -10,7 +10,7 @@ const cx = classNames.bind(style);
 
 type PhotoItemPropsType = {
     name: string;
-    yearsOfLife: string;
+    years: string;
     picture: string;
     id: string;
     theme: string;
@@ -19,7 +19,7 @@ type PhotoItemPropsType = {
 const PhotoItem = ({
   name,
   id,
-  yearsOfLife,
+  years,
   picture,
   theme,
 }: PhotoItemPropsType) => {
@@ -84,7 +84,7 @@ const PhotoItem = ({
               years__light: theme === 'light',
             })}
             >
-              {yearsOfLife}
+              {years}
             </div>
           </div>
         </div>

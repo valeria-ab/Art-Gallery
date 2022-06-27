@@ -4,11 +4,14 @@ import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 import ArtistProfile from './ArtistProfile';
-import ArtistArtworks from './ArtistArtworks';
-import { getArtistInfoTC } from '../../store/artistPage-reducer';
+import {
+  getArtistInfoTC,
+  getPaintingsByAuthorIdTC,
+} from '../../store/artistPage-reducer';
 import { ArtistResponseType } from '../../utils/api';
 // @ts-ignore
 import style from './ArtistPage.scss';
+import ArtistArtworks from './ArtistArtworks';
 
 const cx = classNames.bind(style);
 
@@ -18,9 +21,11 @@ const ArtistPage = () => {
   const artistInfo = useSelector<IAppStore, ArtistResponseType>(
     (state) => state.artistPage.artistInfo,
   );
+
   useEffect(() => {
     if (authorId) {
       dispatch(getArtistInfoTC(authorId));
+      dispatch(getPaintingsByAuthorIdTC(authorId));
     }
   }, [authorId]);
 

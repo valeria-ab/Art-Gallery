@@ -23,25 +23,41 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
   );
 
   return (
-    <div className={cx('artistProfile')}>
-      <NavLink to="/artists/static" className={cx('comeBackButton')}>
-        <img src={arrowBack} alt="arrowBack" width="10px" height="16px" />
-        <Button value="back" theme={theme} type="outlined" width="20px" />
-      </NavLink>
+    <div className={cx('artistPage')}>
+      <div>
+        <NavLink to="/artists/static" className={cx('comeBackButton')}>
+          <img src={arrowBack} alt="arrowBack" width="10px" height="16px" />
+          <Button value="back" theme={theme} type="outlined" width="50px" />
+        </NavLink>
+      </div>
+
       {artistInfo.avatar && (
-        <>
-          <div
-            className={cx('infoBlock', {
-              infoBlock__light: theme === 'light',
-              infoBlock__dark: theme === 'dark',
-            })}
+        <div className={cx('artistProfile')}>
+          <div className={cx('mainPhoto')}>
+            <img
+                // src="https://internship-front.framework.team/images/62a32e09269fa5c416c53d91/original.jpg"
+              src={`${baseURL}${artistInfo.avatar.src2x}`}
+              alt="artist_picture"
+              className={cx('profilePicture')}
+            />
+          </div>
+          <div className={cx('infoBlock', {
+            infoBlock__light: theme === 'light',
+            infoBlock__dark: theme === 'dark',
+          })}
           >
+
             <div className={cx('artistInfo')}>
               <span className={cx('infoBlock__padding')}>
                 {artistInfo.yearsOfLife}
               </span>
             </div>
-            <div className={cx('artistNameContainer')}>
+            <div
+              className={cx({
+                artistNameContainer__light: theme === 'light',
+                artistNameContainer__dark: theme === 'dark',
+              })}
+            >
               <span className={cx('artistName')}>{artistInfo.name}</span>
             </div>
             <div className={cx('artistDescription')}>
@@ -56,27 +72,22 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
                 type="outlined"
                 theme={theme}
               />
-              <img src={learnMoreIcon} alt="learnMoreIcon" width="12px" height="7px" />
+              <img
+                src={learnMoreIcon}
+                alt="learnMoreIcon"
+                width="12px"
+                height="7px"
+              />
             </div>
 
-            <div>
+            <div className={cx('genresBlock')}>
               {artistInfo.genres.map((g) => (
                 <Genre key={g._id} value={g.name} />
               ))}
             </div>
           </div>
 
-          <div className={cx('mainPhoto')}>
-            <img
-              // src="https://internship-front.framework.team/images/62a32e09269fa5c416c53d91/original.jpg"
-              src={`${baseURL}${artistInfo.avatar.src2x}`}
-              alt="artist_picture"
-              // width="1000px"
-              // height="1001px"
-              className={cx('profilePicture')}
-            />
-          </div>
-        </>
+        </div>
       )}
     </div>
   );

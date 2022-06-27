@@ -2,42 +2,61 @@
 @import "../../common/styles/CommonStyles";
 
 .artistPage {
-
+  //min-height: 90vh;
+  width: 100%;
+  padding: 20px 0;
 }
 
+.artistArtworks {
+//padding: 0 100px;
+}
+.artistArtworks__heading {
+@include h1Heading;
+  margin-left: 100px;
+}
+.artistArtworks__heading__light {
+  color: $accentRed;
+}
+.artistArtworks__heading__dark {
+  color: $accentGold;
+}
+
+
 .artistProfile {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  height: 90vh;
-  width: 100%;
+  //position: relative;
+  //display: flex;
+  //flex-wrap: wrap;
+  //justify-content: space-between;
+  min-height: 1000px;
 }
 
 .infoBlock {
   z-index: 101;
   position: absolute;
-  //width: 604px;
+  min-width: 604px;
   width: 40%;
   //height: 552px;
   left: 100px;
-
-  top: 240px;
+  top: 300px;
 }
 .infoBlock__light {
   background-color: $primaryWhite;
 }
 .infoBlock__dark {
-  background-color: $primaryWhite;
+  background-color: $primaryBlack;
 }
-.artistNameContainer {
+.artistNameContainer__light {
   border-left: 2px solid $accentRed;
+  color: $accentRed
+}
+.artistNameContainer__dark {
+  border-left: 2px solid $accentGold;
+  color: $accentGold
 }
 
 .artistName {
   @include h1Heading;
   display: inline-block;
-  color: $accentRed;
   padding-left: 80px;
 }
 .artistDescription {
@@ -51,15 +70,15 @@
 .mainPhoto {
   //min-height: 300px;
   //min-width: 300px;
-  background-color: #1A1818;
+  //background-color: #1A1818;
   position: absolute;
   //width: 1000px;
   //height: 1001px;
   //left: 440px;
-  margin-left: 80px;
+  //margin-left: 80px;
   right: 0;
-  top: 100px;
-  width: 60%;
+  //top: 100px;
+  //width: 60%;
 }
 
 .profilePicture {
@@ -69,8 +88,8 @@
   //width: 863px;
   //height: 948px;
   //width: 60%;
-  right: 0;
-  top: 180px;
+  //right: 0;
+  //top: 180px;
 }
 
 .artWorks {
@@ -86,6 +105,7 @@
 height: 25px;
   width: 70px;
   margin-left: 5%;
+  //cursor: pointer;
 }
 .learnMoreButton {
   display: flex;
@@ -94,4 +114,25 @@ height: 25px;
   width: 96px;
   height: 16px;
   margin-bottom: 20px;
+  margin-left: 80px;
+}
+.genresBlock {
+  padding-left: 80px;
+}
+.arrowBackButton {
+//  width: 100%;
+//padding-bottom: 20px;
+}
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .infoBlock {
+    position: static;
+    width: 100%;
+  }
+  .mainPhoto {
+    position: static;
+  }
+  .profilePicture {
+    //height: 400px;
+    width: 100%;
+  }
 }

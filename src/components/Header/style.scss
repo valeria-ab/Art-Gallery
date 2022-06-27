@@ -2,12 +2,22 @@
 @import "../../common/styles/sass/baseColors";
 
 .header {
-  height: 12vh;
+  height: 100px;
   position: sticky;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 6666;
   width: 100%;
+}
+.headerContainer {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  //height: 12vh;
+  height: 100px;
 }
 .darkMode {
   background-color: $primaryBlack;
@@ -24,14 +34,6 @@
 }
 .fwtLink:visited.darkMode{
   color: $primaryWhite;
-}
-.headerContainer {
-  width: 90%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 12vh;
 }
 
 .authBlock {
