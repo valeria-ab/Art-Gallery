@@ -2,7 +2,7 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { DeleteModal } from '../components/Modals/delete/DeleteModal';
+import { DeleteModal } from '../components/modals/delete/DeleteModal';
 
 export default {
   title: 'Example/DeleteModal',

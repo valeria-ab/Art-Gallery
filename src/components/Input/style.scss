@@ -1,0 +1,22 @@
+
+
+.inputContainer {
+  margin-bottom: 60px;
+}
+.input {
+  width: 340px;
+  height: 46px
+}
+.select__current__input {
+  width: 100%;
+  outline: none;
+  border: none;
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+.select__current__input__nightMode {
+  background-color: black;
+  color: white;
+}

@@ -13,6 +13,7 @@ import { IAppStore } from './store/store';
 import { RequestStatusType } from './store/app-reducer';
 import { Loader } from './components/loader/Loader';
 import { ArtistResponseType } from './utils/api';
+import { Authorization } from './components/modals/authorization/Authorization';
 
 const cx = classNames.bind(style);
 
@@ -44,6 +45,7 @@ const App = () => {
       <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
         <div className="AppContainer">
           <Header />
+          <Authorization />
           {/* <DeleteModal theme={currentTheme} primaryTitle="dfdf" secondaryTitle="dfdf" /> */}
           <Routes>
             <Route path="/artists/static" element={<Gallery artists={artists} />} />
