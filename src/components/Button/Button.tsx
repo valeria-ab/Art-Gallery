@@ -9,16 +9,21 @@ type ButtonPropsType = {
   theme: string;
     type: 'filled' | 'outlined';
     width: string;
+    callback?: () => void;
 };
 export const Button = ({
-  value, theme, type, width,
+  value, theme, type, width, callback,
 }: ButtonPropsType) => (
   <div
+    role="button"
+    tabIndex={-1}
     className={cx('button', {
       button__darkMode: theme === 'dark' && type === 'filled',
       button__lightMode: theme === 'light' && type === 'filled',
     })}
     style={{ width }}
+    onClick={callback}
+    onKeyDown={() => console.log('on click')}
   >
     <span
       className={cx('value', {

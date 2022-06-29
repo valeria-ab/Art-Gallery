@@ -51,8 +51,12 @@ const Header = () => {
         </NavLink>
 
         <div className={cx('authBlock')}>
-          <div className={cx('authBlockTitles', 'cursorPointer')}>LOGIN</div>
-          <div className={cx('authBlockTitles', 'cursorPointer')}>SIGN UP</div>
+          <div className={cx('authBlockTitles', 'cursorPointer')}>
+            <NavLink to="/logIn">LOGIN</NavLink>
+          </div>
+          <div className={cx('authBlockTitles', 'cursorPointer')}>
+            <NavLink to="/signUp">SIGN UP</NavLink>
+          </div>
           <div
             role="button"
             tabIndex={-1}

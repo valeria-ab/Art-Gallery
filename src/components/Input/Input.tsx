@@ -10,9 +10,10 @@ const cx = classNames.bind(style);
 type InputPropsType = {
     label: string;
     type: string;
+    callback: (value: string) => void
 }
 
-export const Input = ({ label, type }: InputPropsType) => {
+export const Input = ({ label, type, callback }: InputPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
