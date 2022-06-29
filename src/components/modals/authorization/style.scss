@@ -5,22 +5,19 @@
 
 .authorization {
   width: 100%;
-
-
 }
 
 .authorizationContainer {
-
   border: 1px solid;
   width: 1028px;
   height: 700px;
   margin: 0 auto;
   display: flex;
 }
-.authorizationContainer__light {
+.light {
   color: $primaryDarkGray;
 }
-.authorizationContainer__dark {
+.dark {
   color: $primaryWhite;
 }
 .picture {
@@ -45,5 +42,56 @@
   display: inline-block;
 }
 .title {
-  @include h2Heading
+  @include h2Heading;
+  margin-bottom: 10px;
+  margin-top: 80px;
+}
+.title_mobile_light {
+
+}
+.text {
+  margin-top: 10px;
+  margin-bottom: 60px;
+  @include paragraphBaseLight16;
+}
+
+.signUpLink {
+  text-decoration: underline;
+  @include  paragraphBaseMedium16;
+}
+.signUpLink:visited.lightMode{
+  color: $primaryBlack;
+}
+.signUpLink:visited.darkMode{
+  color: $primaryWhite;
+}
+@media screen and (max-width: 1027px) {
+.picture {
+  display: none;
+}
+  .authorizationContainer {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 500px)  {
+  .title {
+    @include h3Heading;
+    margin-bottom: 60px;
+  }
+  .title_mobile_light {
+    color: $primaryBlack;
+  }
+  .authorizationContainer {
+    position: relative;
+    height: 630px;
+  }
+  .text {
+    @include paragraphSmallLight12;
+    position: absolute;
+    bottom: 30px;
+    margin-bottom: 0;
+  }
+  .signUpLink {
+    @include paragraphSmallMedium12;
+  }
 }

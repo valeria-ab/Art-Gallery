@@ -1,3 +1,6 @@
+@import "./src/common/styles/sass/baseColors";
+@import "./src/common/styles/CommonStyles";
+
 
 
 .inputContainer {
@@ -5,18 +8,37 @@
 }
 .input {
   width: 340px;
-  height: 46px
-}
-.select__current__input {
-  width: 100%;
-  outline: none;
+  height: 46px;
   border: none;
-  height: 100%;
-  margin: 0;
-  box-sizing: border-box;
-  border-radius: 8px;
+  outline: none;
+  @include paragraphBaseLight16;
+  padding: 12px 16px;
+  border-radius: 4px;
 }
-.select__current__input__nightMode {
-  background-color: black;
-  color: white;
+.input__light {
+border: 1px solid $primaryLightGray;
+  color: $primaryDarkGray;
+}
+.input__dark {
+  background-color: $secondaryBlack;
+  color: $primaryLightGray;
+}
+.label {
+  margin-bottom: 8px;
+  @include inputBold12;
+}
+.view {
+  width: 16px;
+  height: 11px;
+  position: absolute;
+  right: 16px;
+  top: 56%;
+}
+.passwordInput {
+  position: relative;
+}
+@media screen and (max-width: 500px)  {
+.input {
+  width: 280px;
+}
 }

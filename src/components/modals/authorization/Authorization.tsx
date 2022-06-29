@@ -16,8 +16,8 @@ export const Authorization = () => {
   return (
     <div className={cx('authorization')}>
       <div className={cx('authorizationContainer', {
-        authorizationContainer__light: theme === 'light',
-        authorizationContainer__dark: theme === 'dark',
+        light: theme === 'light',
+        dark: theme === 'dark',
       })}
       >
         <div className={cx('picture')}>
@@ -28,10 +28,27 @@ export const Authorization = () => {
           <div className={cx('cancelIconWrapper')}>
             <img src={cancelIcon} alt="cancelIcon" className={cx('cancelIcon')} />
           </div>
-          <div className={cx('title')}>WelcomeBack</div>
-          <div>If you don't have an account yet, please sign up</div>
-          <Input label="email" />
-          <Input label="password" />
+          <div className={cx('title', {
+            dark: theme === 'dark',
+            title_mobile_light: theme === 'light',
+          })}
+          >
+            Welcome Back
+          </div>
+          <div className={cx('text')}>
+            If you don't have an account yet, please &nbsp;
+            <a
+              href="https://framework.team/"
+              className={cx('signUpLink', {
+                lightMode: theme === 'light',
+                darkMode: theme === 'dark',
+              })}
+            >
+              sign up
+            </a>
+          </div>
+          <Input label="Email" type="email" />
+          <Input label="Password" type="password" />
           <Button value="Log in" theme={theme} type="filled" width="200px" />
         </div>
       </div>
