@@ -28,7 +28,12 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
       <div>
         <NavLink to="/artists/static" className={cx('comeBackButton')}>
           <img src={arrowBack} alt="arrowBack" width="10px" height="16px" />
-          <Button value="back" theme={theme} type="outlined" width="50px" />
+          <Button
+            value="back"
+            theme={theme}
+            type="outlined"
+            width="50px"
+          />
         </NavLink>
       </div>
 

@@ -107,7 +107,7 @@ export const authAPI = {
     return instance.post<
         { payload: RegisterDataType },
         AxiosResponse<RegisterResponseType>
-        >('auth/register', { payload });
+        >('auth/register', payload);
   },
   login(username: string, password: string) {
     return instance.post<
@@ -119,7 +119,7 @@ export const authAPI = {
     return instance.post<
         { payload: RefreshRequestType },
         AxiosResponse<RegisterResponseType, any>
-        >('auth/refresh', { payload });
+        >('auth/refresh', payload);
   },
 };
 

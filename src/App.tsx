@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
-// @ts-ignore
-import { ClientJS } from 'clientjs';
+import { useSelector } from 'react-redux';
 // @ts-ignore
 import style from './App.scss';
 import Gallery from './components/Gallery/Gallery';
@@ -15,17 +13,11 @@ import { IAppStore } from './store/store';
 import { RequestStatusType } from './store/app-reducer';
 import { Loader } from './components/loader/Loader';
 import { ArtistResponseType } from './utils/api';
-import { Authorization } from './components/modals/authorization/Authorization';
 
 const cx = classNames.bind(style);
 
 const App = () => {
   const [currentTheme, setCurrentTheme] = useState(themes.light);
-  const dispatch = useDispatch();
-
-  const client = new ClientJS();
-  const fingerprint = client.getFingerprint();
-  console.log(fingerprint);
 
   const toggleTheme = () => {
     setCurrentTheme((prevCurrentTheme) => (
@@ -63,32 +55,6 @@ const App = () => {
           <Routes>
             <Route path="/artists/static" element={<Gallery artists={artists} />} />
             <Route path="/artists/static/:authorId" element={<ArtistPage />} />
-            <Route
-              path="/signUp"
-              element={(
-                <Authorization
-                  title="Create your profile"
-                  buttonTitle="Sign Up"
-                  text="If you already have an account, please"
-                  linkText="log in"
-                  linkAddress="/logIn"
-                  // callback={() => dispatch(signUpTC())}
-                />
-)}
-            />
-            <Route
-              path="/logIn"
-              element={(
-                <Authorization
-                  title="Welcome back"
-                  buttonTitle="Log In"
-                  text="IIf you don't have an account yet, please"
-                  linkText="sign up"
-                  linkAddress="/signUp"
-                  // callback={() => dispatch(login())}
-                />
-                  )}
-            />
             <Route path="/" element={<Navigate to="/artists/static" />} />
 
             <Route path={'/*'} element={<div>Page not found</div>} />

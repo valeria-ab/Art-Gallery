@@ -8,7 +8,6 @@
 }
 
 .authorizationContainer {
-  border: 1px solid;
   width: 1028px;
   height: 700px;
   margin: 0 auto;
@@ -35,6 +34,7 @@
 
 .cancelIconWrapper {
   align-self: end;
+  cursor: pointer;
 }
 .cancelIcon {
   width: 16px;
@@ -55,14 +55,15 @@
   @include paragraphBaseLight16;
 }
 
-.signUpLink {
+.link {
   text-decoration: underline;
+  cursor: pointer;
   @include  paragraphBaseMedium16;
 }
-.signUpLink:visited.lightMode{
+.link:visited.lightMode{
   color: $primaryBlack;
 }
-.signUpLink:visited.darkMode{
+.link:visited.darkMode{
   color: $primaryWhite;
 }
 @media screen and (max-width: 1027px) {

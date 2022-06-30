@@ -1,6 +1,7 @@
-import { Dispatch } from 'redux';
 import { authAPI } from '../utils/api';
 import { setAppStatus } from './app-reducer';
+// eslint-disable-next-line import/no-cycle
+import { AppThunk } from './store';
 
 export type AuthState = {
   // error: string;
@@ -9,18 +10,21 @@ export type AuthState = {
   accessToken: string | null;
   refreshToken: string | null;
 };
-export const setInitialized = (payload: { value: boolean }) => ({
+export const setInitialized = (payload: { isInitialized: boolean }) => ({
   type: 'AUTH/SET-IS_INITIALIZED',
   payload,
 } as const);
-export const setUserData = (payload: { accessToken: string, refreshToken: string }) => ({
+export const setUserData = (payload: {
+  accessToken: string | null;
+  refreshToken: string | null;
+}) => ({
   type: 'AUTH/SET-USER-DATA',
   payload,
 } as const);
 
 export type AuthActions =
-    | ReturnType<typeof setInitialized>
-    | ReturnType<typeof setUserData>
+  | ReturnType<typeof setInitialized>
+  | ReturnType<typeof setUserData>;
 
 export const AuthInitialState: AuthState = {
   // error: string;
@@ -28,7 +32,6 @@ export const AuthInitialState: AuthState = {
   isInitialized: false,
   accessToken: null,
   refreshToken: null,
-
 };
 
 export const authReducer = (
@@ -45,19 +48,43 @@ export const authReducer = (
   }
 };
 
-export const signUpTC = (username: string, password: string, fingerprint: string) => (
-  dispatch: Dispatch,
-) => {
+export const signUpTC = (
+  username: string, password: string, fingerprint: string,
+): AppThunk => (dispatch) => {
   dispatch(setAppStatus({ status: 'loading' }));
-  authAPI.register({ username, password, fingerprint })
+  authAPI
+    .register({ username, password, fingerprint })
     .then((res) => {
-      dispatch(setUserData({
-        accessToken: res.data.accessToken,
-        refreshToken: res.data.refreshToken,
-      }));
+      dispatch(
+        setUserData({
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+        }),
+      );
+      dispatch(setInitialized({ isInitialized: true }));
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err.message);
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};
+export const loginTC = (username: string, password: string): AppThunk => (dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  authAPI
+    .login(username, password)
+    .then((res) => {
+      dispatch(
+        setUserData({
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+        }),
+      );
+      dispatch(setInitialized({ isInitialized: true }));
+    })
+    .catch((err) => {
+      console.log(err.message);
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));

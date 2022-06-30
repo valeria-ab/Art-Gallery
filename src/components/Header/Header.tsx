@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
@@ -12,12 +13,21 @@ import logoDarkMode from '../../assets/logoDarkMode.png';
 import cancelLight from '../../assets/cancelLight.png';
 import cancelDark from '../../assets/cancelDark.png';
 import { ThemeContext } from '../../contexts/ThemeContext';
+import { IAppStore } from '../../store/store';
+import { setInitialized, setUserData } from '../../store/auth-reducer';
+import { Authorization } from '../modals/authorization/Authorization';
 
 const cx = classNames.bind(style);
 
 const Header = () => {
   const [isBurgerMenuOpened, setIsBurgerMenuOpened] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const isInitialized = useSelector<IAppStore, boolean>(
+    (state) => state.auth.isInitialized,
+  );
+  const [login, setLogin] = useState(false);
+  const [signUp, setSignUp] = useState(false);
+  const dispatch = useDispatch();
 
   // тут не закроешь просто css-ом потому что, если у стиля будет условие,
   // завясящее от true/false (в нашем случает от isBurgerMenuOpened), то при
@@ -35,6 +45,15 @@ const Header = () => {
 
   displayWindowSize();
 
+  const onLogOutClick = () => {
+    dispatch(
+      setInitialized({ isInitialized: false }),
+    );
+    dispatch(
+      setUserData({ refreshToken: null, accessToken: null }),
+    );
+  };
+
   return (
     <div
       className={cx('header', {
@@ -43,20 +62,79 @@ const Header = () => {
       })}
     >
       <div className={cx('headerContainer')}>
+        {login && (
+          <Authorization
+            title="Welcome back"
+            buttonTitle="Log In"
+            text="If you don't have an account yet, please"
+            linkText="sign up"
+            setLogin={setLogin}
+            setSignUp={setSignUp}
+            login={login}
+            signUp={signUp}
+          />
+        )}
+        {signUp && (
+          <Authorization
+            title="Create your profile"
+            buttonTitle="Sign Up"
+            text="If you already have an account, please"
+            linkText="log in"
+            setLogin={setLogin}
+            setSignUp={setSignUp}
+            login={login}
+            signUp={signUp}
+          />
+        )}
         <NavLink to="/artists/static">
           <img
             src={theme === 'light' ? logoLightMode : logoDarkMode}
             alt="logo"
           />
         </NavLink>
-
         <div className={cx('authBlock')}>
-          <div className={cx('authBlockTitles', 'cursorPointer')}>
-            <NavLink to="/logIn">LOGIN</NavLink>
-          </div>
-          <div className={cx('authBlockTitles', 'cursorPointer')}>
-            <NavLink to="/signUp">SIGN UP</NavLink>
-          </div>
+          {!isInitialized && (
+            <>
+              <div
+                className={cx('authBlockTitles', 'cursorPointer')}
+                onClick={() => setLogin(true)}
+                role="button"
+                tabIndex={-1}
+                onKeyDown={() => {
+                  console.log('keyboard listener');
+                }}
+              >
+                LOGIN
+              </div>
+              <div
+                className={cx('authBlockTitles', 'cursorPointer')}
+                onClick={() => setSignUp(true)}
+                role="button"
+                tabIndex={-1}
+                onKeyDown={() => {
+                  console.log('keyboard listener');
+                }}
+              >
+                SIGN UP
+              </div>
+            </>
+          )}
+
+          {isInitialized && (
+            <div className={cx('authBlockTitles', 'cursorPointer')}>
+              <span
+                onClick={onLogOutClick}
+                role="button"
+                tabIndex={-1}
+                onKeyDown={() => {
+                  console.log('keyboard listener');
+                }}
+              >
+                LOG OUT
+              </span>
+            </div>
+          )}
+
           <div
             role="button"
             tabIndex={-1}
@@ -151,12 +229,57 @@ const Header = () => {
                 </span>
               </div>
 
-              <div
-                className={cx('loginButtons', 'cursorPointer', 'loginMargin')}
-              >
-                Log in
-              </div>
-              <div className={cx('loginButtons', 'cursorPointer')}>Sign up</div>
+              {!isInitialized && (
+                <>
+                  <div
+                    className={cx(
+                      'loginButtons',
+                      'cursorPointer',
+                      'loginMargin',
+                    )}
+                    onClick={() => {
+                      setLogin(true);
+                      setIsBurgerMenuOpened(false);
+                    }}
+                    role="button"
+                    tabIndex={-1}
+                    onKeyDown={() => {
+                      console.log('keyboard listener');
+                    }}
+                  >
+                    {' '}
+                    Log in
+                  </div>
+                  <div
+                    className={cx('loginButtons', 'cursorPointer')}
+                    onClick={() => {
+                      setSignUp(true);
+                      setIsBurgerMenuOpened(false);
+                    }}
+                    role="button"
+                    tabIndex={-1}
+                    onKeyDown={() => {
+                      console.log('keyboard listener');
+                    }}
+                  >
+                    Sign up
+                  </div>
+                </>
+              )}
+              {isInitialized && (
+                <div className={cx('loginButtons', 'cursorPointer')}>
+                  <span
+                    onClick={onLogOutClick}
+                    role="button"
+                    tabIndex={-1}
+                    onKeyDown={() => {
+                      console.log('keyboard listener');
+                    }}
+                  >
+                    LOG OUT
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

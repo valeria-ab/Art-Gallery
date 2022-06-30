@@ -2,10 +2,10 @@ import React, { useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
-import { getArtistsTC } from '../../store/gallery-reducer';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import s from './Gallery.module.scss';
 import PhotoItem from '../PhotoItem/PhotoItem';
+import { getArtistsTC } from '../../store/gallery-reducer';
 
 type ArtistArtworksPropsType = {
   artists?: Array<ArtistResponseType>;
@@ -18,7 +18,6 @@ const Gallery = ({ artists, artworks }: ArtistArtworksPropsType) => {
 
   useEffect(() => {
     if (artists) dispatch(getArtistsTC());
-    if (artworks) dispatch(getArtistsTC());
   }, []);
 
   return (

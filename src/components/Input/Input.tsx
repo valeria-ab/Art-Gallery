@@ -10,10 +10,13 @@ const cx = classNames.bind(style);
 type InputPropsType = {
     label: string;
     type: string;
-    callback: (value: string) => void
+    callback: (value: string) => void;
+    value: string;
 }
 
-export const Input = ({ label, type, callback }: InputPropsType) => {
+export const Input = ({
+  label, type, callback, value,
+}: InputPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
@@ -30,6 +33,8 @@ export const Input = ({ label, type, callback }: InputPropsType) => {
               input__dark: theme === 'dark',
             })}
             type={type}
+            value={value}
+            onChange={(e) => callback(e.currentTarget.value)}
           />
           {type === 'password' && <img className={cx('view')} src={eye} alt="eye" />}
         </label>

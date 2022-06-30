@@ -10,11 +10,14 @@ import { artistPageReducer } from './artistPage-reducer';
 // eslint-disable-next-line import/no-cycle
 import { galleryReducer } from './gallery-reducer';
 import { appReducer } from './app-reducer';
+// eslint-disable-next-line import/no-cycle
+import { authReducer } from './auth-reducer';
 
 const reducers = combineReducers({
   gallery: galleryReducer,
   artistPage: artistPageReducer,
   app: appReducer,
+  auth: authReducer,
 });
 
 const store = createStore(reducers, applyMiddleware(thunk));
