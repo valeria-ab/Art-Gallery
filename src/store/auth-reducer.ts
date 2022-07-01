@@ -64,7 +64,7 @@ export const signUpTC = (
       dispatch(setInitialized({ isInitialized: true }));
     })
     .catch((err) => {
-      console.log(err.message);
+      console.error(err.message);
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -75,6 +75,7 @@ export const loginTC = (username: string, password: string): AppThunk => (dispat
   authAPI
     .login(username, password)
     .then((res) => {
+      debugger;
       dispatch(
         setUserData({
           accessToken: res.data.accessToken,
@@ -84,7 +85,7 @@ export const loginTC = (username: string, password: string): AppThunk => (dispat
       dispatch(setInitialized({ isInitialized: true }));
     })
     .catch((err) => {
-      console.log(err.message);
+      console.error(err.message);
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));

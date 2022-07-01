@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
@@ -21,9 +21,7 @@ const App = () => {
 
   const toggleTheme = () => {
     setCurrentTheme((prevCurrentTheme) => (
-      prevCurrentTheme === themes.light
-        ? themes.dark
-        : themes.light
+      prevCurrentTheme === themes.light ? themes.dark : themes.light
     ));
   };
 
@@ -39,12 +37,22 @@ const App = () => {
     (state) => state.gallery.artists,
   );
 
-  // useEffect(() => {
-  //   dispatch(checkAuthMe());
-  //   document.title = 'FWT Art Gallery';
-  // }, []);
+  useEffect(() => {
+    const isMounted = true;
+    const controller = new AbortController();
 
-  if (loadingStatus === 'loading') { return <Loader />; }
+    // const getUsers = async () => {
+    //   try {
+    //     const response = await instance.artistsAPI();
+    //   } catch {
+    //
+    //   }
+    // };
+  }, []);
+
+  if (loadingStatus === 'loading') {
+    return <Loader />;
+  }
   return (
     <div className={componentClassName}>
       <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
@@ -53,7 +61,10 @@ const App = () => {
           {/* <Authorization /> */}
           {/* <DeleteModal theme={currentTheme} primaryTitle="dfdf" secondaryTitle="dfdf" /> */}
           <Routes>
-            <Route path="/artists/static" element={<Gallery artists={artists} />} />
+            <Route
+              path="/artists/static"
+              element={<Gallery artists={artists} />}
+            />
             <Route path="/artists/static/:authorId" element={<ArtistPage />} />
             <Route path="/" element={<Navigate to="/artists/static" />} />
 
