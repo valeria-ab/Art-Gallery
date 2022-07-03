@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import { ClientJS } from 'clientjs';
@@ -11,7 +11,7 @@ import { Button } from '../../Button/Button';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 import { Input } from '../../Input/Input';
 import cancelIcon from '../../../assets/modals/cancelIcon.png';
-import { loginTC, signUpTC } from '../../../store/auth-reducer';
+import { loginTC, setFingerPrint, signUpTC } from '../../../store/auth-reducer';
 import { AppDispatch } from '../../../store/store';
 import styles from '../style.module.css';
 
@@ -61,6 +61,9 @@ export const Authorization = ({
   const onLoginButtonClick = () => {
     dispatch(loginTC(username, password));
   };
+  useEffect(() => {
+    dispatch(setFingerPrint({ fingerprint }));
+  }, [fingerprint]);
 
   return (
     <div className={styles.modal}>

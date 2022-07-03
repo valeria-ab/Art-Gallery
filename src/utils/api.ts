@@ -1,11 +1,16 @@
 import axios, { AxiosResponse } from 'axios';
 
+const BASE_URL = 'https://internship-front.framework.team/';
+
 export const instance = axios.create({
-  baseURL: 'https://internship-front.framework.team/',
+  baseURL: BASE_URL,
+});
+
+export const privateInstance = axios.create({
+  baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
-
 // types
 
 export type ImageType = {
@@ -106,19 +111,19 @@ type RefreshRequestType = {
 }
 export const authAPI = {
   register(payload: RegisterDataType) {
-    return instance.post<
+    return privateInstance.post<
         { payload: RegisterDataType },
         AxiosResponse<RegisterResponseType>
         >('auth/register', payload);
   },
   login(username: string, password: string) {
-    return instance.post<
+    return privateInstance.post<
         { username: string, password: string},
         AxiosResponse<RegisterResponseType, any>
         >('auth/login', { username, password });
   },
   refresh(payload: RefreshRequestType) {
-    return instance.post<
+    return privateInstance.post<
         { payload: RefreshRequestType },
         AxiosResponse<RegisterResponseType, any>
         >('auth/refresh', payload);
@@ -139,44 +144,44 @@ export const artistsAPI = {
 
   // requests for authorized user
   getArtists() {
-    return instance.get<Array<ArtistResponseType>>('artists');
+    return privateInstance.get<Array<ArtistResponseType>>('artists');
   },
   getArtist(id: string) {
-    return instance.get<ArtistResponseType>(`artists/${id}`);
+    return privateInstance.get<ArtistResponseType>(`artists/${id}`);
   },
   getPaintingsByAuthorId(authorId: string) {
-    return instance.get<Array<AuthorPaintingsType>>(
+    return privateInstance.get<Array<AuthorPaintingsType>>(
       `artists/${authorId}/paintings`,
     );
   },
   getSpecifiedPaintingById(paintingId: string, authorId: string) {
-    return instance.get<SpecifiedPaintingByIdType>(
+    return privateInstance.get<SpecifiedPaintingByIdType>(
       `artists/${authorId}/paintings/${paintingId}`,
     );
   },
 
   createArtist(payload: CreateArtistRequestType) {
-    return instance.post<
+    return privateInstance.post<
       { payload: CreateArtistRequestType },
       AxiosResponse<ArtistResponseType, any>
     >('artists', { payload });
   },
   updateArtist(id: string, payload: UpdateArtistRequestType) {
-    return instance.put<
+    return privateInstance.put<
       { payload: UpdateArtistRequestType },
         AxiosResponse<ArtistResponseType>
     >(`artists${id}`, { payload });
   },
   deleteArtist(id: string) {
-    return instance.delete<AxiosResponse<{ _id: string }>>(`artists${id}`);
+    return privateInstance.delete<AxiosResponse<{ _id: string }>>(`artists${id}`);
   },
   updateMainPainting(id: string) {
-    return instance.patch<AxiosResponse<UpdateMainPaintingResponseType>>(
+    return privateInstance.patch<AxiosResponse<UpdateMainPaintingResponseType>>(
       `artists/${id}/main-painting`,
     );
   },
   addPaintingToArtist(id: number, payload: AddPaintingToArtistRequestType) {
-    return instance.post<
+    return privateInstance.post<
       { payload: AddPaintingToArtistRequestType },
         AxiosResponse<MainPaintingType>
     >(`artists/${id}/paintings`, { payload });
@@ -186,13 +191,13 @@ export const artistsAPI = {
     paintingId: string,
     payload: AddPaintingToArtistRequestType,
   ) {
-    return instance.put<
+    return privateInstance.put<
       { payload: AddPaintingToArtistRequestType },
         AxiosResponse<UpdatePaintingResponseType>
     >(`artists/${id}/paintings/${paintingId}`, { payload });
   },
   deletePainting(id: string, paintingId: string) {
-    return instance.delete<AxiosResponse<{ _id: string }>>(
+    return privateInstance.delete<AxiosResponse<{ _id: string }>>(
       `artists/${id}/paintings/${paintingId}`,
     );
   },
@@ -208,24 +213,24 @@ export const genresAPI = {
 
   // requests for authorized user
   getGenres() {
-    return instance.get<AxiosResponse<Array<GenreResponseType>>>('genres');
+    return privateInstance.get<AxiosResponse<Array<GenreResponseType>>>('genres');
   },
   getSpecifiedGenreById(id: string) {
-    return instance.get<AxiosResponse<GenreResponseType>>(`genres/${id}`);
+    return privateInstance.get<AxiosResponse<GenreResponseType>>(`genres/${id}`);
   },
   createGenre(name: string) {
-    return instance.post<{ name: string }, AxiosResponse<GenreResponseType>>(
+    return privateInstance.post<{ name: string }, AxiosResponse<GenreResponseType>>(
       'genres',
       { name },
     );
   },
   updateGenre(id: string, name: string) {
-    return instance.put<{ name: string }, AxiosResponse<GenreResponseType>>(
+    return privateInstance.put<{ name: string }, AxiosResponse<GenreResponseType>>(
       `genres/${id}`,
       { name },
     );
   },
   deleteGenre(id: string) {
-    return instance.delete<AxiosResponse<{ _id: string }>>(`genres/${id}`);
+    return privateInstance.delete<AxiosResponse<{ _id: string }>>(`genres/${id}`);
   },
 };

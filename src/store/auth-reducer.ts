@@ -9,6 +9,7 @@ export type AuthState = {
   isInitialized: boolean;
   accessToken: string | null;
   refreshToken: string | null;
+  fingerprint: string;
 };
 export const setInitialized = (payload: { isInitialized: boolean }) => ({
   type: 'AUTH/SET-IS_INITIALIZED',
@@ -22,9 +23,15 @@ export const setUserData = (payload: {
   payload,
 } as const);
 
+export const setFingerPrint = (payload: { fingerprint: string }) => ({
+  type: 'AUTH/SET-FINGERPRINT',
+  payload,
+} as const);
+
 export type AuthActions =
   | ReturnType<typeof setInitialized>
-  | ReturnType<typeof setUserData>;
+  | ReturnType<typeof setUserData>
+  | ReturnType<typeof setFingerPrint>;
 
 export const AuthInitialState: AuthState = {
   // error: string;
@@ -32,6 +39,7 @@ export const AuthInitialState: AuthState = {
   isInitialized: false,
   accessToken: null,
   refreshToken: null,
+  fingerprint: '',
 };
 
 export const authReducer = (
@@ -40,6 +48,8 @@ export const authReducer = (
 ) => {
   switch (action.type) {
     case 'AUTH/SET-IS_INITIALIZED':
+    case 'AUTH/SET-FINGERPRINT':
+    case 'AUTH/SET-USER-DATA':
       return { ...state, ...action.payload };
 
     default: {
@@ -74,6 +84,27 @@ export const loginTC = (username: string, password: string): AppThunk => (dispat
   dispatch(setAppStatus({ status: 'loading' }));
   authAPI
     .login(username, password)
+    .then((res) => {
+      dispatch(
+        setUserData({
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+        }),
+      );
+      dispatch(setInitialized({ isInitialized: true }));
+    })
+    .catch((err) => {
+      console.error(err.message);
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};
+
+export const refreshTC = (refreshToken: string, fingerprint: string): AppThunk => (dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  authAPI
+    .refresh({ refreshToken, fingerprint })
     .then((res) => {
       debugger;
       dispatch(
