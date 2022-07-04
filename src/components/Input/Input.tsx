@@ -12,10 +12,12 @@ type InputPropsType = {
     type: string;
     callback: (value: string) => void;
     value: string;
+    blurHandler: () => void;
+    error: string | null;
 }
 
 export const Input = ({
-  label, type, callback, value,
+  label, type, callback, value, blurHandler, error
 }: InputPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
@@ -35,7 +37,9 @@ export const Input = ({
             type={type}
             value={value}
             onChange={(e) => callback(e.currentTarget.value)}
+            onBlur={blurHandler}
           />
+            {error !== null && <div  className={cx('errorMessage')}>{error}</div>}
           {type === 'password' && <img className={cx('view')} src={eye} alt="eye" />}
         </label>
       </div>

@@ -50,7 +50,7 @@ const Header = () => {
       setInitialized({ isInitialized: false }),
     );
     dispatch(
-      setUserData({ refreshToken: null, accessToken: null }),
+      setUserData({ refreshToken: '', accessToken: '' }),
     );
   };
 
