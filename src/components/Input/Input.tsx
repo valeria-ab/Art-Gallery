@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import style from './style.scss';
 import eye from '../../assets/modals/authorization/eye.png';
 import { ThemeContext } from '../../contexts/ThemeContext';
+import useDebounce from '../../hooks/autoDispatch';
 
 const cx = classNames.bind(style);
 
@@ -11,16 +12,19 @@ type InputPropsType = {
     label: string;
     type: string;
     callback: (value: string) => void;
-    value: string;
+    // value: string;
     blurHandler: () => void;
     error: string | null;
 }
 
 export const Input = ({
-  label, type, callback, value, blurHandler, error,
+  label, type, callback, blurHandler, error,
 }: InputPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [viewMode, setViewMode] = useState(false);
+  const [value, setValue] = useState('');
+
+  const onKeyUp = useDebounce(() => callback(value), 500);
 
   return (
     <div className={cx('inputContainer')}>
@@ -37,8 +41,9 @@ export const Input = ({
             })}
             type={viewMode ? 'text' : type}
             value={value}
-            onChange={(e) => callback(e.currentTarget.value)}
+            onChange={(e) => setValue(e.currentTarget.value)}
             onBlur={blurHandler}
+            onKeyUp={onKeyUp}
           />
           {error !== null && <div className={cx('errorMessage')}>{error}</div>}
           {type === 'password' && (

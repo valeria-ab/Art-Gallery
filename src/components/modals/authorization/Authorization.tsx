@@ -40,8 +40,9 @@ export const Authorization = ({
 }: AuthPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
-  const [username, setUsername] = useState('test@test.test');
-  const [password, setPassword] = useState('test123@TEST');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  console.log('user: test@test.test, pass: test123@TEST');
   const [emailError, setEmailError] = useState<null | string>(null);
   const [passError, setPassError] = useState<null | string>(null);
 
@@ -58,8 +59,10 @@ export const Authorization = ({
   const passwordBlurHandler = () => {
     if (password.length === 0) {
       setPassError('The field cannot be empty');
-    } else if (password.length < 3) {
-      setPassError('at least 3 characters');
+    } else if (password.length < 7) {
+      setPassError('at least 6 characters');
+    } else {
+      setPassError(null);
     }
   };
 
@@ -73,7 +76,6 @@ export const Authorization = ({
   };
   const client = new ClientJS();
   const fingerprint = client.getFingerprint().toString();
-  console.log(fingerprint);
 
   const onSignUpButtonClick = () => {
     dispatch(signUpTC(username, password, fingerprint));
@@ -153,7 +155,7 @@ export const Authorization = ({
               label="Email"
               type="email"
               callback={setUsername}
-              value={username}
+                            // value={username}
               blurHandler={blurHandler}
               error={emailError}
             />
@@ -161,7 +163,7 @@ export const Authorization = ({
               label="Password"
               type="password"
               callback={setPassword}
-              value={password}
+                            // value={password}
               blurHandler={passwordBlurHandler}
               error={passError}
             />
@@ -172,10 +174,10 @@ export const Authorization = ({
                 type="filled"
                 width="200px"
                 callback={
-                                linkText === 'sign up'
-                                  ? onLoginButtonClick
-                                  : onSignUpButtonClick
-                            }
+                                    linkText === 'sign up'
+                                      ? onLoginButtonClick
+                                      : onSignUpButtonClick
+                                }
               />
             </div>
           </div>
