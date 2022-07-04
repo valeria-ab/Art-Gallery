@@ -1,16 +1,18 @@
 import axios, { AxiosResponse } from 'axios';
+// eslint-disable-next-line import/no-cycle
+import { useAxiosPrivate } from '../hooks/useAxiosPrivate';
 
-const BASE_URL = 'https://internship-front.framework.team/';
+export const BASE_URL = 'https://internship-front.framework.team/';
 
 export const instance = axios.create({
   baseURL: BASE_URL,
 });
-
 export const privateInstance = axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
+
 // types
 
 export type ImageType = {

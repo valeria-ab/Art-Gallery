@@ -24,7 +24,7 @@ const ArtistArtworks = () => {
       >
         Artworks
       </div>
-      <Gallery artworks={artworks} />
+      {/* <Gallery artworks={artworks} /> */}
     </div>
   );
 };

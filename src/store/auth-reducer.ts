@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { authAPI } from '../utils/api';
 import { setAppStatus } from './app-reducer';
 // eslint-disable-next-line import/no-cycle
@@ -107,6 +108,7 @@ export const refreshTC = (): AppThunk => (dispatch,
     refreshToken,
     fingerprint,
   } = getState().auth;
+  console.log(refreshToken);
   dispatch(setAppStatus({ status: 'loading' }));
   if (refreshToken && fingerprint) {
     authAPI

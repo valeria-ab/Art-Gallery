@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
@@ -54,6 +54,13 @@ const Header = () => {
     );
   };
 
+  useEffect(() => {
+    if (isInitialized) {
+      setLogin(false);
+      setSignUp(false);
+    }
+  }, [isInitialized]);
+
   return (
     <div
       className={cx('header', {
@@ -63,28 +70,28 @@ const Header = () => {
     >
       <div className={cx('headerContainer')}>
         {login && (
-          <Authorization
-            title="Welcome back"
-            buttonTitle="Log In"
-            text="If you don't have an account yet, please"
-            linkText="sign up"
-            setLogin={setLogin}
-            setSignUp={setSignUp}
-            login={login}
-            signUp={signUp}
-          />
+        <Authorization
+          title="Welcome back"
+          buttonTitle="Log In"
+          text="If you don't have an account yet, please"
+          linkText="sign up"
+          setLogin={setLogin}
+          setSignUp={setSignUp}
+          login={login}
+          signUp={signUp}
+        />
         )}
         {signUp && (
-          <Authorization
-            title="Create your profile"
-            buttonTitle="Sign Up"
-            text="If you already have an account, please"
-            linkText="log in"
-            setLogin={setLogin}
-            setSignUp={setSignUp}
-            login={login}
-            signUp={signUp}
-          />
+        <Authorization
+          title="Create your profile"
+          buttonTitle="Sign Up"
+          text="If you already have an account, please"
+          linkText="log in"
+          setLogin={setLogin}
+          setSignUp={setSignUp}
+          login={login}
+          signUp={signUp}
+        />
         )}
         <NavLink to="/artists/static">
           <img
@@ -215,8 +222,8 @@ const Header = () => {
               >
                 <img
                   src={
-                    theme === 'light' ? toDarkThemeToggler : toLightThemeToggler
-                  }
+                                        theme === 'light' ? toDarkThemeToggler : toLightThemeToggler
+                                    }
                   alt="themeIcon"
                   className={cx({
                     toNightThemeIcon: theme === 'light',

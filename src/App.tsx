@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AxiosResponse } from 'axios';
 // @ts-ignore
 import style from './App.scss';
 import Gallery from './components/Gallery/Gallery';
@@ -9,10 +10,14 @@ import Header from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { ThemeContext, themes } from './contexts/ThemeContext';
 import ArtistPage from './components/ArtistProfile/ArtistPage';
-import { IAppStore } from './store/store';
+import { AppDispatch, IAppStore } from './store/store';
 import { RequestStatusType } from './store/app-reducer';
 import { Loader } from './components/loader/Loader';
 import { ArtistResponseType } from './utils/api';
+import { useAxiosPrivate } from './hooks/useAxiosPrivate';
+import { setArtists } from './store/gallery-reducer';
+import { refreshTC } from './store/auth-reducer';
+import { Add } from './components/modals/add/Add';
 
 const cx = classNames.bind(style);
 
@@ -24,6 +29,33 @@ const App = () => {
       prevCurrentTheme === themes.light ? themes.dark : themes.light
     ));
   };
+  const dispatch = useDispatch<AppDispatch>();
+  const axiosPrivate = useAxiosPrivate();
+  const isInitialized = useSelector<IAppStore, boolean>(
+    (state) => state.auth.isInitialized,
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+    const getPictures = async () => {
+      try {
+        const response = await axiosPrivate.get<AxiosResponse<Array<ArtistResponseType>>>('artists',
+          { signal: controller.signal });
+        // eslint-disable-next-line no-unused-expressions
+        isMounted && dispatch(setArtists({ artists: response.data.data }));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getPictures();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [isInitialized]);
 
   const componentClassName = cx('App', {
     dark: currentTheme === 'dark',
@@ -36,20 +68,6 @@ const App = () => {
   const artists = useSelector<IAppStore, Array<ArtistResponseType>>(
     (state) => state.gallery.artists,
   );
-
-  useEffect(() => {
-    const isMounted = true;
-    const controller = new AbortController();
-
-    // const getUsers = async () => {
-    //   try {
-    //     const response = await instance.artistsAPI();
-    //   } catch {
-    //
-    //   }
-    // };
-  }, []);
-
   if (loadingStatus === 'loading') {
     return <Loader />;
   }
@@ -60,6 +78,7 @@ const App = () => {
           <Header />
           {/* <Authorization /> */}
           {/* <DeleteModal theme={currentTheme} primaryTitle="dfdf" secondaryTitle="dfdf" /> */}
+          <Add />
           <Routes>
             <Route
               path="/artists/static"
@@ -70,6 +89,7 @@ const App = () => {
 
             <Route path={'/*'} element={<div>Page not found</div>} />
           </Routes>
+          <button type="button" onClick={() => dispatch(refreshTC())}>refresh</button>
           <Footer />
         </div>
       </ThemeContext.Provider>

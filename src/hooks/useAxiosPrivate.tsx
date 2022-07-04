@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+// eslint-disable-next-line import/no-cycle
 import { AppDispatch, IAppStore } from '../store/store';
-import { privateInstance } from '../utils/api';
+// eslint-disable-next-line import/no-cycle
 import { refreshTC } from '../store/auth-reducer';
+// eslint-disable-next-line import/no-cycle
+import { privateInstance } from '../utils/api';
+// eslint-disable-next-line import/no-cycle
 
 export const useAxiosPrivate = () => {
   const dispatch = useDispatch<AppDispatch>();

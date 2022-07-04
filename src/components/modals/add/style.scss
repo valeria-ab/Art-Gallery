@@ -1,0 +1,79 @@
+//@import "./src/common/styles/sass/baseColors";
+//@import "./src/common/styles/CommonStyles";
+
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  //color: #2d2e46
+}
+.addModal {
+  width: 800px;
+  height: 876px;
+  border: 1px solid;
+}
+.container {
+  width: 100%;
+  height: 100%;
+}
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 250px;
+  padding: 22px 24px 30px;
+  height: 90%;
+
+}
+.select__item {
+  line-height: 24px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.select__item__whiteMode {
+  line-height: 24px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: white;
+}
+
+.select__item__nightMode {
+  line-height: 24px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: black;
+  color: white;
+}
+
+.select__item__whiteMode:hover {
+  background-color: black;
+  color: white;
+}
+
+.select__item__nightMode:hover {
+  background-color: white;
+  color: black;
+}
+
+.multiselect {
+  width: 340px;
+  height: 46px;
+  //border: none;
+  border: 1px solid;
+  outline: none;
+  //@include paragraphBaseLight16;
+  padding: 12px 16px;
+  border-radius: 4px;
+}

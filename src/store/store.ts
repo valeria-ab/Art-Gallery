@@ -21,6 +21,8 @@ const reducers = combineReducers({
 });
 
 const store = createStore(reducers, applyMiddleware(thunk));
+// @ts-ignore
+window.store = store;
 
 export default store;
 

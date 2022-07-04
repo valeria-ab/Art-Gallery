@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import style from './style.scss';
 import eye from '../../assets/modals/authorization/eye.png';
 import { ThemeContext } from '../../contexts/ThemeContext';
-import useDebounce from '../../hooks/autoDispatch';
+import useDebounce from '../../hooks/useDebounce';
 
 const cx = classNames.bind(style);
 
@@ -13,7 +13,7 @@ type InputPropsType = {
     type: string;
     callback: (value: string) => void;
     // value: string;
-    blurHandler: () => void;
+    blurHandler?: () => void;
     error: string | null;
 }
 

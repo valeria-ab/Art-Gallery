@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import { ClientJS } from 'clientjs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import style from './style.scss';
 import loginPic from '../../../assets/modals/authorization/loginPic.png';
@@ -12,7 +12,7 @@ import { ThemeContext } from '../../../contexts/ThemeContext';
 import { Input } from '../../Input/Input';
 import cancelIcon from '../../../assets/modals/cancelIcon.png';
 import { loginTC, setFingerPrint, signUpTC } from '../../../store/auth-reducer';
-import { AppDispatch } from '../../../store/store';
+import { AppDispatch, IAppStore } from '../../../store/store';
 import styles from '../style.module.css';
 
 const cx = classNames.bind(style);
@@ -40,9 +40,9 @@ export const Authorization = ({
 }: AuthPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  console.log('user: test@test.test, pass: test123@TEST');
+  const [username, setUsername] = useState('test@test.test');
+  const [password, setPassword] = useState('test123@TEST');
+  // console.log('user: test@test.test, pass: test123@TEST');
   const [emailError, setEmailError] = useState<null | string>(null);
   const [passError, setPassError] = useState<null | string>(null);
 

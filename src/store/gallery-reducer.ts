@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { ArtistResponseType, artistsAPI } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk } from './store';
