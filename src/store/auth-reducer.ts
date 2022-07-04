@@ -1,23 +1,23 @@
 import { authAPI } from '../utils/api';
 import { setAppStatus } from './app-reducer';
 // eslint-disable-next-line import/no-cycle
-import { AppThunk } from './store';
+import { AppThunk, IAppStore } from './store';
 
 export type AuthState = {
-  // error: string;
-  // redirectToLogin: boolean;
-  isInitialized: boolean;
-  accessToken: string | null;
-  refreshToken: string | null;
-  fingerprint: string;
+    // error: string;
+    // redirectToLogin: boolean;
+    isInitialized: boolean;
+    accessToken: string ;
+    refreshToken: string ;
+    fingerprint: string;
 };
 export const setInitialized = (payload: { isInitialized: boolean }) => ({
   type: 'AUTH/SET-IS_INITIALIZED',
   payload,
 } as const);
 export const setUserData = (payload: {
-  accessToken: string | null;
-  refreshToken: string | null;
+    accessToken: string ;
+    refreshToken: string ;
 }) => ({
   type: 'AUTH/SET-USER-DATA',
   payload,
@@ -29,16 +29,16 @@ export const setFingerPrint = (payload: { fingerprint: string }) => ({
 } as const);
 
 export type AuthActions =
-  | ReturnType<typeof setInitialized>
-  | ReturnType<typeof setUserData>
-  | ReturnType<typeof setFingerPrint>;
+    | ReturnType<typeof setInitialized>
+    | ReturnType<typeof setUserData>
+    | ReturnType<typeof setFingerPrint>;
 
 export const AuthInitialState: AuthState = {
   // error: string;
   // redirectToLogin: boolean;
   isInitialized: false,
-  accessToken: null,
-  refreshToken: null,
+  accessToken: '',
+  refreshToken: '',
   fingerprint: '',
 };
 
@@ -101,26 +101,33 @@ export const loginTC = (username: string, password: string): AppThunk => (dispat
     });
 };
 
-export const refreshTC = (refreshToken: string, fingerprint: string): AppThunk => (dispatch) => {
+export const refreshTC = (): AppThunk => (dispatch,
+  getState: () => IAppStore) => {
+  const {
+    refreshToken,
+    fingerprint,
+  } = getState().auth;
   dispatch(setAppStatus({ status: 'loading' }));
-  authAPI
-    .refresh({ refreshToken, fingerprint })
-    .then((res) => {
-      debugger;
-      dispatch(
-        setUserData({
-          accessToken: res.data.accessToken,
-          refreshToken: res.data.refreshToken,
-        }),
-      );
-      dispatch(setInitialized({ isInitialized: true }));
-    })
-    .catch((err) => {
-      console.error(err.message);
-    })
-    .finally(() => {
-      dispatch(setAppStatus({ status: 'idle' }));
-    });
+  if (refreshToken && fingerprint) {
+    authAPI
+      .refresh({ refreshToken, fingerprint })
+      .then((res) => {
+        debugger;
+        dispatch(
+          setUserData({
+            accessToken: res.data.accessToken,
+            refreshToken: res.data.refreshToken,
+          }),
+        );
+        dispatch(setInitialized({ isInitialized: true }));
+      })
+      .catch((err) => {
+        console.error(err.message);
+      })
+      .finally(() => {
+        dispatch(setAppStatus({ status: 'idle' }));
+      });
+  }
 };
 
 // export const signIn = (username: string, password: string) => (dispatch: Dispatch) => {
