@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
@@ -17,9 +17,10 @@ type InputPropsType = {
 }
 
 export const Input = ({
-  label, type, callback, value, blurHandler, error
+  label, type, callback, value, blurHandler, error,
 }: InputPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [viewMode, setViewMode] = useState(false);
 
   return (
     <div className={cx('inputContainer')}>
@@ -34,13 +35,28 @@ export const Input = ({
               input__light: theme === 'light',
               input__dark: theme === 'dark',
             })}
-            type={type}
+            type={viewMode ? 'text' : type}
             value={value}
             onChange={(e) => callback(e.currentTarget.value)}
             onBlur={blurHandler}
           />
-            {error !== null && <div  className={cx('errorMessage')}>{error}</div>}
-          {type === 'password' && <img className={cx('view')} src={eye} alt="eye" />}
+          {error !== null && <div className={cx('errorMessage')}>{error}</div>}
+          {type === 'password' && (
+          <span
+            onClick={() => setViewMode(!viewMode)}
+            onKeyDown={() => {
+              console.log('keyboard listener');
+            }}
+            role="button"
+            tabIndex={-1}
+          >
+            <img
+              className={cx('view')}
+              src={eye}
+              alt="eye"
+            />
+          </span>
+          )}
         </label>
       </div>
     </div>

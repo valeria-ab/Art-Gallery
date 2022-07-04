@@ -18,14 +18,14 @@ import styles from '../style.module.css';
 const cx = classNames.bind(style);
 
 type AuthPropsType = {
-  title: string;
-  text: string;
-  linkText: string;
-  buttonTitle: string;
-  setLogin: (value: boolean) => void;
-  setSignUp: (value: boolean) => void;
-  login: boolean;
-  signUp: boolean;
+    title: string;
+    text: string;
+    linkText: string;
+    buttonTitle: string;
+    setLogin: (value: boolean) => void;
+    setSignUp: (value: boolean) => void;
+    login: boolean;
+    signUp: boolean;
 };
 
 export const Authorization = ({
@@ -42,26 +42,26 @@ export const Authorization = ({
   const dispatch = useDispatch<AppDispatch>();
   const [username, setUsername] = useState('test@test.test');
   const [password, setPassword] = useState('test123@TEST');
-    const [emailError, setEmailError] = useState<null | string>(null)
-    const [passError, setPassError] = useState<null | string>(null)
+  const [emailError, setEmailError] = useState<null | string>(null);
+  const [passError, setPassError] = useState<null | string>(null);
 
-    const blurHandler = () => {
-        const re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-        if (username.length === 0) {
-            setEmailError('The field cannot be empty')
-        } else if (!re.test(String(username).toLowerCase())) {
-            setEmailError('Invalid Email');
-        } else {
-            setEmailError(null);
-        }
-    };
-    const passwordBlurHandler = () => {
-        if (password.length === 0) {
-            setPassError('The field cannot be empty')
-        } else if (password.length < 3) {
-            setPassError('at least 3 characters')
-        }
+  const blurHandler = () => {
+    const re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    if (username.length === 0) {
+      setEmailError('The field cannot be empty');
+    } else if (!re.test(String(username).toLowerCase())) {
+      setEmailError('Invalid Email');
+    } else {
+      setEmailError(null);
     }
+  };
+  const passwordBlurHandler = () => {
+    if (password.length === 0) {
+      setPassError('The field cannot be empty');
+    } else if (password.length < 3) {
+      setPassError('at least 3 characters');
+    }
+  };
 
   const onLoginClick = () => {
     setSignUp(false);
@@ -106,10 +106,10 @@ export const Authorization = ({
             <div
               className={cx('cancelIconWrapper')}
               onClick={
-                buttonTitle === 'Log In'
-                  ? () => setLogin(!login)
-                  : () => setSignUp(!signUp)
-              }
+                                buttonTitle === 'Log In'
+                                  ? () => setLogin(!login)
+                                  : () => setSignUp(!signUp)
+                            }
               role="button"
               tabIndex={-1}
               onKeyDown={() => {
@@ -133,7 +133,7 @@ export const Authorization = ({
             <div className={cx('text')}>
               {text}
               {' '}
-&nbsp;
+                            &nbsp;
               <span
                 onClick={linkText === 'sign up' ? onSignUpClick : onLoginClick}
                 className={cx('link', {
@@ -165,17 +165,19 @@ export const Authorization = ({
               blurHandler={passwordBlurHandler}
               error={passError}
             />
-            <Button
-              value={buttonTitle}
-              theme={theme}
-              type="filled"
-              width="200px"
-              callback={
-                linkText === 'sign up'
-                  ? onLoginButtonClick
-                  : onSignUpButtonClick
-              }
-            />
+            <div className={cx('buttonBlock')}>
+              <Button
+                value={buttonTitle}
+                theme={theme}
+                type="filled"
+                width="200px"
+                callback={
+                                linkText === 'sign up'
+                                  ? onLoginButtonClick
+                                  : onSignUpButtonClick
+                            }
+              />
+            </div>
           </div>
         </div>
       </div>
