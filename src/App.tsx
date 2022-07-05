@@ -17,7 +17,7 @@ import { ArtistResponseType } from './utils/api';
 import { useAxiosPrivate } from './hooks/useAxiosPrivate';
 import { setArtists } from './store/gallery-reducer';
 import { refreshTC } from './store/auth-reducer';
-import { Add } from './components/modals/add/Add';
+import { AddEditArtist } from './components/modals/AddEditArtist/AddEditArtist';
 
 const cx = classNames.bind(style);
 
@@ -78,7 +78,7 @@ const App = () => {
           <Header />
           {/* <Authorization /> */}
           {/* <DeleteModal theme={currentTheme} primaryTitle="dfdf" secondaryTitle="dfdf" /> */}
-          <Add />
+          <AddEditArtist />
           <Routes>
             <Route
               path="/artists/static"

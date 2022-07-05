@@ -6,7 +6,7 @@ import style from './style.scss';
 const cx = classNames.bind(style);
 type ButtonPropsType = {
     value: string;
-  theme: string;
+    theme: string;
     type: 'filled' | 'outlined';
     width: string;
     callback?: () => void;
@@ -27,7 +27,7 @@ export const Button = ({
   >
     <span
       className={cx('value', {
-        outlined: value === 'cancel',
+        outlined__dark: theme === 'dark' && type === 'outlined',
         outlined__light: theme === 'light' && type === 'outlined',
       })}
     >
