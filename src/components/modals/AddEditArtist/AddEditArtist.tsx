@@ -6,6 +6,8 @@ import userIcon from '../../../assets/modals/addEditArtist/userIcon.png';
 import { Input } from '../../Input/Input';
 import { Button } from '../../Button/Button';
 import { ThemeContext } from '../../../contexts/ThemeContext';
+import { Genre } from '../../ArtistProfile/Genre/Genre';
+import { Multiselect } from './Multiselect/Multiselect';
 
 const cx = classNames.bind(style);
 
@@ -71,88 +73,12 @@ const TextArea = () => {
   return (
     <label>
       <div className={cx('label')}>Description</div>
-      <textarea className={cx('textArea', {
-        input__light: theme === 'light',
-        input__dark: theme === 'dark',
-      })}
-      />
-    </label>
-  );
-};
-
-const Multiselect = () => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  const [description, setDescription] = useState('');
-  const genres = ['Romanticism', 'Art', 'Nature', 'Bataille', 'Realistic'];
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>('');
-  const [crossIconStyle, setIconCrossIconStyle] = useState({ display: 'none' });
-
-  const onCrossIconClick = (e: any) => {
-    e.stopPropagation();
-    setTitle('');
-    setIconCrossIconStyle({ display: 'none' });
-  };
-  const onAuthorsOptionClick = (id: number) => {
-    setIsOpen(false);
-    setIconCrossIconStyle({ display: 'block' });
-  };
-  const onLocationsOptionClick = (id: number) => {
-    setIsOpen(false);
-    setIconCrossIconStyle({ display: 'block' });
-  };
-
-  return (
-    <div>
-      <div className={cx('label', {
-        label__light: theme === 'light',
-        label__dark: theme === 'dark',
-      })}
-      >
-        Genres*
-      </div>
-      <div
-        className={cx('multiselect', {
+      <textarea
+        className={cx('textArea', {
           input__light: theme === 'light',
           input__dark: theme === 'dark',
         })}
-        onClick={() => setIsOpen(!isOpen)}
-                // tabIndex={2}
-        onBlur={() => setIsOpen(false)}
-        role="button"
-        tabIndex={-1}
-        onKeyDown={() => {
-          console.log('keyboard listener');
-        }}
-      >
-        <div>
-          <span>{title}</span>
-          <div>
-            <div
-              className={cx('select__icon')}
-              onClick={() => setIsOpen(!isOpen)}
-              role="button"
-              tabIndex={-1}
-              onKeyDown={() => {
-                console.log('keyboard listener');
-              }}
-            >
-              &#9660;
-            </div>
-
-          </div>
-        </div>
-        <div className={cx('selectBody', {
-          selectBody__opened: isOpen,
-        })}
-        >
-          {
-                        genres.map((g) => (
-                          <div key={g}>{g}</div>
-                        ))
-                    }
-        </div>
-      </div>
-    </div>
+      />
+    </label>
   );
 };
