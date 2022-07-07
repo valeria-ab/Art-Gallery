@@ -4,7 +4,7 @@
 .genre {
   border-radius: 30px;
   padding: 8px 16px;
-  //margin-bottom: 10px;
+  margin-bottom: 10px;
   margin-right: 10px;
   display: inline-block;
 }
@@ -22,4 +22,11 @@
 
 .genreValue {
   @include paragraphSmallMedium12;
+}
+
+.genreMultiselect {
+  border-radius: 30px;
+  padding: 7px 16px;
+  margin-right: 10px;
+  display: inline-block;
 }

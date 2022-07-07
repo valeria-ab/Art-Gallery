@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
@@ -10,9 +10,10 @@ type ButtonPropsType = {
     type: 'filled' | 'outlined';
     width: string;
     callback?: () => void;
+    uploadPhotoCallback?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 export const Button = ({
-  value, theme, type, width, callback,
+  value, theme, type, width, callback, uploadPhotoCallback,
 }: ButtonPropsType) => (
   <div
     role="button"

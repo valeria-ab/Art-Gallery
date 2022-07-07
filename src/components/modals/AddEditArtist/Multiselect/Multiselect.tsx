@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
 import { ThemeContext } from '../../../../contexts/ThemeContext';
-import { Genre } from '../../../ArtistProfile/Genre/Genre';
+import { Genre, GenreForMultiselect } from '../../../ArtistProfile/Genre/Genre';
 
 const cx = classNames.bind(style);
 
@@ -28,6 +28,13 @@ export const Multiselect = () => {
   const onLocationsOptionClick = (id: number) => {
     setIsOpen(false);
     setIconCrossIconStyle({ display: 'block' });
+  };
+  const onGenreClick = (genre: string) => {
+    if (selectedGenres.find((selectedGenre) => selectedGenre === genre)) {
+      setSelectedGenres(selectedGenres.filter((sg) => sg !== genre));
+    } else {
+      setSelectedGenres([...selectedGenres, genre]);
+    }
   };
 
   return (
@@ -59,7 +66,19 @@ export const Multiselect = () => {
           }}
         >
           <div className={cx('genres')}>
-            {selectedGenres.map((g) => <Genre value={`${g} x`} key={g} />)}
+            {selectedGenres.map((g) => (
+              // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+              <span
+                key={g}
+                onKeyDown={() => {
+                  console.log('keyboard listener');
+                }}
+                role="definition"
+                onClick={() => onGenreClick(g)}
+              >
+                <GenreForMultiselect value={`${g} x`} />
+              </span>
+            ))}
           </div>
           <div
             className={cx('select__icon')}
@@ -92,13 +111,8 @@ export const Multiselect = () => {
                               className={cx('custom-checkbox')}
                               type="checkbox"
                               id={`checkbox + ${index}`}
-                              onClick={() => {
-                                if (selectedGenres.find((selectedGenre) => selectedGenre === g)) {
-                                  setSelectedGenres(selectedGenres.filter((sg) => sg !== g));
-                                } else {
-                                  setSelectedGenres([...selectedGenres, g]);
-                                }
-                              }}
+                              onClick={() => onGenreClick(g)}
+                              checked={!!selectedGenres.find((sg) => sg === g)}
                             />
                             <label htmlFor={`checkbox + ${index}`}>
                               {' '}
