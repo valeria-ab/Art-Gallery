@@ -10,10 +10,9 @@ type ButtonPropsType = {
     type: 'filled' | 'outlined';
     width: string;
     callback?: () => void;
-    uploadPhotoCallback?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 export const Button = ({
-  value, theme, type, width, callback, uploadPhotoCallback,
+  value, theme, type, width, callback,
 }: ButtonPropsType) => (
   <div
     role="button"

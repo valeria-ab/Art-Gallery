@@ -17,21 +17,22 @@ export const AddEditArtist = () => {
   const [yearsOfLife, setYearsOfLife] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
-  const [drag, setDrag] = useState(true);
+  const [drag, setDrag] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const inRef = useRef<HTMLInputElement>(null);
 
-  // const upload = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const reader = new FileReader();
-  //   // у таргета files всегда массив, даже если инпуту не поставлен multiply там всего 1 файл
-  //   const newFile = e.target.files && e.target.files[0];
-  //   if (newFile) {
-  //     reader.onloadend = () => {
-  //       // dispatch(changeProfilePhoto(reader.result))
-  //     };
-  //     reader.readAsDataURL(newFile);
-  //   }
-  // };
+  const upload = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    // у таргета files всегда массив, даже если инпуту не поставлен multiply там всего 1 файл
+    const newFile = e.target.files && e.target.files[0];
+    if (newFile) {
+      reader.onloadend = () => {
+        console.log(reader.result);
+        // dispatch(changeProfilePhoto(reader.result))
+      };
+      reader.readAsDataURL(newFile);
+    }
+  };
 
   const dragHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -106,7 +107,19 @@ export const AddEditArtist = () => {
                   <p>You can drop your image here</p>
                   {/* </div> */}
                 </div>
-                <Button value="Browse Profile Photo" callback={upload} width="210px" type="outlined" theme={theme} />
+                <input
+                  type="file"
+                  ref={inRef}
+                  id="input_uploader"
+                  onChange={(e) => upload(e)}
+                  accept=".jpg, .jpeg, .png"
+                  className={cx('input_uploader')}
+                />
+                <label htmlFor="input_uploader">
+                  {' '}
+                  <Button value="Browse Profile Photo" width="210px" type="outlined" theme={theme} />
+                </label>
+                {/* </div> */}
               </div>
               <div className={cx('wrap')}>
                 <div className={cx('contentContainer')}>

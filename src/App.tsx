@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
+import Cookies from 'js-cookie';
 // @ts-ignore
 import style from './App.scss';
 import Gallery from './components/Gallery/Gallery';
@@ -15,7 +16,7 @@ import { RequestStatusType } from './store/app-reducer';
 import { Loader } from './components/loader/Loader';
 import { ArtistResponseType } from './utils/api';
 import { useAxiosPrivate } from './hooks/useAxiosPrivate';
-import { setArtists } from './store/gallery-reducer';
+import { getArtistsTC, setArtists } from './store/gallery-reducer';
 import { refreshTC } from './store/auth-reducer';
 import { AddEditArtist } from './components/modals/AddEditArtist/AddEditArtist';
 
@@ -46,6 +47,7 @@ const App = () => {
         isMounted && dispatch(setArtists({ artists: response.data.data }));
       } catch (error) {
         console.error(error);
+        dispatch(getArtistsTC());
       }
     };
 
@@ -55,7 +57,19 @@ const App = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [isInitialized]);
+  }, []);
+
+  // useEffect(() => {
+  //   const getPictures = async () => {
+  //     try {
+  //       dispatch(setArtists({ artists: response.data.data }));
+  //     } catch (error) {
+  //       console.error(error);
+  //       dispatch(getArtistsTC());
+  //     }
+  //   };
+  //   getPictures();
+  // }, []);
 
   const componentClassName = cx('App', {
     dark: currentTheme === 'dark',

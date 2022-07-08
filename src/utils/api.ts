@@ -1,17 +1,21 @@
 import axios, { AxiosResponse } from 'axios';
 // eslint-disable-next-line import/no-cycle
-import { useAxiosPrivate } from '../hooks/useAxiosPrivate';
+import { privateInstance, useAxiosPrivate } from '../hooks/useAxiosPrivate';
 
-export const BASE_URL = 'https://internship-front.framework.team/';
+// export const BASE_URL = 'https://internship-front.framework.team/';
 
 export const instance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: 'https://internship-front.framework.team',
 });
-export const privateInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: true,
-});
+// export const privateInstance = axios.create({
+//   baseURL: "https://internship-front.framework.team",
+//   // headers: {
+//   // 'Accept': 'application/json',
+//   //  'Content-Type': 'application/json',
+//   // },
+//   headers: { 'Content-Type': 'application/json' },
+//   withCredentials: true,
+// });
 
 // types
 
@@ -118,11 +122,11 @@ export const authAPI = {
         AxiosResponse<RegisterResponseType>
         >('auth/register', payload);
   },
-  login(username: string, password: string) {
+  login(username: string, password: string, fingerprint: string) {
     return privateInstance.post<
-        { username: string, password: string},
+        { username: string, password: string, fingerprint: string},
         AxiosResponse<RegisterResponseType, any>
-        >('auth/login', { username, password });
+        >('auth/login', { username, password, fingerprint });
   },
   refresh(payload: RefreshRequestType) {
     return privateInstance.post<

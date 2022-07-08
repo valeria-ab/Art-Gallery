@@ -6,8 +6,18 @@ import { AppDispatch, IAppStore } from '../store/store';
 // eslint-disable-next-line import/no-cycle
 import { refreshTC } from '../store/auth-reducer';
 // eslint-disable-next-line import/no-cycle
-import { privateInstance } from '../utils/api';
-// eslint-disable-next-line import/no-cycle
+
+export const BASE_URL = 'https://internship-front.framework.team/';
+
+export const privateInstance = axios.create({
+  baseURL: BASE_URL,
+  // headers: {
+  // 'Accept': 'application/json',
+  //  'Content-Type': 'application/json',
+  // },
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
+});
 
 export const useAxiosPrivate = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,7 +40,7 @@ export const useAxiosPrivate = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
+        if (error?.response?.status === 401 && !prevRequest?.sent) {
           prevRequest.sent = true;
           const newAccessToken = await dispatch(refreshTC());
           prevRequest.headers.Authorization = `Bearer ${newAccessToken}`;

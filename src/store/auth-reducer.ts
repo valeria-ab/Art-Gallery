@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 // eslint-disable-next-line import/no-cycle
 import { authAPI } from '../utils/api';
 import { setAppStatus } from './app-reducer';
@@ -81,11 +82,17 @@ export const signUpTC = (
       dispatch(setAppStatus({ status: 'idle' }));
     });
 };
-export const loginTC = (username: string, password: string): AppThunk => (dispatch) => {
+export const loginTC = (username: string, password: string): AppThunk => (dispatch,
+  getState: () => IAppStore) => {
   dispatch(setAppStatus({ status: 'loading' }));
+  const {
+    fingerprint,
+  } = getState().auth;
   authAPI
-    .login(username, password)
+    .login(username, password, fingerprint)
     .then((res) => {
+      Cookies.set('accessToken', res.data.accessToken, { path: 'http://localhost:3000' });
+      Cookies.set('refreshToken', res.data.refreshToken, { path: 'http://localhost:3000' });
       dispatch(
         setUserData({
           accessToken: res.data.accessToken,
@@ -114,7 +121,6 @@ export const refreshTC = (): AppThunk => (dispatch,
     authAPI
       .refresh({ refreshToken, fingerprint })
       .then((res) => {
-        debugger;
         dispatch(
           setUserData({
             accessToken: res.data.accessToken,

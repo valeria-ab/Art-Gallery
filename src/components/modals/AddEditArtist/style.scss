@@ -73,8 +73,15 @@
     text-align: center;
     @include paragraphBaseLight16
   }
-}
 
+}
+.input_uploader {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  width: 100%;
+  z-index: -1;
+}
 .userIcon {
   margin-bottom: 16px;
 }
