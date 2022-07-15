@@ -15,10 +15,11 @@ type InputPropsType = {
     // value: string;
     blurHandler?: () => void;
     error: string | null;
+    width?: string
 }
 
 export const Input = ({
-  label, type, callback, blurHandler, error,
+  label, type, callback, blurHandler, error, width,
 }: InputPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [viewMode, setViewMode] = useState(false);
@@ -39,6 +40,7 @@ export const Input = ({
               input__light: theme === 'light',
               input__dark: theme === 'dark',
             })}
+            style={{ width }}
             type={viewMode ? 'text' : type}
             value={value}
             onChange={(e) => setValue(e.currentTarget.value)}

@@ -53,7 +53,6 @@ export const AddEditArtist = () => {
     // axios.post('url', formData)
   };
 
-  // @ts-ignore
   return (
   // <div className={cx('modal')}>
     <div className={cx('addModal')}>

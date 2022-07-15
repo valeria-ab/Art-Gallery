@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-// @ts-ignore
-import { ClientJS } from 'clientjs';
+
 import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import style from './style.scss';
@@ -45,6 +44,7 @@ export const Authorization = ({
   // console.log('user: test@test.test, pass: test123@TEST');
   const [emailError, setEmailError] = useState<null | string>(null);
   const [passError, setPassError] = useState<null | string>(null);
+  const fingerprint = useSelector<IAppStore, string>((state) => state.auth.fingerprint);
 
   const blurHandler = () => {
     const re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -74,8 +74,6 @@ export const Authorization = ({
     setLogin(false);
     setSignUp(true);
   };
-  const client = new ClientJS();
-  const fingerprint = client.getFingerprint().toString();
 
   const onSignUpButtonClick = () => {
     dispatch(signUpTC(username, password, fingerprint));
@@ -83,9 +81,6 @@ export const Authorization = ({
   const onLoginButtonClick = () => {
     dispatch(loginTC(username, password));
   };
-  useEffect(() => {
-    dispatch(setFingerPrint({ fingerprint }));
-  }, [fingerprint]);
 
   return (
     <div className={styles.modal}>

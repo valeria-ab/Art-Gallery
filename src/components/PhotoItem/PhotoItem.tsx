@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { IAppStore } from '../../store/store';
+import { AppDispatch, IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './style.scss';
+import { updateMainPaintingTC } from '../../store/artistPage-reducer';
+import cogwheel from '../../assets/photoItem/cogwheel.png';
 
 const cx = classNames.bind(style);
 
@@ -14,6 +16,7 @@ type PhotoItemPropsType = {
     picture: string;
     id: string;
     theme: string;
+    onHover: 'artists' | 'artworks'
 };
 
 const PhotoItem = ({
@@ -22,16 +25,24 @@ const PhotoItem = ({
   years,
   picture,
   theme,
+  onHover,
 }: PhotoItemPropsType) => {
   const [hover, setHover] = useState(false);
-
+  const [isMenuOpened, setMenuOpened] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { authorId } = useParams();
   const baseURL = useSelector<IAppStore, string>(
     (state) => state.gallery.baseURL,
+  );
+  const isInitialized = useSelector<IAppStore, boolean>(
+    (state) => state.auth.isInitialized,
   );
   return (
     <div
       className={cx('photoItem__container', {
-        'photoItem__container-active': hover,
+        'photoItem__container-active': hover && onHover === 'artists',
+        // settings__hover: hover && onHover === 'artworks',
+
       })}
       onMouseOver={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -39,10 +50,68 @@ const PhotoItem = ({
         console.log('onFocus');
       }}
     >
-      <NavLink to={`/artists/static/${id}`} className={cx('photoItem')}>
+      {isInitialized && (
+      <>
+        <div
+          className={cx('displayNone', {
+            displayBlock: hover && onHover === 'artworks',
+          })}
+        >
+          <div
+            className={cx({
+              settings__hover: hover && onHover === 'artworks',
+            })}
+            onClick={() => setMenuOpened(!isMenuOpened)}
+          >
+            <img src={cogwheel} alt="cogwheel" width="24px" height="24px" />
+          </div>
+          <div className={cx('displayNone', {
+            settings__menu: isMenuOpened && onHover === 'artworks',
+            settings__menu_light: theme === 'light',
+            settings__menu_dark: theme === 'dark',
+          })}
+          >
+            <div
+              className={cx({
+                menuItem: hover && onHover === 'artworks',
+                menuItem_light: theme === 'light',
+                menuItem_dark: theme === 'dark',
+              })}
+              role="button"
+              // onFocus={() => {
+              //   console.log('onFocus');
+              // }}
+              onClick={() => {
+                // eslint-disable-next-line no-unused-expressions
+                authorId && dispatch(updateMainPaintingTC(id, authorId));
+              }}
+            >
+              Make the cover
+            </div>
+            <div className={cx({
+              menuItem: hover && onHover === 'artworks',
+              menuItem_light: theme === 'light',
+              menuItem_dark: theme === 'dark',
+            })}
+            >
+              Edit
+            </div>
+            <div className={cx({
+              menuItem: hover && onHover === 'artworks',
+              menuItem_light: theme === 'light',
+              menuItem_dark: theme === 'dark',
+            })}
+            >
+              Delete
+            </div>
+          </div>
+        </div>
+      </>
+      )}
+      <NavLink to={`/artists/${id}`} className={cx('photoItem')}>
         <img
           className={cx('photoItem__img', {
-            'photoItem__img-active': hover,
+            'photoItem__img-active': hover && onHover === 'artists',
           })}
           src={`${baseURL}${picture}`}
           alt="mainPicture"
@@ -88,7 +157,6 @@ const PhotoItem = ({
             </div>
           </div>
         </div>
-
       </NavLink>
     </div>
   );

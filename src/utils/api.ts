@@ -1,23 +1,42 @@
 import axios, { AxiosResponse } from 'axios';
 // eslint-disable-next-line import/no-cycle
-import { privateInstance, useAxiosPrivate } from '../hooks/useAxiosPrivate';
+import Cookies from 'js-cookie';
+// @ts-ignore
+import { ClientJS } from 'clientjs';
 
-// export const BASE_URL = 'https://internship-front.framework.team/';
+export const BASE_URL = 'https://internship-front.framework.team/';
 
 export const instance = axios.create({
   baseURL: 'https://internship-front.framework.team',
 });
-// export const privateInstance = axios.create({
-//   baseURL: "https://internship-front.framework.team",
-//   // headers: {
-//   // 'Accept': 'application/json',
-//   //  'Content-Type': 'application/json',
-//   // },
-//   headers: { 'Content-Type': 'application/json' },
-//   withCredentials: true,
-// });
 
-// types
+export const privateInstance = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    Accept: 'application/json',
+    Authorization: `Bearer ${Cookies.get('accessToken')}`,
+  },
+  withCredentials: true,
+});
+const client = new ClientJS();
+const fingerprint = client.getFingerprint().toString();
+
+privateInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response.data.statusCode === 401) {
+      const refreshToken = Cookies.get('refreshToken');
+      if (refreshToken) {
+        authAPI.refresh({ refreshToken, fingerprint })
+          .then((res) => {
+            Cookies.set('accessToken', res.data.accessToken, { path: 'http://localhost:3000' });
+            Cookies.set('refreshToken', res.data.refreshToken, { path: 'http://localhost:3000' });
+          });
+      }
+    }
+    // return Promise.reject(error);
+  },
+);
 
 export type ImageType = {
   _id: string;
@@ -38,6 +57,12 @@ export type MainPaintingType = {
   _id: string;
   name: string;
 };
+export type AuthorPaintingsType = {
+  _id: string;
+  name: string;
+  yearOfCreation: string;
+  image: ImageType;
+};
 export type ArtistResponseType = {
   genres: Array<GenreResponseType>;
   _id: string;
@@ -46,6 +71,7 @@ export type ArtistResponseType = {
   yearsOfLife: string;
   mainPainting: MainPaintingType;
   avatar: ImageType;
+  paintings: Array<AuthorPaintingsType>
 };
 
 type UpdateMainPaintingResponseType = {
@@ -55,13 +81,6 @@ type UpdateMainPaintingResponseType = {
   mimetype: string;
   fieldname: string;
   originalname: string;
-};
-
-export type AuthorPaintingsType = {
-  _id: string;
-  name: string;
-  yearOfCreation: string;
-  image: ImageType;
 };
 
 type SpecifiedPaintingByIdType = {
@@ -88,10 +107,19 @@ type UpdateArtistRequestType = {
   mainPainting: string;
 };
 
-type AddPaintingToArtistRequestType = {
+export type AddPaintingToArtistRequestType = {
   name: string;
   yearOfCreation: string;
-  image: ImageType;
+  image?: Blob;
+
+  // "image": {
+  //   "size": 0,
+  //   "buffer": {},
+  //   "encoding": "string",
+  //   "mimetype": "string",
+  //   "fieldname": "string",
+  //   "originalname": "string"
+  // }
 };
 type UpdatePaintingResponseType = {
   _id: string;
@@ -122,7 +150,7 @@ export const authAPI = {
         AxiosResponse<RegisterResponseType>
         >('auth/register', payload);
   },
-  login(username: string, password: string, fingerprint: string) {
+  login(username: string, password: string) {
     return privateInstance.post<
         { username: string, password: string, fingerprint: string},
         AxiosResponse<RegisterResponseType, any>
@@ -150,7 +178,7 @@ export const artistsAPI = {
 
   // requests for authorized user
   getArtists() {
-    return privateInstance.get<Array<ArtistResponseType>>('artists');
+    return privateInstance.get<AxiosResponse<Array<ArtistResponseType>>>('artists');
   },
   getArtist(id: string) {
     return privateInstance.get<ArtistResponseType>(`artists/${id}`);
@@ -181,12 +209,13 @@ export const artistsAPI = {
   deleteArtist(id: string) {
     return privateInstance.delete<AxiosResponse<{ _id: string }>>(`artists${id}`);
   },
-  updateMainPainting(id: string) {
+  updateMainPainting(paintingId: string, authorId: string) {
     return privateInstance.patch<AxiosResponse<UpdateMainPaintingResponseType>>(
-      `artists/${id}/main-painting`,
+      `artists/${authorId}/main-painting`,
+      { mainPainting: paintingId },
     );
   },
-  addPaintingToArtist(id: number, payload: AddPaintingToArtistRequestType) {
+  addPaintingToArtist(id: string, payload: AddPaintingToArtistRequestType) {
     return privateInstance.post<
       { payload: AddPaintingToArtistRequestType },
         AxiosResponse<MainPaintingType>

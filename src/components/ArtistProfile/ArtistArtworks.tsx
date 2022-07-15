@@ -10,10 +10,15 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
-const ArtistArtworks = () => {
+type PropsType = {
+    setAddPictureModeOn: (value: boolean) => void;
+    addPictureModeOn: boolean
+}
+
+const ArtistArtworks = ({ setAddPictureModeOn, addPictureModeOn }: PropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
-    (state) => state.artistPage.artworks,
+    (state) => state.artistPage.artistInfo.paintings,
   );
   return (
     <div className={cx('artistArtworks')}>
@@ -24,7 +29,7 @@ const ArtistArtworks = () => {
       >
         Artworks
       </div>
-      {/* <Gallery artworks={artworks} /> */}
+      <Gallery artworks={artworks} setAddPictureModeOn={setAddPictureModeOn} addPictureModeOn={addPictureModeOn} />
     </div>
   );
 };

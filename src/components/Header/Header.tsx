@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
+import Cookies from 'js-cookie';
 // @ts-ignore
 import style from './style.scss';
 import burgerLightMode from '../../assets/burgerLightMode.png';
@@ -52,6 +53,8 @@ const Header = () => {
     dispatch(
       setUserData({ refreshToken: '', accessToken: '' }),
     );
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
   };
 
   useEffect(() => {
@@ -93,7 +96,7 @@ const Header = () => {
           signUp={signUp}
         />
         )}
-        <NavLink to="/artists/static">
+        <NavLink to="/">
           <img
             src={theme === 'light' ? logoLightMode : logoDarkMode}
             alt="logo"
