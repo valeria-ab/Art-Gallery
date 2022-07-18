@@ -20,7 +20,6 @@ import Gallery from './components/Gallery/Gallery';
 const cx = classNames.bind(style);
 
 const App = () => {
-  console.log('app');
   const [currentTheme, setCurrentTheme] = useState(themes.light);
   const toggleTheme = () => {
     setCurrentTheme((prevCurrentTheme) => (

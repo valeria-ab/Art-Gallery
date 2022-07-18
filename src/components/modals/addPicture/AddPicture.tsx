@@ -3,6 +3,8 @@ import React, {
 } from 'react';
 import classNames from 'classnames/bind';
 import { useParams } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
 // @ts-ignore
 import style from './style.scss';
 import userIcon from '../../../assets/modals/addEditArtist/userIcon.png';
@@ -11,12 +13,13 @@ import { Button } from '../../Button/Button';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 import plug from '../../../assets/modals/addPicture/plug.png';
 import { addNewPaintingTC } from '../../../store/artistPage-reducer';
+import { AppDispatch } from '../../../store/store';
 
 const cx = classNames.bind(style);
 
 type PropsType = {
-  setAddPictureModeOn: (value: boolean) => void
-  addPictureModeOn: boolean
+    setAddPictureModeOn: (value: boolean) => void
+    addPictureModeOn: boolean
 }
 export const AddPicture = ({
   setAddPictureModeOn,
@@ -25,28 +28,12 @@ export const AddPicture = ({
   const [name, setName] = useState('');
   const [yearOfCreation, setYear] = useState('');
   const [drag, setDrag] = useState(false);
-  const [image, setImage] = useState<string | ArrayBuffer | null>('');
+  const [image, setImage] = useState<File>();
+  const [src, setSrc] = useState<string | ArrayBuffer | null>();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const inRef = useRef<HTMLInputElement>(null);
   const { authorId } = useParams();
-
-  const upload = (e: ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
-    // у таргета files всегда массив, даже если инпуту не поставлен multiply там всего 1 файл
-    const newFile = e.target.files && e.target.files[0];
-    if (newFile) {
-      reader.onloadend = () => {
-        setImage(reader.result);
-        // dispatch(changeProfilePhoto(reader.result))
-      };
-      reader.readAsDataURL(newFile);
-    }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('name', name);
-    formData.append('yearOfCreation', yearOfCreation);
-    console.log(formData);
-  };
+  const dispatch = useDispatch<AppDispatch>();
 
   // const formData = new FormData();
   // console.log(formData);
@@ -58,7 +45,21 @@ export const AddPicture = ({
   // if (name && artistsGenres.length !== 0) createArtist(formData);
   // setAddEditArtistOpened(false);
 
-  const dragHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const upload = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    const newFile = e.target.files && e.target.files[0];
+    if (newFile) {
+      setImage(newFile);
+      reader.onloadend = () => {
+        // console.log(reader.result);
+        setSrc(reader.result);
+        // dispatch(changeProfilePhoto(reader.result))
+      };
+      reader.readAsDataURL(newFile);
+    }
+  };
+
+  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDrag(true);
   };
@@ -71,30 +72,26 @@ export const AddPicture = ({
   const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    console.log(file);
+    setImage(file);
+    const reader = new FileReader();
+    if (file) {
+      reader.onloadend = () => {
+        setSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
     setDrag(false);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('name', name);
-    formData.append('yearOfCreation', yearOfCreation);
-    console.log(formData);
-    // axios.post('url', formData)
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = () => {
+    const formData = new FormData();
+    // @ts-ignore
+    formData.append('image', image);
+    formData.append('name', name);
+    formData.append('yearOfCreation', yearOfCreation);
 
-    const reader = new FileReader();
-    const file = e.target.files[0];
-
-    reader.onloadend = () => {
-      setImage({
-        image: file,
-        imagePreviewUrl: reader.result,
-      });
-    };
-
-    reader.readAsDataURL(file);
+    authorId && dispatch(addNewPaintingTC(authorId, formData));
+    setAddPictureModeOn(!addPictureModeOn);
   };
 
   // @ts-ignore
@@ -131,44 +128,44 @@ export const AddPicture = ({
           </div>
           <div
             className={cx('pictureBlock')}
-            onDragStart={(e) => dragHandler(e)}
+            onDragStart={(e) => dragStartHandler(e)}
             onDragLeave={(e) => dragLeaveHandler(e)}
-            onDragOver={(e) => dragHandler(e)}
+            onDragOver={(e) => dragStartHandler(e)}
             onDrop={(e) => onDropHandler(e)}
           >
-            <img src={plug} alt="choosePhoto" width="130px" height="130px" />
-            <p>
-              Drop your image here, or
-              <br />
-              {' '}
-              <span className={cx('browse')}>browse</span>
-            </p>
-            <p className={cx('description')}>Upload only .jpg or .png format less than 3 MB </p>
+            {image ? (<img src={src} alt="" height="300px" />)
+              : (
+                <>
+                  <img src={plug} alt="choosePhoto" width="130px" height="130px" />
+                  <p>
+                    Drop your image here, or
+                    <br />
+
+                    <input
+                      type="file"
+                      ref={inRef}
+                      id="input_uploader"
+                      onChange={(e) => upload(e)}
+                      accept=".jpg, .jpeg, .png"
+                      className={cx('input_uploader')}
+                    />
+                    <label htmlFor="input_uploader">
+                      {' '}
+                      <span className={cx('browse')}>browse</span>
+                    </label>
+
+                  </p>
+                  <p className={cx('description')}>Upload only .jpg or .png format less than 3 MB </p>
+                </>
+              )}
           </div>
-          {/* <Button */}
-          {/*  value="Save" */}
-          {/*  theme={theme} */}
-          {/*  type="filled" */}
-          {/*  width="200px" */}
-          {/*  callback={() => { */}
-          {/*    if (authorId) { */}
-          {/*      addNewPaintingTC(authorId, { name, yearOfCreation }); */}
-          {/*    } */}
-          {/*  }} */}
-          {/* <input */}
-          {/*  type="file" */}
-          {/*  ref={inRef} */}
-          {/*  id="input_uploader" */}
-          {/*  onChange={(e) => upload(e)} */}
-          {/*  accept=".jpg, .jpeg, .png" */}
-          {/* /> */}
-          <form id="formElem" onSubmit={onSubmit}>
-            <input type="text" name="firstName" value="John" />
-            Картинка:
-            {' '}
-            <input type="file" name="image" accept="image/*" />
-            <input type="submit" />
-          </form>
+          <Button
+            value="Save"
+            theme={theme}
+            type="filled"
+            width="200px"
+            callback={onSubmit}
+          />
         </div>
       </div>
     </div>

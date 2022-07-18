@@ -26,7 +26,7 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
   return (
     <div className={cx('artistPage')}>
       <div>
-        <NavLink to="/artists/static" className={cx('comeBackButton')}>
+        <NavLink to="/artists" className={cx('comeBackButton')}>
           <img src={arrowBack} alt="arrowBack" width="10px" height="16px" />
           <Button
             value="back"

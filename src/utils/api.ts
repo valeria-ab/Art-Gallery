@@ -39,128 +39,122 @@ privateInstance.interceptors.response.use(
 );
 
 export type ImageType = {
-  _id: string;
-  src: string;
-  webp: string;
-  src2x: string;
-  webp2x: string;
-  original: string;
+    _id: string;
+    src: string;
+    webp: string;
+    src2x: string;
+    webp2x: string;
+    original: string;
 };
 export type MainPaintingType = {
-  _id: string;
-  name: string;
-  yearOfCreation: string;
-  image: ImageType;
-  artist?: string;
+    _id: string;
+    name: string;
+    yearOfCreation: string;
+    image: ImageType;
+    artist?: string;
 };
- type GenreResponseType = {
-  _id: string;
-  name: string;
+type GenreResponseType = {
+    _id: string;
+    name: string;
 };
 export type AuthorPaintingsType = {
-  _id: string;
-  name: string;
-  yearOfCreation: string;
-  image: ImageType;
+    _id: string;
+    name: string;
+    yearOfCreation: string;
+    image: ImageType;
 };
 export type ArtistResponseType = {
-  genres: Array<GenreResponseType>;
-  _id: string;
-  name: string;
-  description: string;
-  yearsOfLife: string;
-  mainPainting: MainPaintingType;
-  avatar: ImageType;
-  paintings: Array<AuthorPaintingsType>
+    genres: Array<GenreResponseType>;
+    _id: string;
+    name: string;
+    description: string;
+    yearsOfLife: string;
+    mainPainting: MainPaintingType;
+    avatar: ImageType;
+    paintings: Array<AuthorPaintingsType>
 };
 
 type UpdateMainPaintingResponseType = {
-  size: number;
-  buffer: {};
-  encoding: string;
-  mimetype: string;
-  fieldname: string;
-  originalname: string;
+    size: number;
+    buffer: {};
+    encoding: string;
+    mimetype: string;
+    fieldname: string;
+    originalname: string;
 };
 
 type SpecifiedPaintingByIdType = {
-  _id: string;
-  name: string;
-  yearOfCreation: string;
-  image: ImageType;
+    _id: string;
+    name: string;
+    yearOfCreation: string;
+    image: ImageType;
 };
 
 type CreateArtistRequestType = {
-  genres: string;
-  name: string;
-  description: string;
-  yearsOfLife: string;
-  mainPainting: MainPaintingType;
-  avatar: ImageType;
+    genres: string;
+    name: string;
+    description: string;
+    yearsOfLife: string;
+    mainPainting: MainPaintingType;
+    avatar: ImageType;
 };
 type UpdateArtistRequestType = {
-  id: string;
-  genres: string;
-  name: string;
-  description: string;
-  yearsOfLife: string;
-  mainPainting: string;
+    id: string;
+    genres: string;
+    name: string;
+    description: string;
+    yearsOfLife: string;
+    mainPainting: string;
 };
 
 export type AddPaintingToArtistRequestType = {
-  name: string;
-  yearOfCreation: string;
-  image?: Blob;
+    name: string;
+    yearOfCreation: string;
+    image?: Blob;
 
-  // "image": {
-  //   "size": 0,
-  //   "buffer": {},
-  //   "encoding": "string",
-  //   "mimetype": "string",
-  //   "fieldname": "string",
-  //   "originalname": "string"
-  // }
+    // "image": {
+    //   "size": 0,
+    //   "buffer": {},
+    //   "encoding": "string",
+    //   "mimetype": "string",
+    //   "fieldname": "string",
+    //   "originalname": "string"
+    // }
 };
 type UpdatePaintingResponseType = {
-  _id: string;
-  name: string;
-  earOfCreation: string;
-  mage: ImageType;
+    _id: string;
+    name: string;
+    earOfCreation: string;
+    mage: ImageType;
 };
 
 // types for authApi
 
 type RegisterDataType = {
- username: string;
-  password: string;
-  fingerprint: string;
+    username: string;
+    password: string;
+    fingerprint: string;
 }
 type RegisterResponseType = {
-  accessToken: string;
-  refreshToken: string;
+    accessToken: string;
+    refreshToken: string;
 }
 type RefreshRequestType = {
-  fingerprint: string;
-  refreshToken: string;
+    fingerprint: string;
+    refreshToken: string;
 }
 export const authAPI = {
   register(payload: RegisterDataType) {
-    return privateInstance.post<
-        { payload: RegisterDataType },
-        AxiosResponse<RegisterResponseType>
-        >('auth/register', payload);
+    return privateInstance.post<{ payload: RegisterDataType },
+            AxiosResponse<RegisterResponseType>>('auth/register', payload);
   },
   login(username: string, password: string) {
-    return privateInstance.post<
-        { username: string, password: string, fingerprint: string},
-        AxiosResponse<RegisterResponseType, any>
-        >('auth/login', { username, password, fingerprint });
+    return privateInstance.post<{ username: string, password: string, fingerprint: string },
+            AxiosResponse<RegisterResponseType, any>>('auth/login', { username, password, fingerprint });
   },
   refresh(payload: RefreshRequestType) {
-    return privateInstance.post<
-        { payload: RefreshRequestType },
-        AxiosResponse<RegisterResponseType, any>
-        >('auth/refresh', payload);
+    return privateInstance.post<{ payload: RefreshRequestType },
+            AxiosResponse<RegisterResponseType, any>>('auth/refresh', payload);
   },
 };
 
@@ -195,16 +189,12 @@ export const artistsAPI = {
   },
 
   createArtist(payload: CreateArtistRequestType) {
-    return privateInstance.post<
-      { payload: CreateArtistRequestType },
-      AxiosResponse<ArtistResponseType, any>
-    >('artists', { payload });
+    return privateInstance.post<{ payload: CreateArtistRequestType },
+            AxiosResponse<ArtistResponseType, any>>('artists', { payload });
   },
   updateArtist(id: string, payload: UpdateArtistRequestType) {
-    return privateInstance.put<
-      { payload: UpdateArtistRequestType },
-        AxiosResponse<ArtistResponseType>
-    >(`artists${id}`, { payload });
+    return privateInstance.put<{ payload: UpdateArtistRequestType },
+            AxiosResponse<ArtistResponseType>>(`artists${id}`, { payload });
   },
   deleteArtist(id: string) {
     return privateInstance.delete<AxiosResponse<{ _id: string }>>(`artists${id}`);
@@ -215,21 +205,21 @@ export const artistsAPI = {
       { mainPainting: paintingId },
     );
   },
-  addPaintingToArtist(id: string, payload: AddPaintingToArtistRequestType) {
-    return privateInstance.post<
-      { payload: AddPaintingToArtistRequestType },
-        AxiosResponse<MainPaintingType>
-    >(`artists/${id}/paintings`, { payload });
+  addPaintingToArtist(id: string, payload: any) {
+    return privateInstance.post<{ payload: AddPaintingToArtistRequestType },
+            AxiosResponse<MainPaintingType>>(`artists/${id}/paintings`, payload, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
   },
   updatePainting(
     id: string,
     paintingId: string,
     payload: AddPaintingToArtistRequestType,
   ) {
-    return privateInstance.put<
-      { payload: AddPaintingToArtistRequestType },
-        AxiosResponse<UpdatePaintingResponseType>
-    >(`artists/${id}/paintings/${paintingId}`, { payload });
+    return privateInstance.put<{ payload: AddPaintingToArtistRequestType },
+            AxiosResponse<UpdatePaintingResponseType>>(`artists/${id}/paintings/${paintingId}`, { payload });
   },
   deletePainting(id: string, paintingId: string) {
     return privateInstance.delete<AxiosResponse<{ _id: string }>>(
