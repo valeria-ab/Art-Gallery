@@ -44,7 +44,6 @@ const ArtistPage = () => {
                 && <AddPicture addPictureModeOn={addPictureModeOn} setAddPictureModeOn={setAddPictureModeOn} />}
       <ArtistProfile artistInfo={artistInfo} />
       <ArtistArtworks setAddPictureModeOn={setAddPictureModeOn} addPictureModeOn={addPictureModeOn} />
-      <AddEditArtist />
     </div>
   );
 };

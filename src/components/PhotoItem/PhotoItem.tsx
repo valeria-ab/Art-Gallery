@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './style.scss';
-import { updateMainPaintingTC } from '../../store/artistPage-reducer';
+import { deletePaintingTC, updateMainPaintingTC } from '../../store/artistPage-reducer';
 import cogwheel from '../../assets/photoItem/cogwheel.png';
 
 const cx = classNames.bind(style);
@@ -96,11 +96,13 @@ const PhotoItem = ({
             >
               Edit
             </div>
-            <div className={cx({
-              menuItem: hover && onHover === 'artworks',
-              menuItem_light: theme === 'light',
-              menuItem_dark: theme === 'dark',
-            })}
+            <div
+              className={cx({
+                menuItem: hover && onHover === 'artworks',
+                menuItem_light: theme === 'light',
+                menuItem_dark: theme === 'dark',
+              })}
+              onClick={() => authorId && dispatch(deletePaintingTC(authorId, id))}
             >
               Delete
             </div>

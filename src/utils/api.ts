@@ -222,7 +222,7 @@ export const artistsAPI = {
             AxiosResponse<UpdatePaintingResponseType>>(`artists/${id}/paintings/${paintingId}`, { payload });
   },
   deletePainting(id: string, paintingId: string) {
-    return privateInstance.delete<AxiosResponse<{ _id: string }>>(
+    return privateInstance.delete(
       `artists/${id}/paintings/${paintingId}`,
     );
   },

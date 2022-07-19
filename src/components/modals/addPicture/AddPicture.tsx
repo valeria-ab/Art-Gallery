@@ -90,7 +90,7 @@ export const AddPicture = ({
     formData.append('name', name);
     formData.append('yearOfCreation', yearOfCreation);
 
-    authorId && dispatch(addNewPaintingTC(authorId, formData));
+    if (authorId) dispatch(addNewPaintingTC(authorId, formData));
     setAddPictureModeOn(!addPictureModeOn);
   };
 
@@ -133,9 +133,9 @@ export const AddPicture = ({
             onDragOver={(e) => dragStartHandler(e)}
             onDrop={(e) => onDropHandler(e)}
           >
-            {image ? (<img src={src} alt="" height="300px" />)
+            {image ? (<img src={src} alt="" width="100%" />)
               : (
-                <>
+                <div className={cx('picture__place')}>
                   <img src={plug} alt="choosePhoto" width="130px" height="130px" />
                   <p>
                     Drop your image here, or
@@ -156,7 +156,7 @@ export const AddPicture = ({
 
                   </p>
                   <p className={cx('description')}>Upload only .jpg or .png format less than 3 MB </p>
-                </>
+                </div>
               )}
           </div>
           <Button
