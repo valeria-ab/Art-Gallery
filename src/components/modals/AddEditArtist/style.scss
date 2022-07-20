@@ -12,13 +12,20 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 100000;
-  //color: #2d2e46
 }
 
 .addModal {
   max-width: 800px;
   min-height: 876px;
   padding: 36px;
+  .light {
+    color: $primaryDarkGray;
+    background-color: $secondaryWhite;
+  }
+  .dark {
+    color: $primaryLightGray;
+    background-color: $primaryBlack;
+  }
 }
 
 .container {
@@ -90,6 +97,7 @@
   height: 16px;
   width: 16px;
   float: right;
+  cursor: pointer;
 }
 
 .inputsBlock {

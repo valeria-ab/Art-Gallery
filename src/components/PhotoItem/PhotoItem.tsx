@@ -7,6 +7,7 @@ import { AppDispatch, IAppStore } from '../../store/store';
 import style from './style.scss';
 import { deletePaintingTC, updateMainPaintingTC } from '../../store/artistPage-reducer';
 import cogwheel from '../../assets/photoItem/cogwheel.png';
+import noImagePlug from '../../assets/photoItem/noImagePlug.png';
 
 const cx = classNames.bind(style);
 
@@ -58,6 +59,11 @@ const PhotoItem = ({
           })}
         >
           <div
+            onKeyDown={() => {
+              console.log('keyboard listener');
+            }}
+            role="button"
+            tabIndex={-1}
             className={cx({
               settings__hover: hover && onHover === 'artworks',
             })}
@@ -78,9 +84,10 @@ const PhotoItem = ({
                 menuItem_dark: theme === 'dark',
               })}
               role="button"
-              // onFocus={() => {
-              //   console.log('onFocus');
-              // }}
+              onKeyDown={() => {
+                console.log('keyboard listener');
+              }}
+              tabIndex={-1}
               onClick={() => {
                 // eslint-disable-next-line no-unused-expressions
                 authorId && dispatch(updateMainPaintingTC(id, authorId));
@@ -97,6 +104,11 @@ const PhotoItem = ({
               Edit
             </div>
             <div
+              onKeyDown={() => {
+                console.log('keyboard listener');
+              }}
+              role="button"
+              tabIndex={-1}
               className={cx({
                 menuItem: hover && onHover === 'artworks',
                 menuItem_light: theme === 'light',
@@ -115,7 +127,7 @@ const PhotoItem = ({
           className={cx('photoItem__img', {
             'photoItem__img-active': hover && onHover === 'artists',
           })}
-          src={`${baseURL}${picture}`}
+          src={picture === 'no image' ? noImagePlug : `${baseURL}${picture}`}
           alt="mainPicture"
         />
         <div className={cx('hoverButton', {

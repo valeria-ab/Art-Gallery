@@ -126,3 +126,16 @@ export const deletePaintingTC = (artistId: string, paintingId: string):
       dispatch(setAppStatus({ status: 'idle' }));
     });
 };
+export const deleteArtistTC = (artistId: string):
+    AppThunk => (dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  artistsAPI
+    .deleteArtist(artistId)
+    .then((res) => {
+      // dispatch(deletePainting(res.data));
+      debugger;
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};

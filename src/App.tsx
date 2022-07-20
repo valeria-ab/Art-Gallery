@@ -57,9 +57,6 @@ const App = () => {
       <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
         <div className="AppContainer">
           <Header />
-          {/* <Authorization /> */}
-          {/* <DeleteModal theme={currentTheme} primaryTitle="dfdf" secondaryTitle="dfdf" /> */}
-          {/* <AddPicture /> */}
           <Routes>
             <Route
               path="/artists"

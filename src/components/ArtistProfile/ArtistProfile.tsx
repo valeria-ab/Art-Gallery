@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom';
 import style from './ArtistPage.scss';
 import arrowBack from '../../assets/buttons/arrowBack.png';
 import dash from '../../assets/artistProfile/dash.png';
+import edit from '../../assets/artistProfile/edit.png';
+import deleteIcon from '../../assets/artistProfile/deleteIcon.png';
 import learnMoreIcon from '../../assets/buttons/learnMoreIcon.png';
 import { IAppStore } from '../../store/store';
 import { ArtistResponseType } from '../../utils/api';
@@ -15,8 +17,20 @@ import { Button } from '../Button/Button';
 
 const cx = classNames.bind(style);
 
-const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
-  const { artistInfo } = props;
+type PropsType = {
+    artistInfo: ArtistResponseType
+    setDeleteArtistModeOn: (value: boolean) => void;
+    setEditArtistModeOn: (value: boolean) => void;
+    deleteArtistModeOn: boolean
+}
+
+const ArtistProfile = (props: PropsType) => {
+  const {
+    artistInfo,
+    deleteArtistModeOn,
+    setDeleteArtistModeOn,
+    setEditArtistModeOn,
+  } = props;
 
   const { theme, toggleTheme } = useContext(ThemeContext);
   const baseURL = useSelector<IAppStore, string>(
@@ -25,7 +39,7 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
 
   return (
     <div className={cx('artistPage')}>
-      <div>
+      <div className={cx('profile_top')}>
         <NavLink to="/artists" className={cx('comeBackButton')}>
           <img src={arrowBack} alt="arrowBack" width="10px" height="16px" />
           <Button
@@ -35,13 +49,27 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
             width="50px"
           />
         </NavLink>
+        <div className={cx('deleteEditBlock')}>
+          <img
+            className={cx('deleteEditIcon')}
+            src={edit}
+            alt="edit"
+            onClick={() => setEditArtistModeOn(true)}
+          />
+          <img
+            className={cx('deleteEditIcon')}
+            src={deleteIcon}
+            alt="delete"
+            onClick={() => setDeleteArtistModeOn(true)}
+          />
+        </div>
       </div>
 
       {artistInfo.avatar && (
         <div className={cx('artistProfile')}>
           <div className={cx('mainPhoto')}>
             <img
-                // src="https://internship-front.framework.team/images/62a32e09269fa5c416c53d91/original.jpg"
+                            // src="https://internship-front.framework.team/images/62a32e09269fa5c416c53d91/original.jpg"
               src={`${baseURL}${artistInfo.avatar.src2x}`}
               alt="artist_picture"
               className={cx('profilePicture')}
@@ -66,7 +94,9 @@ const ArtistProfile = (props: { artistInfo: ArtistResponseType }) => {
               >
                 <span className={cx('artistName')}>{artistInfo.name}</span>
               </div>
-              <div className={cx('dash')}><img src={dash} alt="dash" width="30px" /></div>
+              <div className={cx('dash')}>
+                <img src={dash} alt="dash" width="30px" />
+              </div>
               <div className={cx('artistDescription')}>
                 {artistInfo.description}
               </div>

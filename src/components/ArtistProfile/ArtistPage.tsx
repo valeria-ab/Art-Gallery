@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 import ArtistProfile from './ArtistProfile';
 import {
+  deleteArtistTC, deletePaintingTC,
   getArtistInfoStaticTC,
   getArtistInfoTC,
 } from '../../store/artistPage-reducer';
@@ -14,12 +15,15 @@ import style from './ArtistPage.scss';
 import ArtistArtworks from './ArtistArtworks';
 import { AddPicture } from '../modals/addPicture/AddPicture';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
+import { DeleteModal } from '../modals/delete/DeleteModal';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
 const ArtistPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { authorId } = useParams();
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const artistInfo = useSelector<IAppStore, ArtistResponseType>(
     (state) => state.artistPage.artistInfo,
   );
@@ -27,7 +31,13 @@ const ArtistPage = () => {
     (state) => state.auth.isInitialized,
   );
   const [addPictureModeOn, setAddPictureModeOn] = useState(false);
+  const [deletePictureModeOn, setDeletePictureModeOn] = useState(false);
+  const [deleteArtistModeOn, setDeleteArtistModeOn] = useState(false);
+  const [editArtist, setEditArtistModeOn] = useState(false);
 
+  const onDeleteArtistCallback = () => authorId && dispatch(deleteArtistTC(authorId));
+  // const onDeletePaintingCallback = (paintingId: string)
+  // => authorId && dispatch(deletePaintingTC(authorId, paintingId));
   useEffect(() => {
     if (authorId) {
       if (!isInitialized) {
@@ -39,11 +49,42 @@ const ArtistPage = () => {
 
   return (
     <div className={cx('artistPage')}>
-      <button onClick={() => setAddPictureModeOn(!addPictureModeOn)}>set</button>
       {addPictureModeOn
-                && <AddPicture addPictureModeOn={addPictureModeOn} setAddPictureModeOn={setAddPictureModeOn} />}
-      <ArtistProfile artistInfo={artistInfo} />
-      <ArtistArtworks setAddPictureModeOn={setAddPictureModeOn} addPictureModeOn={addPictureModeOn} />
+                && (
+                <AddPicture
+                  addPictureModeOn={addPictureModeOn}
+                  setAddPictureModeOn={setAddPictureModeOn}
+                />
+                )}
+      {/* {deletePictureModeOn && ( */}
+      {/* <DeleteModal */}
+      {/*  theme={theme} */}
+      {/*  primaryTitle="picture" */}
+      {/*  secondaryTitle="picture" */}
+      {/*  cancelCallback={setDeletePictureModeOn} */}
+      {/*  onDeleteCallback={onDeletePaintingCallback} */}
+      {/* /> */}
+      {/* )} */}
+      {deleteArtistModeOn && (
+      <DeleteModal
+        theme={theme}
+        primaryTitle="artist profile"
+        secondaryTitle="profile"
+        cancelCallback={setDeleteArtistModeOn}
+        onDeleteCallback={onDeleteArtistCallback}
+      />
+      )}
+      {editArtist && <AddEditArtist onCancelCallback={setEditArtistModeOn} />}
+      <ArtistProfile
+        artistInfo={artistInfo}
+        setDeleteArtistModeOn={setDeleteArtistModeOn}
+        deleteArtistModeOn={deleteArtistModeOn}
+        setEditArtistModeOn={setEditArtistModeOn}
+      />
+      <ArtistArtworks
+        setAddPictureModeOn={setAddPictureModeOn}
+        addPictureModeOn={addPictureModeOn}
+      />
     </div>
   );
 };

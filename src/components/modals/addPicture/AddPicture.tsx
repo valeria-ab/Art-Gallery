@@ -29,21 +29,11 @@ export const AddPicture = ({
   const [yearOfCreation, setYear] = useState('');
   const [drag, setDrag] = useState(false);
   const [image, setImage] = useState<File>();
-  const [src, setSrc] = useState<string | ArrayBuffer | null>();
+  const [src, setSrc] = useState<string>();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const inRef = useRef<HTMLInputElement>(null);
   const { authorId } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-
-  // const formData = new FormData();
-  // console.log(formData);
-  // formData.append('name', name);
-  // formData.append('yearOfCreation', yearOfCreation);
-  // formData.append('image', imageBlob, 'image.png');
-  // artistsGenres.forEach((item) => formData.append('genres', item._id));
-  // formData.append('avatar', picture as File);
-  // if (name && artistsGenres.length !== 0) createArtist(formData);
-  // setAddEditArtistOpened(false);
 
   const upload = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -52,7 +42,7 @@ export const AddPicture = ({
       setImage(newFile);
       reader.onloadend = () => {
         // console.log(reader.result);
-        setSrc(reader.result);
+        setSrc(reader.result as string);
         // dispatch(changeProfilePhoto(reader.result))
       };
       reader.readAsDataURL(newFile);
@@ -76,7 +66,7 @@ export const AddPicture = ({
     const reader = new FileReader();
     if (file) {
       reader.onloadend = () => {
-        setSrc(reader.result);
+        setSrc(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -103,6 +93,11 @@ export const AddPicture = ({
       })}
       >
         <div
+          onKeyDown={() => {
+            console.log('keyboard listener');
+          }}
+          role="button"
+          tabIndex={-1}
           className={cx('cancel')}
           onClick={() => setAddPictureModeOn(!addPictureModeOn)}
         >
@@ -133,7 +128,7 @@ export const AddPicture = ({
             onDragOver={(e) => dragStartHandler(e)}
             onDrop={(e) => onDropHandler(e)}
           >
-            {image ? (<img src={src} alt="" width="100%" />)
+            {image ? (<img src={src || ''} alt="" width="100%" />)
               : (
                 <div className={cx('picture__place')}>
                   <img src={plug} alt="choosePhoto" width="130px" height="130px" />

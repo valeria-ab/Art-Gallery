@@ -7,7 +7,6 @@ import s from './Gallery.module.scss';
 import PhotoItem from '../PhotoItem/PhotoItem';
 import { getArtistsStaticTC, getArtistsTC } from '../../store/gallery-reducer';
 import { Button } from '../Button/Button';
-import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 
 type ArtistArtworksPropsType = {
     artists?: Array<ArtistResponseType>;
@@ -28,7 +27,6 @@ const Gallery = React.memo(({
   const accessToken = useSelector<IAppStore, string>(
     (state) => state.auth.accessToken,
   );
-
   useEffect(() => {
     if (isInitialized) {
       dispatch(getArtistsTC());
@@ -41,13 +39,13 @@ const Gallery = React.memo(({
     <div className={s.main}>
       {isInitialized && artists && <Button value="add artist" type="outlined" theme={theme} width="100px" />}
       {isInitialized && artworks && (
-      <Button
-        value="add picture"
-        type="outlined"
-        theme={theme}
-        width="100px"
-        callback={setAddPictureModeOn && (() => setAddPictureModeOn(!addPictureModeOn))}
-      />
+        <Button
+          value="add picture"
+          type="outlined"
+          theme={theme}
+          width="100px"
+          callback={setAddPictureModeOn && (() => setAddPictureModeOn(!addPictureModeOn))}
+        />
       )}
 
       <div className={s.mainContainer}>
@@ -57,7 +55,7 @@ const Gallery = React.memo(({
             id={a._id}
             name={a.name}
             years={a.yearsOfLife}
-            picture={a.mainPainting.image.src}
+            picture={a.mainPainting ? a.mainPainting.image.src : 'no image'}
             theme={theme}
             onHover="artists"
           />
@@ -67,7 +65,7 @@ const Gallery = React.memo(({
             key={i._id}
             name={i.name}
             years={i.yearOfCreation}
-            picture={i.image.src}
+            picture={i.image.src ? i.image.src : 'no image'}
             id={i._id}
             theme={theme}
             onHover="artworks"
