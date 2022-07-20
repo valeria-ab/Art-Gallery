@@ -2,6 +2,7 @@ import React, {
   ChangeEvent, useContext, useRef, useState,
 } from 'react';
 import classNames from 'classnames/bind';
+import { useSelector } from 'react-redux';
 // @ts-ignore
 import style from './style.scss';
 import userIcon from '../../../assets/modals/addEditArtist/userIcon.png';
@@ -9,21 +10,37 @@ import { Input } from '../../Input/Input';
 import { Button } from '../../Button/Button';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 import { Multiselect } from './Multiselect/Multiselect';
+import { IAppStore } from '../../../store/store';
 
 const cx = classNames.bind(style);
 
 type PropsType = {
-  onCancelCallback: (value: boolean) => void;
+    onCancelCallback: (value: boolean) => void;
+    artistName?: string;
+    artistYearsOfLife?: string;
+    artistLocation?: string;
+    artistDescription?: string;
+    avatar?: string;
 }
 
-export const AddEditArtist = ({ onCancelCallback }: PropsType) => {
-  const [name, setName] = useState('');
-  const [yearsOfLife, setYearsOfLife] = useState('');
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+export const AddEditArtist = ({
+  onCancelCallback,
+  artistName,
+  artistYearsOfLife,
+  artistLocation,
+  artistDescription,
+  avatar,
+}: PropsType) => {
+  const [name, setName] = useState(artistName || '');
+  const [yearsOfLife, setYearsOfLife] = useState(artistYearsOfLife || '');
+  const [location, setLocation] = useState(artistLocation || '');
+  const [description, setDescription] = useState(artistDescription || '');
   const [drag, setDrag] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const inRef = useRef<HTMLInputElement>(null);
+  const baseURL = useSelector<IAppStore, string>(
+    (state) => state.gallery.baseURL,
+  );
 
   const upload = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -75,7 +92,13 @@ export const AddEditArtist = ({ onCancelCallback }: PropsType) => {
               onDrop={(e) => onDropHandler(e)}
             >
               <div className={cx('drop_infoBlock')}>
-                <img className={cx('userIcon')} src={userIcon} alt="userIcon" height="60px" width="60px" />
+                <img
+                  className={cx('userIcon')}
+                  src={userIcon}
+                  alt="userIcon"
+                  height="60px"
+                  width="60px"
+                />
                 <div className={cx('dropAreaTitle')}>Drop your image here</div>
                 <div className={cx('description', {
                   description_dark: theme === 'dark',
@@ -104,7 +127,13 @@ export const AddEditArtist = ({ onCancelCallback }: PropsType) => {
                 className={cx('cancel')}
                 onClick={() => onCancelCallback(false)}
               >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
@@ -118,8 +147,27 @@ export const AddEditArtist = ({ onCancelCallback }: PropsType) => {
                 <div>
                   <div className={cx('photoBlock')}>
                     {/* <div className={cx('userIcon')}> */}
-                    <img className={cx('userIcon')} src={userIcon} alt="userIcon" height="60px" width="60px" />
-                    <p>You can drop your image here</p>
+                    {avatar ? (
+                      <img
+                        src={`${baseURL}${avatar}`}
+                        alt="userIcon"
+                        height="100%"
+                        width="100%"
+                      />
+                    )
+                      : (
+                        <>
+                          <img
+                            className={cx('userIcon')}
+                            src={`${baseURL}${avatar}` || userIcon}
+                            alt="userIcon"
+                            height="60px"
+                            width="60px"
+                          />
+                          <p>You can drop your image here</p>
+                        </>
+                      )}
+
                     {/* </div> */}
                   </div>
                   <input
@@ -132,7 +180,12 @@ export const AddEditArtist = ({ onCancelCallback }: PropsType) => {
                   />
                   <label htmlFor="input_uploader">
                     {' '}
-                    <Button value="Browse Profile Photo" width="210px" type="outlined" theme={theme} />
+                    <Button
+                      value="Browse Profile Photo"
+                      width="210px"
+                      type="outlined"
+                      theme={theme}
+                    />
                   </label>
                   {/* </div> */}
                 </div>
@@ -143,10 +196,28 @@ export const AddEditArtist = ({ onCancelCallback }: PropsType) => {
                       inputsBlock__dark: theme === 'dark',
                     })}
                     >
-                      <Input label="Name" type="text" callback={setName} error={null} />
-                      <Input label="Years of life" type="text" callback={setYearsOfLife} error={null} />
-                      <Input label="Location" type="text" callback={setLocation} error={null} />
-                      <TextArea />
+                      <Input
+                        label="Name"
+                        type="text"
+                        callback={setName}
+                        error={null}
+                        propsValue={name}
+                      />
+                      <Input
+                        label="Years of life"
+                        type="text"
+                        callback={setYearsOfLife}
+                        error={null}
+                        propsValue={yearsOfLife}
+                      />
+                      <Input
+                        label="Location"
+                        type="text"
+                        callback={setLocation}
+                        error={null}
+                        propsValue={location}
+                      />
+                      <TextArea propsValue={description} />
                     </div>
                     <Multiselect />
                   </div>
@@ -159,10 +230,12 @@ export const AddEditArtist = ({ onCancelCallback }: PropsType) => {
     </div>
   );
 };
-
-const TextArea = () => {
+type TextAreaPropsType = {
+    propsValue: string;
+}
+const TextArea = ({ propsValue }: TextAreaPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(propsValue || '');
   return (
     <label>
       <div className={cx('label')}>Description</div>
@@ -171,6 +244,7 @@ const TextArea = () => {
           input__light: theme === 'light',
           input__dark: theme === 'dark',
         })}
+        value={description}
       />
     </label>
   );

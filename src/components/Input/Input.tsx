@@ -15,15 +15,16 @@ type InputPropsType = {
     // value: string;
     blurHandler?: () => void;
     error: string | null;
-    width?: string
+    width?: string;
+    propsValue?: string
 }
 
 export const Input = ({
-  label, type, callback, blurHandler, error, width,
+  label, type, callback, blurHandler, error, width, propsValue,
 }: InputPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [viewMode, setViewMode] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(propsValue || '');
 
   const onKeyUp = useDebounce(() => callback(value), 500);
 

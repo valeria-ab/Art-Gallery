@@ -74,7 +74,15 @@ const ArtistPage = () => {
         onDeleteCallback={onDeleteArtistCallback}
       />
       )}
-      {editArtist && <AddEditArtist onCancelCallback={setEditArtistModeOn} />}
+      {editArtist && (
+      <AddEditArtist
+        onCancelCallback={setEditArtistModeOn}
+        artistDescription={artistInfo.description}
+        artistName={artistInfo.name}
+        artistYearsOfLife={artistInfo.yearsOfLife}
+        avatar={artistInfo.avatar.src}
+      />
+      )}
       <ArtistProfile
         artistInfo={artistInfo}
         setDeleteArtistModeOn={setDeleteArtistModeOn}
