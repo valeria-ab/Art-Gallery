@@ -4,13 +4,15 @@ import classNames from 'classnames/bind';
 import style from './style.scss';
 import { ThemeContext } from '../../../../contexts/ThemeContext';
 import { Genre, GenreForMultiselect } from '../../../ArtistProfile/Genre/Genre';
+import { GenreResponseType } from '../../../../utils/api';
 
 const cx = classNames.bind(style);
-
-export const Multiselect = () => {
+type PropsType = {
+  genres: GenreResponseType[]
+}
+export const Multiselect = ({ genres }: PropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [description, setDescription] = useState('');
-  const genres = ['Romanticism', 'Art', 'Nature', 'Bataille', 'Realistic'];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [crossIconStyle, setIconCrossIconStyle] = useState({ display: 'none' });
@@ -101,7 +103,7 @@ export const Multiselect = () => {
           {
                         genres.map((g, index) => (
                           <div
-                            key={g}
+                            key={g._id}
                             className={cx('select__item', {
                               select__item__light: theme === 'light',
                               select__item__dark: theme === 'dark',
@@ -111,12 +113,12 @@ export const Multiselect = () => {
                               className={cx('custom-checkbox')}
                               type="checkbox"
                               id={`checkbox + ${index}`}
-                              onClick={() => onGenreClick(g)}
-                              checked={!!selectedGenres.find((sg) => sg === g)}
+                              onClick={() => onGenreClick(g.name)}
+                              checked={!!selectedGenres.find((sg) => sg === g.name)}
                             />
                             <label htmlFor={`checkbox + ${index}`}>
                               {' '}
-                              <div>{g}</div>
+                              <div>{g.name}</div>
                             </label>
                           </div>
                         ))

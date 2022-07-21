@@ -1,12 +1,10 @@
 // eslint-disable-next-line import/no-cycle
-import { AxiosResponse } from 'axios';
 // eslint-disable-next-line import/no-cycle
-import { ArtistResponseType, artistsAPI, privateInstance } from '../utils/api';
+import { ArtistResponseType, artistsAPI } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk, IAppStore } from './store';
 import { setAppStatus } from './app-reducer';
 // eslint-disable-next-line import/no-cycle
-import { refreshTC } from './auth-reducer';
 
 export type InitialCardsStateType = {
   baseURL: string;
@@ -17,8 +15,13 @@ export const setArtists = (payload: { artists: Array<ArtistResponseType> }) => (
   type: 'GALLERY/SET-ARTISTS',
   payload,
 } as const);
+export const createArtist = (artist: ArtistResponseType) => ({
+  type: 'GALLERY/CREATE-ARTISTS',
+  artist,
+} as const);
 
-type ActionsType = ReturnType<typeof setArtists>;
+type ActionsType = ReturnType<typeof setArtists>
+    | ReturnType<typeof createArtist>;
 
 const initialState: InitialCardsStateType = {
   artists: [],
@@ -32,7 +35,13 @@ export const galleryReducer = (
   switch (action.type) {
     case 'GALLERY/SET-ARTISTS':
       return { ...state, ...action.payload };
-
+    case 'GALLERY/CREATE-ARTISTS': {
+      const stateCopy = { ...state };
+      const { artists } = stateCopy;
+      const newArrayArtists = [...artists, action.artist];
+      stateCopy.artists = newArrayArtists;
+      return stateCopy;
+    }
     default:
       return state;
   }
@@ -91,6 +100,19 @@ export const getArtistPageTC = (artistId: string): AppThunk => (dispatch) => {
     .getArtistStatic(artistId)
     .then((res: any) => {
       dispatch(setArtists({ artists: res.data }));
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};
+// CreateArtistRequestType
+export const createArtistTC = (payload: any):
+    AppThunk => (dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  artistsAPI
+    .createArtist(payload)
+    .then((res) => {
+      dispatch(createArtist(res.data));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));

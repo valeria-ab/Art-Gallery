@@ -2,7 +2,7 @@ import {
   AddPaintingToArtistRequestType,
   ArtistResponseType,
   artistsAPI,
-  AuthorPaintingsType,
+  AuthorPaintingsType, CreateArtistRequestType,
 } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk } from './store';

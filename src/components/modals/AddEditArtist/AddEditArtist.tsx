@@ -1,8 +1,8 @@
 import React, {
-  ChangeEvent, useContext, useRef, useState,
+  ChangeEvent, useContext, useEffect, useRef, useState,
 } from 'react';
 import classNames from 'classnames/bind';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import style from './style.scss';
 import userIcon from '../../../assets/modals/addEditArtist/userIcon.png';
@@ -10,7 +10,10 @@ import { Input } from '../../Input/Input';
 import { Button } from '../../Button/Button';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 import { Multiselect } from './Multiselect/Multiselect';
-import { IAppStore } from '../../../store/store';
+import { AppDispatch, IAppStore } from '../../../store/store';
+import { addNewPaintingTC } from '../../../store/artistPage-reducer';
+import { createArtistTC } from '../../../store/gallery-reducer';
+import { GenreResponseType, genresAPI, privateInstance } from '../../../utils/api';
 
 const cx = classNames.bind(style);
 
@@ -33,23 +36,29 @@ export const AddEditArtist = ({
 }: PropsType) => {
   const [name, setName] = useState(artistName || '');
   const [yearsOfLife, setYearsOfLife] = useState(artistYearsOfLife || '');
-  const [location, setLocation] = useState(artistLocation || '');
+  const [country, setCountry] = useState(artistLocation || '');
   const [description, setDescription] = useState(artistDescription || '');
+  const [genres, setGenres] = useState(artistDescription || '');
+  const [genresList, setGenresList] = useState<GenreResponseType[]>([]);
+
   const [drag, setDrag] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  const inRef = useRef<HTMLInputElement>(null);
+  const [image, setImage] = useState<File>();
   const baseURL = useSelector<IAppStore, string>(
     (state) => state.gallery.baseURL,
   );
+  const [src, setSrc] = useState<string>();
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const inRef = useRef<HTMLInputElement>(null);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const upload = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
-    // у таргета files всегда массив, даже если инпуту не поставлен multiply там всего 1 файл
     const newFile = e.target.files && e.target.files[0];
     if (newFile) {
+      setImage(newFile);
       reader.onloadend = () => {
-        console.log(reader.result);
-        // dispatch(changeProfilePhoto(reader.result))
+        setSrc(reader.result as string);
       };
       reader.readAsDataURL(newFile);
     }
@@ -68,11 +77,42 @@ export const AddEditArtist = ({
   const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    setImage(file);
+    const reader = new FileReader();
+    if (file) {
+      reader.onloadend = () => {
+        setSrc(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
     setDrag(false);
-    // const formData = new FormData();
-    // formData.append('file', file);
-    // axios.post('url', formData)
   };
+
+  const onSubmit = () => {
+    const formData = new FormData();
+    const genres1 = ['62a32e08269fa5c416c53d8f'];
+    // @ts-ignore
+    formData.append('avatar', image);
+    formData.append('name', 'Brfgtrhotrgfgucherwwwwww');
+    formData.append('yearsOfLife', '5 July 1606 – 4 October 1669');
+    formData.append('description', 'hjddvsdfskhkjsur');
+    formData.append('genres', genres1[0]);
+
+    dispatch(createArtistTC(formData));
+    onCancelCallback(false);
+  };
+
+  useEffect(() => {
+    if (avatar) setSrc(`${baseURL}${avatar}`);
+  }, [avatar]);
+
+  useEffect(() => {
+    genresAPI.getGenres()
+      .then((res) => {
+        // @ts-ignore
+        setGenresList(res.data);
+      });
+  }, []);
 
   return (
     <div className={cx('modal')}>
@@ -145,21 +185,26 @@ export const AddEditArtist = ({
               </div>
               <div className={cx('wrapper')}>
                 <div>
-                  <div className={cx('photoBlock')}>
+                  <div className={cx('photoBlock', {
+                    imageAdded: image || avatar,
+                  })}
+                  >
                     {/* <div className={cx('userIcon')}> */}
-                    {avatar ? (
-                      <img
-                        src={`${baseURL}${avatar}`}
-                        alt="userIcon"
-                        height="100%"
-                        width="100%"
-                      />
-                    )
+
+                    {image || avatar
+                      ? (
+                        <img
+                          src={src}
+                          alt="avatar"
+                          width="100%"
+                          height="100%"
+                        />
+                      )
                       : (
                         <>
                           <img
                             className={cx('userIcon')}
-                            src={`${baseURL}${avatar}` || userIcon}
+                            src={userIcon}
                             alt="userIcon"
                             height="60px"
                             width="60px"
@@ -168,6 +213,26 @@ export const AddEditArtist = ({
                         </>
                       )}
 
+                    {/* {avatar ? ( */}
+                    {/*  <img */}
+                    {/*    src={`${baseURL}${avatar}`} */}
+                    {/*    alt="userIcon" */}
+                    {/*    height="100%" */}
+                    {/*    width="100%" */}
+                    {/*  /> */}
+                    {/* ) */}
+                    {/*  : ( */}
+                    {/*    <> */}
+                    {/*      <img */}
+                    {/*        className={cx('userIcon')} */}
+                    {/*        src={avatar ? `${baseURL}${avatar}` : userIcon} */}
+                    {/*        alt="userIcon" */}
+                    {/*        height="60px" */}
+                    {/*        width="60px" */}
+                    {/*      /> */}
+                    {/*      <p>You can drop your image here</p> */}
+                    {/*    </> */}
+                    {/*  )} */}
                     {/* </div> */}
                   </div>
                   <input
@@ -213,15 +278,21 @@ export const AddEditArtist = ({
                       <Input
                         label="Location"
                         type="text"
-                        callback={setLocation}
+                        callback={setCountry}
                         error={null}
-                        propsValue={location}
+                        propsValue={country}
                       />
                       <TextArea propsValue={description} />
                     </div>
-                    <Multiselect />
+                    <Multiselect genres={genresList} />
                   </div>
-                  <Button value="Save" theme={theme} type="filled" width="200px" />
+                  <Button
+                    value="Save"
+                    theme={theme}
+                    type="filled"
+                    width="200px"
+                    callback={onSubmit}
+                  />
                 </div>
               </div>
             </div>

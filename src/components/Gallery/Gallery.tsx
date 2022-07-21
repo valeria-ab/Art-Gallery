@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, IAppStore } from '../../store/store';
 import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
@@ -7,6 +7,7 @@ import s from './Gallery.module.scss';
 import PhotoItem from '../PhotoItem/PhotoItem';
 import { getArtistsStaticTC, getArtistsTC } from '../../store/gallery-reducer';
 import { Button } from '../Button/Button';
+import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 
 type ArtistArtworksPropsType = {
     artists?: Array<ArtistResponseType>;
@@ -27,6 +28,8 @@ const Gallery = React.memo(({
   const accessToken = useSelector<IAppStore, string>(
     (state) => state.auth.accessToken,
   );
+  const [isAddArtistMode, setAddArtistMode] = useState(false);
+
   useEffect(() => {
     if (isInitialized) {
       dispatch(getArtistsTC());
@@ -37,7 +40,16 @@ const Gallery = React.memo(({
 
   return (
     <div className={s.main}>
-      {isInitialized && artists && <Button value="add artist" type="outlined" theme={theme} width="100px" />}
+      {isAddArtistMode && <AddEditArtist onCancelCallback={setAddArtistMode} />}
+      {isInitialized && artists && (
+      <Button
+        value="add artist"
+        type="outlined"
+        theme={theme}
+        width="100px"
+        callback={() => setAddArtistMode(true)}
+      />
+      )}
       {isInitialized && artworks && (
         <Button
           value="add picture"

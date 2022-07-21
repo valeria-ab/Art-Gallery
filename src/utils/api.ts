@@ -53,7 +53,7 @@ export type MainPaintingType = {
     image: ImageType;
     artist?: string;
 };
-type GenreResponseType = {
+export type GenreResponseType = {
     _id: string;
     name: string;
 };
@@ -90,13 +90,13 @@ type SpecifiedPaintingByIdType = {
     image: ImageType;
 };
 
-type CreateArtistRequestType = {
+export type CreateArtistRequestType = {
     genres: string;
     name: string;
     description: string;
     yearsOfLife: string;
-    mainPainting: MainPaintingType;
-    avatar: ImageType;
+    // mainPainting: MainPaintingType;
+    avatar?: ImageType;
 };
 type UpdateArtistRequestType = {
     id: string;
@@ -188,9 +188,13 @@ export const artistsAPI = {
     );
   },
 
-  createArtist(payload: CreateArtistRequestType) {
-    return privateInstance.post<{ payload: CreateArtistRequestType },
-            AxiosResponse<ArtistResponseType, any>>('artists', { payload });
+  createArtist(payload: any) {
+    return privateInstance.post<
+            AxiosResponse<ArtistResponseType, any>>('artists', payload, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
   },
   updateArtist(id: string, payload: UpdateArtistRequestType) {
     return privateInstance.put<{ payload: UpdateArtistRequestType },

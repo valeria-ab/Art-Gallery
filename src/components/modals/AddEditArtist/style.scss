@@ -15,7 +15,7 @@
 }
 
 .addModal {
-  max-width: 800px;
+  width: 800px;
   min-height: 876px;
   padding: 36px;
   .light {
@@ -75,12 +75,14 @@
   border: 1px gray;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23333' stroke-width='1' stroke-dasharray='10' stroke-dashoffset='5' stroke-linecap='square'/%3e%3c/svg%3e");
   border-radius: 10px;
-
   p {
     text-align: center;
     @include paragraphBaseLight16
   }
 
+}
+.imageAdded {
+  padding: 0;
 }
 .input_uploader {
   position: absolute;
