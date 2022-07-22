@@ -133,7 +133,6 @@ export const deleteArtistTC = (artistId: string):
     .deleteArtist(artistId)
     .then((res) => {
       // dispatch(deletePainting(res.data));
-      debugger;
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));

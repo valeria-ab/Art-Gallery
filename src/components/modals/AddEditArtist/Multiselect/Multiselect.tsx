@@ -8,15 +8,20 @@ import { GenreResponseType } from '../../../../utils/api';
 
 const cx = classNames.bind(style);
 type PropsType = {
-  genres: GenreResponseType[]
+  genres: GenreResponseType[];
+  selectedGenres: Array<GenreResponseType>;
+  onGenreClick: (genre: GenreResponseType) => void;
 }
-export const Multiselect = ({ genres }: PropsType) => {
+export const Multiselect = ({
+  genres,
+  onGenreClick,
+  selectedGenres,
+}: PropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [description, setDescription] = useState('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [crossIconStyle, setIconCrossIconStyle] = useState({ display: 'none' });
-  const [selectedGenres, setSelectedGenres] = useState<Array<string>>([]);
 
   const onCrossIconClick = (e: any) => {
     e.stopPropagation();
@@ -30,13 +35,6 @@ export const Multiselect = ({ genres }: PropsType) => {
   const onLocationsOptionClick = (id: number) => {
     setIsOpen(false);
     setIconCrossIconStyle({ display: 'block' });
-  };
-  const onGenreClick = (genre: string) => {
-    if (selectedGenres.find((selectedGenre) => selectedGenre === genre)) {
-      setSelectedGenres(selectedGenres.filter((sg) => sg !== genre));
-    } else {
-      setSelectedGenres([...selectedGenres, genre]);
-    }
   };
 
   return (
@@ -71,14 +69,14 @@ export const Multiselect = ({ genres }: PropsType) => {
             {selectedGenres.map((g) => (
               // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
               <span
-                key={g}
+                key={g._id}
                 onKeyDown={() => {
                   console.log('keyboard listener');
                 }}
                 role="definition"
                 onClick={() => onGenreClick(g)}
               >
-                <GenreForMultiselect value={`${g} x`} />
+                <GenreForMultiselect value={`${g.name} x`} />
               </span>
             ))}
           </div>
@@ -113,8 +111,8 @@ export const Multiselect = ({ genres }: PropsType) => {
                               className={cx('custom-checkbox')}
                               type="checkbox"
                               id={`checkbox + ${index}`}
-                              onClick={() => onGenreClick(g.name)}
-                              checked={!!selectedGenres.find((sg) => sg === g.name)}
+                              onClick={() => onGenreClick(g)}
+                              checked={!!selectedGenres.find((sg) => sg._id === g._id)}
                             />
                             <label htmlFor={`checkbox + ${index}`}>
                               {' '}

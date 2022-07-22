@@ -69,7 +69,7 @@ const ArtistProfile = (props: PropsType) => {
         <div className={cx('artistProfile')}>
           <div className={cx('mainPhoto')}>
             <img
-                            // src="https://internship-front.framework.team/images/62a32e09269fa5c416c53d91/original.jpg"
+                // src="https://internship-front.framework.team/images/62a32e09269fa5c416c53d91/original.jpg"
               src={`${baseURL}${artistInfo.avatar.src2x}`}
               alt="artist_picture"
               className={cx('profilePicture')}

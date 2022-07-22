@@ -21,22 +21,17 @@ const Gallery = React.memo(({
   artists, artworks, setAddPictureModeOn, addPictureModeOn,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
+  // const artists = useSelector<IAppStore, Array<ArtistResponseType>>(
+  //   (state) => state.gallery.artists,
+  // );
   const accessToken = useSelector<IAppStore, string>(
     (state) => state.auth.accessToken,
   );
   const [isAddArtistMode, setAddArtistMode] = useState(false);
-
-  useEffect(() => {
-    if (isInitialized) {
-      dispatch(getArtistsTC());
-    } else {
-      dispatch(getArtistsStaticTC());
-    }
-  }, [isInitialized, accessToken]);
 
   return (
     <div className={s.main}>

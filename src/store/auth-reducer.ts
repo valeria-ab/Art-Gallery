@@ -49,7 +49,10 @@ export const authReducer = (
   action: AuthActions,
 ) => {
   switch (action.type) {
-    case 'AUTH/SET-IS_INITIALIZED':
+    case 'AUTH/SET-IS_INITIALIZED': {
+      console.log('IS_INITIALIZED', action.payload);
+      return { ...state, ...action.payload };
+    }
     case 'AUTH/SET-FINGERPRINT':
     case 'AUTH/SET-USER-DATA':
       return { ...state, ...action.payload };
@@ -120,7 +123,6 @@ export const refreshTC = (): AppThunk => (dispatch,
     authAPI
       .refresh({ refreshToken, fingerprint })
       .then((res) => {
-        debugger;
         dispatch(
           setUserData({
             accessToken: res.data.accessToken,

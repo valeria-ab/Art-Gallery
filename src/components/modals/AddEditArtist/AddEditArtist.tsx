@@ -14,6 +14,7 @@ import { AppDispatch, IAppStore } from '../../../store/store';
 import { addNewPaintingTC } from '../../../store/artistPage-reducer';
 import { createArtistTC } from '../../../store/gallery-reducer';
 import { GenreResponseType, genresAPI, privateInstance } from '../../../utils/api';
+import useDebounce from '../../../hooks/useDebounce';
 
 const cx = classNames.bind(style);
 
@@ -40,7 +41,7 @@ export const AddEditArtist = ({
   const [description, setDescription] = useState(artistDescription || '');
   const [genres, setGenres] = useState(artistDescription || '');
   const [genresList, setGenresList] = useState<GenreResponseType[]>([]);
-
+  const [selectedGenres, setSelectedGenres] = useState<Array<GenreResponseType>>([]);
   const [drag, setDrag] = useState(false);
   const [image, setImage] = useState<File>();
   const baseURL = useSelector<IAppStore, string>(
@@ -88,15 +89,23 @@ export const AddEditArtist = ({
     setDrag(false);
   };
 
+  const onGenreClick = (genre: GenreResponseType) => {
+    if (selectedGenres.find((selectedGenre) => selectedGenre._id === genre._id)) {
+      setSelectedGenres(selectedGenres.filter((sg) => sg._id !== genre._id));
+    } else {
+      setSelectedGenres([...selectedGenres, genre]);
+    }
+  };
+
   const onSubmit = () => {
     const formData = new FormData();
-    const genres1 = ['62a32e08269fa5c416c53d8f'];
     // @ts-ignore
     formData.append('avatar', image);
-    formData.append('name', 'Brfgtrhotrgfgucherwwwwww');
-    formData.append('yearsOfLife', '5 July 1606 – 4 October 1669');
-    formData.append('description', 'hjddvsdfskhkjsur');
-    formData.append('genres', genres1[0]);
+    formData.append('name', name);
+    formData.append('yearsOfLife', yearsOfLife);
+    formData.append('description', description);
+
+    selectedGenres.forEach((item) => formData.append('genres', item._id));
 
     dispatch(createArtistTC(formData));
     onCancelCallback(false);
@@ -121,7 +130,6 @@ export const AddEditArtist = ({
         dark: theme === 'dark',
       })}
       >
-
         {drag
           ? (
             <div
@@ -189,8 +197,6 @@ export const AddEditArtist = ({
                     imageAdded: image || avatar,
                   })}
                   >
-                    {/* <div className={cx('userIcon')}> */}
-
                     {image || avatar
                       ? (
                         <img
@@ -212,28 +218,6 @@ export const AddEditArtist = ({
                           <p>You can drop your image here</p>
                         </>
                       )}
-
-                    {/* {avatar ? ( */}
-                    {/*  <img */}
-                    {/*    src={`${baseURL}${avatar}`} */}
-                    {/*    alt="userIcon" */}
-                    {/*    height="100%" */}
-                    {/*    width="100%" */}
-                    {/*  /> */}
-                    {/* ) */}
-                    {/*  : ( */}
-                    {/*    <> */}
-                    {/*      <img */}
-                    {/*        className={cx('userIcon')} */}
-                    {/*        src={avatar ? `${baseURL}${avatar}` : userIcon} */}
-                    {/*        alt="userIcon" */}
-                    {/*        height="60px" */}
-                    {/*        width="60px" */}
-                    {/*      /> */}
-                    {/*      <p>You can drop your image here</p> */}
-                    {/*    </> */}
-                    {/*  )} */}
-                    {/* </div> */}
                   </div>
                   <input
                     type="file"
@@ -252,7 +236,6 @@ export const AddEditArtist = ({
                       theme={theme}
                     />
                   </label>
-                  {/* </div> */}
                 </div>
                 <div className={cx('wrap')}>
                   <div className={cx('contentContainer')}>
@@ -282,9 +265,16 @@ export const AddEditArtist = ({
                         error={null}
                         propsValue={country}
                       />
-                      <TextArea propsValue={description} />
+                      <TextArea
+                        value={description}
+                        callback={setDescription}
+                      />
                     </div>
-                    <Multiselect genres={genresList} />
+                    <Multiselect
+                      genres={genresList}
+                      onGenreClick={onGenreClick}
+                      selectedGenres={selectedGenres}
+                    />
                   </div>
                   <Button
                     value="Save"
@@ -302,11 +292,13 @@ export const AddEditArtist = ({
   );
 };
 type TextAreaPropsType = {
-    propsValue: string;
+    value: string;
+    callback: (value: string) => void;
 }
-const TextArea = ({ propsValue }: TextAreaPropsType) => {
+const TextArea = ({ value, callback }: TextAreaPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [description, setDescription] = useState(propsValue || '');
+  const [description, setDescription] = useState(value || '');
+  const onKeyUp = useDebounce(() => callback(description), 500);
   return (
     <label>
       <div className={cx('label')}>Description</div>
@@ -316,6 +308,8 @@ const TextArea = ({ propsValue }: TextAreaPropsType) => {
           input__dark: theme === 'dark',
         })}
         value={description}
+        onChange={(e) => setDescription(e.currentTarget.value)}
+        onKeyUp={onKeyUp}
       />
     </label>
   );

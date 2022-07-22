@@ -112,7 +112,7 @@ export const createArtistTC = (payload: any):
   artistsAPI
     .createArtist(payload)
     .then((res) => {
-      dispatch(createArtist(res.data));
+      dispatch(createArtist(res.data.data));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
