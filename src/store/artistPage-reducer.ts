@@ -128,6 +128,7 @@ export const editPaintingTC = (artistId: string, paintingId: string, payload: an
   artistsAPI
     .updatePainting(artistId, paintingId, payload)
     .then((res) => {
+      debugger;
       // dispatch(addPainting(res.data));
     })
     .finally(() => {

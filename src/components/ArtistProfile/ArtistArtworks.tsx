@@ -11,13 +11,13 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 const cx = classNames.bind(style);
 
 type PropsType = {
-    onEditPictureClick: () => void;
+    onAddEditPictureClick: (mode: 'edit' | 'add') => void;
     // addEditPictureModeOn: boolean;
     onDeletePictureClick: (paintingId: string) => void;
 }
 
 const ArtistArtworks = ({
-  onEditPictureClick,
+  onAddEditPictureClick,
   // addEditPictureModeOn,
   onDeletePictureClick,
 }: PropsType) => {
@@ -36,7 +36,7 @@ const ArtistArtworks = ({
       </div>
       <Gallery
         artworks={artworks}
-        onEditPictureClick={onEditPictureClick}
+        onAddEditPictureClick={() => onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
       />
     </div>

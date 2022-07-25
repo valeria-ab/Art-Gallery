@@ -54,9 +54,10 @@ const ArtistPage = () => {
     setPaintingId(pictureId);
   };
   const onCancelDeletePictureClick = () => setDeletePictureModeOn(false);
-  const onEditPictureClick = () => {
+
+  const onAddEditPictureClick = (mode: 'edit' | 'add') => {
     setAddEditPictureModeOn(true);
-    setAddEditPictureMode('edit');
+    setAddEditPictureMode(mode);
   };
 
   useEffect(() => {
@@ -113,7 +114,7 @@ const ArtistPage = () => {
       />
       <ArtistArtworks
         // setAddEditPictureModeOn={() => setAddEditPictureModeOn}
-        onEditPictureClick={onEditPictureClick}
+        onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
       />
     </div>

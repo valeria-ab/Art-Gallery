@@ -20,7 +20,7 @@ type PhotoItemPropsType = {
     theme: string;
     onHover: 'artists' | 'artworks';
     onDeletePictureClick?: (paintingId: string) => void;
-    onEditPictureClick?: () => void
+    onEditPictureClick?: (mode: 'edit' | 'add') => void
   pictureData?: AuthorPaintingsType
 };
 
@@ -48,7 +48,7 @@ const PhotoItem = ({
 
   const onEditPainting = () => {
     if (pictureData) dispatch(setCurrentPainting({ currentPainting: pictureData }));
-    if (onEditPictureClick) onEditPictureClick();
+    if (onEditPictureClick) onEditPictureClick('edit');
   };
   return (
     <div

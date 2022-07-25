@@ -12,7 +12,7 @@ import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 type ArtistArtworksPropsType = {
     artists?: Array<ArtistResponseType>;
     artworks?: Array<AuthorPaintingsType>;
-    onEditPictureClick?: () => void;
+    onAddEditPictureClick?: (mode: 'edit' | 'add') => void;
     onDeletePictureClick?: (paintingId: string) => void;
 };
 
@@ -20,7 +20,7 @@ type ArtistArtworksPropsType = {
 const Gallery = React.memo(({
   artists,
   artworks,
-  onEditPictureClick,
+  onAddEditPictureClick,
   onDeletePictureClick,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -29,9 +29,6 @@ const Gallery = React.memo(({
     (state) => state.auth.isInitialized,
   );
 
-  const accessToken = useSelector<IAppStore, string>(
-    (state) => state.auth.accessToken,
-  );
   const [isAddArtistMode, setAddArtistMode] = useState(false);
 
   return (
@@ -52,7 +49,7 @@ const Gallery = React.memo(({
           type="outlined"
           theme={theme}
           width="100px"
-          callback={onEditPictureClick && (() => onEditPictureClick())}
+          callback={onAddEditPictureClick && (() => onAddEditPictureClick('add'))}
         />
       )}
 
@@ -79,7 +76,7 @@ const Gallery = React.memo(({
             theme={theme}
             onHover="artworks"
             onDeletePictureClick={onDeletePictureClick}
-            onEditPictureClick={onEditPictureClick && onEditPictureClick}
+            onEditPictureClick={() => onAddEditPictureClick && onAddEditPictureClick('edit')}
           />
         ))}
       </div>

@@ -223,7 +223,11 @@ export const artistsAPI = {
     payload: AddPaintingToArtistRequestType,
   ) {
     return privateInstance.put<{ payload: AddPaintingToArtistRequestType },
-            AxiosResponse<UpdatePaintingResponseType>>(`artists/${id}/paintings/${paintingId}`, { payload });
+            AxiosResponse<UpdatePaintingResponseType>>(`artists/${id}/paintings/${paintingId}`, payload, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
   },
   deletePainting(id: string, paintingId: string) {
     return privateInstance.delete(
