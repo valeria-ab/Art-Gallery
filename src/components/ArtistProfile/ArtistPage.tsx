@@ -9,11 +9,11 @@ import {
   getArtistInfoStaticTC,
   getArtistInfoTC,
 } from '../../store/artistPage-reducer';
-import { ArtistResponseType } from '../../utils/api';
+import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
 // @ts-ignore
 import style from './ArtistPage.scss';
 import ArtistArtworks from './ArtistArtworks';
-import { AddPicture } from '../modals/addPicture/AddPicture';
+import { AddEditPicture } from '../modals/AddEditPicture/AddEditPicture';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 import { DeleteModal } from '../modals/delete/DeleteModal';
 import { ThemeContext } from '../../contexts/ThemeContext';
@@ -30,14 +30,35 @@ const ArtistPage = () => {
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
-  const [addPictureModeOn, setAddPictureModeOn] = useState(false);
+  const [addEditPictureModeOn, setAddEditPictureModeOn] = useState(false);
   const [deletePictureModeOn, setDeletePictureModeOn] = useState(false);
   const [deleteArtistModeOn, setDeleteArtistModeOn] = useState(false);
   const [editArtist, setEditArtistModeOn] = useState(false);
+  const [paintingId, setPaintingId] = useState<string>();
+  const [addEditPictureMode, setAddEditPictureMode] = useState<'edit' | 'add'>('add');
 
+  // artist
+
+  const onDeleteArtistClick = () => setDeletePictureModeOn(true);
+  const onCancelDeleteArtistClick = () => setDeletePictureModeOn(false);
   const onDeleteArtistCallback = () => authorId && dispatch(deleteArtistTC(authorId));
-  // const onDeletePaintingCallback = (paintingId: string)
-  // => authorId && dispatch(deletePaintingTC(authorId, paintingId));
+
+  // picture
+
+  const onDeletePaintingCallback = () => {
+    if (authorId && paintingId) dispatch(deletePaintingTC(authorId, paintingId));
+    setDeletePictureModeOn(false);
+  };
+  const onDeletePictureClick = (pictureId: string) => {
+    setDeletePictureModeOn(true);
+    setPaintingId(pictureId);
+  };
+  const onCancelDeletePictureClick = () => setDeletePictureModeOn(false);
+  const onEditPictureClick = () => {
+    setAddEditPictureModeOn(true);
+    setAddEditPictureMode('edit');
+  };
+
   useEffect(() => {
     if (authorId) {
       if (!isInitialized) {
@@ -49,28 +70,29 @@ const ArtistPage = () => {
 
   return (
     <div className={cx('artistPage')}>
-      {addPictureModeOn
+      {addEditPictureModeOn
                 && (
-                <AddPicture
-                  addPictureModeOn={addPictureModeOn}
-                  setAddPictureModeOn={setAddPictureModeOn}
+                <AddEditPicture
+                  addPictureModeOn={addEditPictureModeOn}
+                  setAddPictureModeOn={setAddEditPictureModeOn}
+                  mode={addEditPictureMode}
                 />
                 )}
-      {/* {deletePictureModeOn && ( */}
-      {/* <DeleteModal */}
-      {/*  theme={theme} */}
-      {/*  primaryTitle="picture" */}
-      {/*  secondaryTitle="picture" */}
-      {/*  cancelCallback={setDeletePictureModeOn} */}
-      {/*  onDeleteCallback={onDeletePaintingCallback} */}
-      {/* /> */}
-      {/* )} */}
+      {deletePictureModeOn && (
+      <DeleteModal
+        theme={theme}
+        primaryTitle="picture"
+        secondaryTitle="picture"
+        cancelCallback={onCancelDeletePictureClick}
+        onDeleteCallback={onDeletePaintingCallback}
+      />
+      )}
       {deleteArtistModeOn && (
       <DeleteModal
         theme={theme}
         primaryTitle="artist profile"
         secondaryTitle="profile"
-        cancelCallback={setDeleteArtistModeOn}
+        cancelCallback={() => setDeleteArtistModeOn}
         onDeleteCallback={onDeleteArtistCallback}
       />
       )}
@@ -90,8 +112,9 @@ const ArtistPage = () => {
         setEditArtistModeOn={setEditArtistModeOn}
       />
       <ArtistArtworks
-        setAddPictureModeOn={setAddPictureModeOn}
-        addPictureModeOn={addPictureModeOn}
+        // setAddEditPictureModeOn={() => setAddEditPictureModeOn}
+        onEditPictureClick={onEditPictureClick}
+        onDeletePictureClick={onDeletePictureClick}
       />
     </div>
   );

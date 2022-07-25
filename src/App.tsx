@@ -29,14 +29,14 @@ const App = () => {
   };
   const dispatch = useDispatch<AppDispatch>();
 
-  // useEffect(() => {
-  //   const accessToken = Cookies.get('accessToken');
-  //   const refreshToken = Cookies.get('refreshToken');
-  //   if (accessToken && refreshToken) {
-  //     dispatch(setUserData({ refreshToken, accessToken }));
-  //     dispatch(setInitialized({ isInitialized: true }));
-  //   }
-  // }, []);
+  useEffect(() => {
+    const accessToken = Cookies.get('accessToken');
+    const refreshToken = Cookies.get('refreshToken');
+    if (accessToken && refreshToken) {
+      dispatch(setUserData({ refreshToken, accessToken }));
+      dispatch(setInitialized({ isInitialized: true }));
+    }
+  }, []);
 
   // const loadingStatus = useSelector<IAppStore, RequestStatusType>(
   //   (state) => state.app.status,
@@ -52,25 +52,21 @@ const App = () => {
       light: currentTheme === 'light',
     })}
     >
-      {/* <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}> */}
-      <div className="AppContainer">
-        <Header />
-        <MainPage />
-        {/* <Routes> */}
-        {/*  {console.log('Routes')} */}
-        {/*  /!* <Route path="/" element={<Navigate to="/artists" />} /> *!/ */}
-        {/*  <Route */}
-        {/*    path="/artists" */}
-        {/*    element={<MainPage />} */}
-        {/*  /> */}
-        {/*  /!* <Route path="/artists/:authorId" element={<ArtistPage />} /> *!/ */}
-
-        {/*  /!* <Route path={'/*'} element={<div>Page not found</div>} /> *!/ */}
-        {/* </Routes> */}
-        {/* <button type="button" onClick={() => dispatch(refreshTC())}>refresh</button> */}
-        <Footer />
-      </div>
-      {/* </ThemeContext.Provider> */}
+      <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
+        <div className="AppContainer">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Navigate to="/artists" />} />
+            <Route
+              path="/artists"
+              element={<MainPage />}
+            />
+            <Route path="/artists/:authorId" element={<ArtistPage />} />
+            <Route path={'/*'} element={<div>Page not found</div>} />
+          </Routes>
+          <Footer />
+        </div>
+      </ThemeContext.Provider>
     </div>
   );
 };

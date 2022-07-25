@@ -1,10 +1,10 @@
 import React, {
-  ChangeEvent, FormEvent, useContext, useRef, useState,
+  ChangeEvent, FormEvent, useContext, useEffect, useRef, useState,
 } from 'react';
 import classNames from 'classnames/bind';
 import { useParams } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import style from './style.scss';
 import userIcon from '../../../assets/modals/addEditArtist/userIcon.png';
@@ -12,21 +12,30 @@ import { Input } from '../../Input/Input';
 import { Button } from '../../Button/Button';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 import plug from '../../../assets/modals/addPicture/plug.png';
-import { addNewPaintingTC } from '../../../store/artistPage-reducer';
-import { AppDispatch } from '../../../store/store';
+import { addNewPaintingTC, editPaintingTC, setCurrentPainting } from '../../../store/artistPage-reducer';
+import { AppDispatch, IAppStore } from '../../../store/store';
+import { AuthorPaintingsType } from '../../../utils/api';
 
 const cx = classNames.bind(style);
 
 type PropsType = {
     setAddPictureModeOn: (value: boolean) => void
     addPictureModeOn: boolean
+  mode: 'edit' | 'add'
 }
-export const AddPicture = ({
+export const AddEditPicture = ({
   setAddPictureModeOn,
   addPictureModeOn,
+  mode,
 }: PropsType) => {
-  const [name, setName] = useState('');
-  const [yearOfCreation, setYear] = useState('');
+  const currentPainting = useSelector<IAppStore, AuthorPaintingsType>(
+    (state) => state.artistPage.currentPainting,
+  );
+  const baseURL = useSelector<IAppStore, string>(
+    (state) => state.gallery.baseURL,
+  );
+  const [name, setName] = useState(currentPainting.name || '');
+  const [yearOfCreation, setYear] = useState(currentPainting.yearOfCreation || '');
   const [drag, setDrag] = useState(false);
   const [image, setImage] = useState<File>();
   const [src, setSrc] = useState<string>();
@@ -80,9 +89,20 @@ export const AddPicture = ({
     formData.append('name', name);
     formData.append('yearOfCreation', yearOfCreation);
 
-    if (authorId) dispatch(addNewPaintingTC(authorId, formData));
+    if (authorId) {
+      if (mode === 'add') dispatch(addNewPaintingTC(authorId, formData));
+      if (mode === 'edit') dispatch(editPaintingTC(authorId, currentPainting._id, formData));
+    }
     setAddPictureModeOn(!addPictureModeOn);
   };
+
+  useEffect(() => {
+    if (currentPainting.image) setSrc(`${baseURL}${currentPainting.image.src}`);
+
+    // return () => dispatch(setCurrentPainting({
+    //   currentPainting: {} as AuthorPaintingsType,
+    // }));
+  }, [currentPainting]);
 
   // @ts-ignore
   return (
@@ -118,8 +138,21 @@ export const AddPicture = ({
 
         <div className={cx('addPictureContainer')}>
           <div className={cx('addPicture_inputsBlock')}>
-            <Input label="The name of the picture" type="text" callback={setName} error={null} />
-            <Input label="Year Of Creation" width="105px" type="text" callback={setYear} error={null} />
+            <Input
+              label="The name of the picture"
+              type="text"
+              callback={setName}
+              error={null}
+              propsValue={name}
+            />
+            <Input
+              label="Year Of Creation"
+              width="105px"
+              type="text"
+              callback={setYear}
+              error={null}
+              propsValue={yearOfCreation}
+            />
           </div>
           <div
             className={cx('pictureBlock')}
@@ -128,7 +161,7 @@ export const AddPicture = ({
             onDragOver={(e) => dragStartHandler(e)}
             onDrop={(e) => onDropHandler(e)}
           >
-            {image ? (<img src={src || ''} alt="" width="100%" />)
+            {image || currentPainting.image ? (<img src={src || ''} alt="" width="100%" height="100%" />)
               : (
                 <div className={cx('picture__place')}>
                   <img src={plug} alt="choosePhoto" width="130px" height="130px" />

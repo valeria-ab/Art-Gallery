@@ -8,40 +8,30 @@ import Gallery from '../Gallery/Gallery';
 
 // eslint-disable-next-line react/display-name
 const MainPage = () => {
-  console.log('main');
+  const dispatch = useDispatch<AppDispatch>();
+  const isInitialized = useSelector<IAppStore, boolean>(
+    (state) => state.auth.isInitialized, shallowEqual,
+  );
 
-  // const dispatch = useDispatch<AppDispatch>();
-  // const isInitialized = useSelector<IAppStore, boolean>(
-  //   (state) => state.auth.isInitialized, shallowEqual,
+  // const accessToken = useSelector<IAppStore, string>(
+  //   (state) => state.auth.accessToken,
   // );
-  // console.log('static', isInitialized);
-  // // const accessToken = useSelector<IAppStore, string>(
-  // //   (state) => state.auth.accessToken,
-  // // );
-  // const artists = useSelector<IAppStore, Array<ArtistResponseType>>(
-  //   (state) => state.gallery.artists, shallowEqual,
+  const artists = useSelector<IAppStore, Array<ArtistResponseType>>(
+    (state) => state.gallery.artists, shallowEqual,
+  );
+  // const loadingStatus = useSelector<IAppStore, RequestStatusType>(
+  //   (state) => state.app.status,
   // );
-  // // const loadingStatus = useSelector<IAppStore, RequestStatusType>(
-  // //   (state) => state.app.status,
-  // // );
-  //
-  // useEffect(() => {
-  //   if (isInitialized) {
-  //     dispatch(getArtistsTC());
-  //     console.log('auth');
-  //   } else {
-  //     dispatch(getArtistsStaticTC());
-  //     console.log('not auth');
-  //   }
-  // }, []);
-  
+
   useEffect(() => {
-    console.log('mainUseEffect');
-  }, []);
+    if (isInitialized) {
+      dispatch(getArtistsTC());
+    } else {
+      dispatch(getArtistsStaticTC());
+    }
+  }, [isInitialized]);
 
-
-  // return <Gallery artists={[]} />;
-  return <div>12323</div>;
+  return <Gallery artists={artists} />;
 };
 
 export default MainPage;

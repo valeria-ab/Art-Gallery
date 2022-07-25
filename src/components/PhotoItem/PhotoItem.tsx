@@ -5,9 +5,10 @@ import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './style.scss';
-import { deletePaintingTC, updateMainPaintingTC } from '../../store/artistPage-reducer';
+import { deletePaintingTC, setCurrentPainting, updateMainPaintingTC } from '../../store/artistPage-reducer';
 import cogwheel from '../../assets/photoItem/cogwheel.png';
 import noImagePlug from '../../assets/photoItem/noImagePlug.png';
+import { AuthorPaintingsType } from '../../utils/api';
 
 const cx = classNames.bind(style);
 
@@ -17,7 +18,10 @@ type PhotoItemPropsType = {
     picture: string;
     id: string;
     theme: string;
-    onHover: 'artists' | 'artworks'
+    onHover: 'artists' | 'artworks';
+    onDeletePictureClick?: (paintingId: string) => void;
+    onEditPictureClick?: () => void
+  pictureData?: AuthorPaintingsType
 };
 
 const PhotoItem = ({
@@ -27,6 +31,9 @@ const PhotoItem = ({
   picture,
   theme,
   onHover,
+  onDeletePictureClick,
+  onEditPictureClick,
+  pictureData,
 }: PhotoItemPropsType) => {
   const [hover, setHover] = useState(false);
   const [isMenuOpened, setMenuOpened] = useState(false);
@@ -38,12 +45,16 @@ const PhotoItem = ({
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
+
+  const onEditPainting = () => {
+    if (pictureData) dispatch(setCurrentPainting({ currentPainting: pictureData }));
+    if (onEditPictureClick) onEditPictureClick();
+  };
   return (
     <div
       className={cx('photoItem__container', {
         'photoItem__container-active': hover && onHover === 'artists',
         // settings__hover: hover && onHover === 'artworks',
-
       })}
       onMouseOver={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -52,57 +63,12 @@ const PhotoItem = ({
       }}
     >
       {isInitialized && (
-      <>
-        <div
-          className={cx('displayNone', {
-            displayBlock: hover && onHover === 'artworks',
-          })}
-        >
+        <>
           <div
-            onKeyDown={() => {
-              console.log('keyboard listener');
-            }}
-            role="button"
-            tabIndex={-1}
-            className={cx({
-              settings__hover: hover && onHover === 'artworks',
+            className={cx('displayNone', {
+              displayBlock: hover && onHover === 'artworks',
             })}
-            onClick={() => setMenuOpened(!isMenuOpened)}
           >
-            <img src={cogwheel} alt="cogwheel" width="24px" height="24px" />
-          </div>
-          <div className={cx('displayNone', {
-            settings__menu: isMenuOpened && onHover === 'artworks',
-            settings__menu_light: theme === 'light',
-            settings__menu_dark: theme === 'dark',
-          })}
-          >
-            <div
-              className={cx({
-                menuItem: hover && onHover === 'artworks',
-                menuItem_light: theme === 'light',
-                menuItem_dark: theme === 'dark',
-              })}
-              role="button"
-              onKeyDown={() => {
-                console.log('keyboard listener');
-              }}
-              tabIndex={-1}
-              onClick={() => {
-                // eslint-disable-next-line no-unused-expressions
-                authorId && dispatch(updateMainPaintingTC(id, authorId));
-              }}
-            >
-              Make the cover
-            </div>
-            <div className={cx({
-              menuItem: hover && onHover === 'artworks',
-              menuItem_light: theme === 'light',
-              menuItem_dark: theme === 'dark',
-            })}
-            >
-              Edit
-            </div>
             <div
               onKeyDown={() => {
                 console.log('keyboard listener');
@@ -110,17 +76,69 @@ const PhotoItem = ({
               role="button"
               tabIndex={-1}
               className={cx({
-                menuItem: hover && onHover === 'artworks',
-                menuItem_light: theme === 'light',
-                menuItem_dark: theme === 'dark',
+                settings__hover: hover && onHover === 'artworks',
               })}
-              onClick={() => authorId && dispatch(deletePaintingTC(authorId, id))}
+              onClick={() => setMenuOpened(!isMenuOpened)}
             >
-              Delete
+              <img src={cogwheel} alt="cogwheel" width="24px" height="24px" />
+            </div>
+            <div className={cx('displayNone', {
+              settings__menu: isMenuOpened && onHover === 'artworks',
+              settings__menu_light: theme === 'light',
+              settings__menu_dark: theme === 'dark',
+            })}
+            >
+              <div
+                className={cx({
+                  menuItem: hover && onHover === 'artworks',
+                  menuItem_light: theme === 'light',
+                  menuItem_dark: theme === 'dark',
+                })}
+                role="button"
+                onKeyDown={() => {
+                  console.log('keyboard listener');
+                }}
+                tabIndex={-1}
+                onClick={() => {
+                  // eslint-disable-next-line no-unused-expressions
+                  authorId && dispatch(updateMainPaintingTC(id, authorId));
+                }}
+              >
+                Make the cover
+              </div>
+              <div
+                className={cx({
+                  menuItem: hover && onHover === 'artworks',
+                  menuItem_light: theme === 'light',
+                  menuItem_dark: theme === 'dark',
+                })}
+                role="button"
+                onKeyDown={() => {
+                  console.log('keyboard listener');
+                }}
+                tabIndex={-1}
+                onClick={onEditPainting}
+              >
+                Edit
+              </div>
+              <div
+                onKeyDown={() => {
+                  console.log('keyboard listener');
+                }}
+                role="button"
+                tabIndex={-1}
+                className={cx({
+                  menuItem: hover && onHover === 'artworks',
+                  menuItem_light: theme === 'light',
+                  menuItem_dark: theme === 'dark',
+                })}
+                onClick={() => onDeletePictureClick && onDeletePictureClick(id)}
+              >
+                Delete
+              </div>
             </div>
           </div>
-        </div>
-      </>
+        </>
       )}
       <NavLink to={`/artists/${id}`} className={cx('photoItem')}>
         <img

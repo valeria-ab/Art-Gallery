@@ -11,11 +11,16 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 const cx = classNames.bind(style);
 
 type PropsType = {
-    setAddPictureModeOn: (value: boolean) => void;
-    addPictureModeOn: boolean
+    onEditPictureClick: () => void;
+    // addEditPictureModeOn: boolean;
+    onDeletePictureClick: (paintingId: string) => void;
 }
 
-const ArtistArtworks = ({ setAddPictureModeOn, addPictureModeOn }: PropsType) => {
+const ArtistArtworks = ({
+  onEditPictureClick,
+  // addEditPictureModeOn,
+  onDeletePictureClick,
+}: PropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
     (state) => state.artistPage.artistInfo.paintings,
@@ -29,7 +34,11 @@ const ArtistArtworks = ({ setAddPictureModeOn, addPictureModeOn }: PropsType) =>
       >
         Artworks
       </div>
-      <Gallery artworks={artworks} setAddPictureModeOn={setAddPictureModeOn} addPictureModeOn={addPictureModeOn} />
+      <Gallery
+        artworks={artworks}
+        onEditPictureClick={onEditPictureClick}
+        onDeletePictureClick={onDeletePictureClick}
+      />
     </div>
   );
 };

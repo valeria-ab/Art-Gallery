@@ -12,22 +12,23 @@ import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 type ArtistArtworksPropsType = {
     artists?: Array<ArtistResponseType>;
     artworks?: Array<AuthorPaintingsType>;
-    setAddPictureModeOn?: (value: boolean) => void;
-    addPictureModeOn?: boolean
+    onEditPictureClick?: () => void;
+    onDeletePictureClick?: (paintingId: string) => void;
 };
 
 // eslint-disable-next-line react/display-name
 const Gallery = React.memo(({
-  artists, artworks, setAddPictureModeOn, addPictureModeOn,
+  artists,
+  artworks,
+  onEditPictureClick,
+  onDeletePictureClick,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   // const dispatch = useDispatch<AppDispatch>();
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
-  // const artists = useSelector<IAppStore, Array<ArtistResponseType>>(
-  //   (state) => state.gallery.artists,
-  // );
+
   const accessToken = useSelector<IAppStore, string>(
     (state) => state.auth.accessToken,
   );
@@ -37,13 +38,13 @@ const Gallery = React.memo(({
     <div className={s.main}>
       {isAddArtistMode && <AddEditArtist onCancelCallback={setAddArtistMode} />}
       {isInitialized && artists && (
-      <Button
-        value="add artist"
-        type="outlined"
-        theme={theme}
-        width="100px"
-        callback={() => setAddArtistMode(true)}
-      />
+        <Button
+          value="add artist"
+          type="outlined"
+          theme={theme}
+          width="100px"
+          callback={() => setAddArtistMode(true)}
+        />
       )}
       {isInitialized && artworks && (
         <Button
@@ -51,7 +52,7 @@ const Gallery = React.memo(({
           type="outlined"
           theme={theme}
           width="100px"
-          callback={setAddPictureModeOn && (() => setAddPictureModeOn(!addPictureModeOn))}
+          callback={onEditPictureClick && (() => onEditPictureClick())}
         />
       )}
 
@@ -69,13 +70,16 @@ const Gallery = React.memo(({
         ))}
         {artworks && artworks.map((i) => (
           <PhotoItem
+            pictureData={i}
+            id={i._id}
             key={i._id}
             name={i.name}
             years={i.yearOfCreation}
             picture={i.image.src ? i.image.src : 'no image'}
-            id={i._id}
             theme={theme}
             onHover="artworks"
+            onDeletePictureClick={onDeletePictureClick}
+            onEditPictureClick={onEditPictureClick && onEditPictureClick}
           />
         ))}
       </div>

@@ -12,8 +12,8 @@ type ModalPropsType = {
     theme: string;
     primaryTitle: 'artist profile' | 'picture';
     secondaryTitle: 'profile' | 'picture';
-    cancelCallback: (value: boolean) => void;
-    onDeleteCallback: (value?: string) => void;
+    cancelCallback: () => void;
+    onDeleteCallback: () => void;
 };
 export const DeleteModal = ({
   theme,
@@ -30,7 +30,7 @@ export const DeleteModal = ({
     >
       <div
         className={cx('cancelIconWrapper')}
-        onClick={() => cancelCallback(false)}
+        onClick={cancelCallback}
         onKeyDown={() => {
           console.log('keyboard listener');
         }}
@@ -79,7 +79,7 @@ export const DeleteModal = ({
             theme={theme}
             type="outlined"
             width="200px"
-            callback={() => cancelCallback(false)}
+            callback={cancelCallback}
           />
         </div>
       </div>

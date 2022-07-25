@@ -12,11 +12,16 @@ import { getArtistsTC } from './gallery-reducer';
 
 export type InitialCardsStateType = {
   artistInfo: ArtistResponseType;
+  currentPainting: AuthorPaintingsType;
   // paintings: Array<>
 };
 
 export const setArtistInfo = (payload: { artistInfo: ArtistResponseType }) => ({
   type: 'ARTIST_PAGE/SET-ARTIST-INFO',
+  payload,
+} as const);
+export const setCurrentPainting = (payload: { currentPainting: AuthorPaintingsType }) => ({
+  type: 'ARTIST_PAGE/SET-CURRENT-PAINTING',
   payload,
 } as const);
 export const addPainting = (painting: AuthorPaintingsType) => ({
@@ -32,9 +37,11 @@ type ActionsType =
    | ReturnType<typeof setArtistInfo>
    | ReturnType<typeof addPainting>
    | ReturnType<typeof deletePainting>
+   | ReturnType<typeof setCurrentPainting>
 
 const initialState: InitialCardsStateType = {
   artistInfo: {} as ArtistResponseType,
+  currentPainting: {} as AuthorPaintingsType,
 };
 
 export const artistPageReducer = (
@@ -43,6 +50,7 @@ export const artistPageReducer = (
 ): InitialCardsStateType => {
   switch (action.type) {
     case 'ARTIST_PAGE/SET-ARTIST-INFO':
+    case 'ARTIST_PAGE/SET-CURRENT-PAINTING':
       return { ...state, ...action.payload };
     case 'ARTIST_PAGE/ADD-PICTURE': {
       const stateCopy = { ...state };
@@ -109,6 +117,18 @@ export const addNewPaintingTC = (artistId: string, payload: any):
     .addPaintingToArtist(artistId, payload)
     .then((res) => {
       dispatch(addPainting(res.data));
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};
+export const editPaintingTC = (artistId: string, paintingId: string, payload: any):
+    AppThunk => (dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  artistsAPI
+    .updatePainting(artistId, paintingId, payload)
+    .then((res) => {
+      // dispatch(addPainting(res.data));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
