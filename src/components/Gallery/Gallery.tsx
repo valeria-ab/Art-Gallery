@@ -5,7 +5,9 @@ import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import s from './Gallery.module.scss';
 import PhotoItem from '../PhotoItem/PhotoItem';
-import { getArtistsStaticTC, getArtistsTC } from '../../store/gallery-reducer';
+import {
+  getArtistsStaticTC, getArtistsTC, setCurrentPagesPortion, setPagesPortion,
+} from '../../store/gallery-reducer';
 import { Button } from '../Button/Button';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 
@@ -14,6 +16,7 @@ type ArtistArtworksPropsType = {
     artworks?: Array<AuthorPaintingsType>;
     onAddEditPictureClick?: (mode: 'edit' | 'add') => void;
     onDeletePictureClick?: (paintingId: string) => void;
+    onLoadMore: () => void;
 };
 
 // eslint-disable-next-line react/display-name
@@ -22,13 +25,22 @@ const Gallery = React.memo(({
   artworks,
   onAddEditPictureClick,
   onDeletePictureClick,
+  onLoadMore,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
-
+  const portionSize = useSelector<IAppStore, number>(
+    (state) => state.gallery.portionSize,
+  );
+  const currentPagesPortion = useSelector<IAppStore, number>(
+    (state) => state.gallery.currentPagesPortion,
+  );
+  const totalPagesCount = useSelector<IAppStore, number>(
+    (state) => state.gallery.totalPagesCount,
+  );
   const [isAddArtistMode, setAddArtistMode] = useState(false);
 
   return (
@@ -60,7 +72,9 @@ const Gallery = React.memo(({
             id={a._id}
             name={a.name}
             years={a.yearsOfLife}
-            picture={a.mainPainting ? a.mainPainting.image.src : 'no image'}
+            picture={a.mainPainting && a.mainPainting.image && a.mainPainting.image.src
+              ? a.mainPainting.image.src
+              : 'no image'}
             theme={theme}
             onHover="artists"
           />
@@ -76,10 +90,19 @@ const Gallery = React.memo(({
             theme={theme}
             onHover="artworks"
             onDeletePictureClick={onDeletePictureClick}
-            onEditPictureClick={() => onAddEditPictureClick && onAddEditPictureClick('edit')}
+            onEditPictureClick={onAddEditPictureClick && onAddEditPictureClick}
           />
         ))}
       </div>
+      {currentPagesPortion !== Math.ceil(totalPagesCount / portionSize) && (
+      <Button
+        value="load more"
+        theme={theme}
+        type="outlined"
+        width="200px"
+        callback={onLoadMore}
+      />
+      )}
     </div>
   );
 });

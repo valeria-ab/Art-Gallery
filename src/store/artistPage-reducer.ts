@@ -11,9 +11,13 @@ import { setAppStatus } from './app-reducer';
 import { getArtistsTC } from './gallery-reducer';
 
 export type InitialCardsStateType = {
-  artistInfo: ArtistResponseType;
-  currentPainting: AuthorPaintingsType;
-  // paintings: Array<>
+    artistInfo: ArtistResponseType;
+    currentPainting: AuthorPaintingsType;
+    totalPagesCount: number;
+    currentPage: number;
+    portionSize: number;
+    currentPagesPortion: number;
+    // paintings: Array<>
 };
 
 export const setArtistInfo = (payload: { artistInfo: ArtistResponseType }) => ({
@@ -32,16 +36,30 @@ export const deletePainting = (id: string) => ({
   type: 'ARTIST_PAGE/DELETE-PICTURE',
   id,
 } as const);
+export const setTotalPagesCount = (payload: { totalPagesCount: number }) => ({
+  type: 'ARTIST_PAGE/SET-TOTAL-PAGES-COUNT',
+  payload,
+} as const);
+export const setCurrentPagesPortion = (payload: { currentPagesPortion: number }) => ({
+  type: 'ARTIST_PAGE/SET-CURRENT-PAGES-PORTION',
+  payload,
+} as const);
 
 type ActionsType =
-   | ReturnType<typeof setArtistInfo>
-   | ReturnType<typeof addPainting>
-   | ReturnType<typeof deletePainting>
-   | ReturnType<typeof setCurrentPainting>
+    | ReturnType<typeof setArtistInfo>
+    | ReturnType<typeof addPainting>
+    | ReturnType<typeof deletePainting>
+    | ReturnType<typeof setCurrentPainting>
+    | ReturnType<typeof setTotalPagesCount>
+    | ReturnType<typeof setCurrentPagesPortion>
 
 const initialState: InitialCardsStateType = {
   artistInfo: {} as ArtistResponseType,
   currentPainting: {} as AuthorPaintingsType,
+  totalPagesCount: 1000,
+  currentPage: 1,
+  portionSize: 9,
+  currentPagesPortion: 1,
 };
 
 export const artistPageReducer = (
@@ -51,6 +69,8 @@ export const artistPageReducer = (
   switch (action.type) {
     case 'ARTIST_PAGE/SET-ARTIST-INFO':
     case 'ARTIST_PAGE/SET-CURRENT-PAINTING':
+    case 'ARTIST_PAGE/SET-TOTAL-PAGES-COUNT':
+    case 'ARTIST_PAGE/SET-CURRENT-PAGES-PORTION':
       return { ...state, ...action.payload };
     case 'ARTIST_PAGE/ADD-PICTURE': {
       const stateCopy = { ...state };
@@ -92,6 +112,7 @@ export const getArtistInfoTC = (artistId: string): AppThunk => (dispatch) => {
     .then((res) => {
       dispatch(setArtistInfo({ artistInfo: res.data }));
     })
+    .catch((error) => alert(error))
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
     });
@@ -128,7 +149,6 @@ export const editPaintingTC = (artistId: string, paintingId: string, payload: an
   artistsAPI
     .updatePainting(artistId, paintingId, payload)
     .then((res) => {
-      debugger;
       // dispatch(addPainting(res.data));
     })
     .finally(() => {

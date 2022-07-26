@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-cycle
-// eslint-disable-next-line import/no-cycle
 import { ArtistResponseType, artistsAPI } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk, IAppStore } from './store';
@@ -9,6 +8,10 @@ import { setAppStatus } from './app-reducer';
 export type InitialCardsStateType = {
   baseURL: string;
   artists: Array<ArtistResponseType>;
+  totalPagesCount: number;
+  currentPage: number;
+  portionSize: number;
+  currentPagesPortion: number;
 };
 
 export const setArtists = (payload: { artists: Array<ArtistResponseType> }) => ({
@@ -19,13 +22,31 @@ export const createArtist = (artist: ArtistResponseType) => ({
   type: 'GALLERY/CREATE-ARTISTS',
   artist,
 } as const);
+export const setTotalPagesCount = (payload: {totalPagesCount: number}) => ({
+  type: 'GALLERY/SET-TOTAL-PAGES-COUNT',
+  payload,
+} as const);
+const setPagesPortion = (payload: {pagesPortion: number}) => ({
+  type: 'GALLERY/SET-CURRENT-PAGE',
+  payload,
+} as const);
+export const setCurrentPagesPortion = (payload: {currentPagesPortion: number}) => ({
+  type: 'GALLERY/SET-CURRENT-PAGES-PORTION',
+  payload,
+} as const);
 
 type ActionsType = ReturnType<typeof setArtists>
-    | ReturnType<typeof createArtist>;
+    | ReturnType<typeof createArtist>
+    | ReturnType<typeof setTotalPagesCount>
+    | ReturnType<typeof setCurrentPagesPortion>
 
 const initialState: InitialCardsStateType = {
   artists: [],
   baseURL: 'https://internship-front.framework.team',
+  totalPagesCount: 1000,
+  currentPage: 1,
+  portionSize: 9,
+  currentPagesPortion: 1,
 };
 
 export const galleryReducer = (
@@ -34,6 +55,8 @@ export const galleryReducer = (
 ): InitialCardsStateType => {
   switch (action.type) {
     case 'GALLERY/SET-ARTISTS':
+    case 'GALLERY/SET-TOTAL-PAGES-COUNT':
+    case 'GALLERY/SET-CURRENT-PAGES-PORTION':
       return { ...state, ...action.payload };
     case 'GALLERY/CREATE-ARTISTS': {
       const stateCopy = { ...state };
@@ -55,6 +78,7 @@ export const getArtistsStaticTC = (): AppThunk => (dispatch) => {
     .getArtistsStatic()
     .then((res) => {
       dispatch(setArtists({ artists: res.data }));
+      dispatch(setTotalPagesCount({ totalPagesCount: res.data.length }));
     })
     .catch((err) => {
       console.log(err);
@@ -83,6 +107,7 @@ export const getArtistsTC = (): AppThunk => (dispatch, getState: () => IAppStore
       // console.log(accessToken);
       // debugger;
       dispatch(setArtists({ artists: res.data.data }));
+      dispatch(setTotalPagesCount({ totalPagesCount: res.data.data.length }));
     })
     .catch((err) => {
       // if (err.response.data.statusCode === 401) {

@@ -162,6 +162,7 @@ export const artistsAPI = {
   // requests for not authorised user
   getArtistsStatic() {
     return instance.get<Array<ArtistResponseType>>('artists/static');
+    // return instance.get('artists/static');
   },
   getArtistStatic(id: string) {
     return instance.get<ArtistResponseType>(`artists/static/${id}`);

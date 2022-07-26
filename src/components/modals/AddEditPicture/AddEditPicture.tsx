@@ -85,7 +85,8 @@ export const AddEditPicture = ({
   const onSubmit = () => {
     const formData = new FormData();
     // @ts-ignore
-    formData.append('image', image);
+    // formData.append('image', image || src);
+    formData.append('image', 'images/62a32e10269fa5c416c53dc1/image.jpg');
     formData.append('name', name);
     formData.append('yearOfCreation', yearOfCreation);
 

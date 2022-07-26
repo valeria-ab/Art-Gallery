@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import { AuthorPaintingsType } from '../../utils/api';
+import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
 import Gallery from '../Gallery/Gallery';
-import { IAppStore } from '../../store/store';
+import { AppDispatch, IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './ArtistPage.scss';
 import { ThemeContext } from '../../contexts/ThemeContext';
+import { setCurrentPagesPortion } from '../../store/artistPage-reducer';
 
 const cx = classNames.bind(style);
 
@@ -22,9 +23,36 @@ const ArtistArtworks = ({
   onDeletePictureClick,
 }: PropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const dispatch = useDispatch<AppDispatch>();
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
     (state) => state.artistPage.artistInfo.paintings,
   );
+
+  const portionSize = useSelector<IAppStore, number>(
+    (state) => state.artistPage.portionSize,
+  );
+  const currentPagesPortion = useSelector<IAppStore, number>(
+    (state) => state.artistPage.currentPagesPortion,
+  );
+
+  const paintingsCurrentPortion = artworks.slice(
+    portionSize * currentPagesPortion - portionSize, portionSize * currentPagesPortion,
+  );
+
+  const [paintingsPortion, setPaintingsPortion] = useState([] as AuthorPaintingsType[]);
+
+  useEffect(() => {
+    setPaintingsPortion(paintingsCurrentPortion);
+  }, [artworks]);
+
+  useEffect(() => {
+    setPaintingsPortion([...paintingsPortion, ...paintingsCurrentPortion]);
+  }, [portionSize, currentPagesPortion]);
+
+  const onLoadMore = () => {
+    dispatch(setCurrentPagesPortion({ currentPagesPortion: currentPagesPortion + 1 }));
+  };
+
   return (
     <div className={cx('artistArtworks')}>
       <div className={cx('artistArtworks__heading', {
@@ -36,8 +64,9 @@ const ArtistArtworks = ({
       </div>
       <Gallery
         artworks={artworks}
-        onAddEditPictureClick={() => onAddEditPictureClick}
+        onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
+        onLoadMore={onLoadMore}
       />
     </div>
   );
