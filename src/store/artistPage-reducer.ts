@@ -15,10 +15,7 @@ export type InitialCardsStateType = {
     artistInfo: ArtistResponseType;
     currentPainting: AuthorPaintingsType;
     artworksTotalPagesCount: number;
-  // artworksCurrentPage: number;
     artworksPortionSize: number;
-  //    artworksCurrentPagesPortion: number;
-
 };
 
 export const setArtistInfo = (payload: { artistInfo: ArtistResponseType }) => ({
@@ -63,12 +60,8 @@ type ActionsType =
 const initialState: InitialCardsStateType = {
   artistInfo: {} as ArtistResponseType,
   currentPainting: {} as AuthorPaintingsType,
-  artworksTotalPagesCount: 1000,
-  // artworksCurrentPage: 1,
+  artworksTotalPagesCount: 100,
   artworksPortionSize: 1,
-  // currentPage: 1,
-  // portionSize: 9,
-  // artworksCurrentPagesPortion: 1,
 };
 
 export const artistPageReducer = (

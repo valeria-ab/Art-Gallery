@@ -17,7 +17,6 @@ import { AddEditPicture } from '../modals/AddEditPicture/AddEditPicture';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 import { DeleteModal } from '../modals/delete/DeleteModal';
 import { ThemeContext } from '../../contexts/ThemeContext';
-import { setCurrentPagesPortion } from '../../store/gallery-reducer';
 
 const cx = classNames.bind(style);
 
@@ -41,8 +40,6 @@ const ArtistPage = () => {
 
   // artist
 
-  const onDeleteArtistClick = () => setDeletePictureModeOn(true);
-  const onCancelDeleteArtistClick = () => setDeletePictureModeOn(false);
   const onDeleteArtistCallback = () => {
     if (authorId) dispatch(deleteArtistTC(authorId));
     setDeleteArtistModeOn(false);
@@ -74,10 +71,6 @@ const ArtistPage = () => {
       dispatch(getArtistInfoTC(authorId));
     }
   }, [authorId, isInitialized]);
-
-  // useEffect(() =>  return () => dispatch(setArtworksCurrentPagesPortion(
-  //     { artworksCurrentPagesPortion: 1 })),
-  //     [])
 
   return (
     <div className={cx('artistPage')}>
