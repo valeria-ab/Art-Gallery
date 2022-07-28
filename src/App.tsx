@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import {
+  Navigate, Route, Routes, useSearchParams,
+} from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
@@ -16,6 +18,7 @@ import { ArtistResponseType } from './utils/api';
 import { refreshTC, setInitialized, setUserData } from './store/auth-reducer';
 import Gallery from './components/Gallery/Gallery';
 import MainPage from './components/MainPage/MainPage';
+import { Pagination } from './components/Pagination/Pagination';
 
 // @ts-ignore
 const cx = classNames.bind(style);
@@ -28,6 +31,11 @@ const App = () => {
     ));
   };
   const dispatch = useDispatch<AppDispatch>();
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // useEffect(() => {
+  //   dispatch(setUrlParams({ urlParams: Object.fromEntries(searchParams) }));
+  //   dispatch(getCardsTC({ data: searchParams }));
+  // }, [searchParams]);
 
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');

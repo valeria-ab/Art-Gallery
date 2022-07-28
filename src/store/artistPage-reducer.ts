@@ -1,3 +1,4 @@
+import { log } from 'util';
 import {
   AddPaintingToArtistRequestType,
   ArtistResponseType,
@@ -5,7 +6,7 @@ import {
   AuthorPaintingsType, CreateArtistRequestType,
 } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
-import { AppThunk } from './store';
+import { AppThunk, IAppStore } from './store';
 import { setAppStatus } from './app-reducer';
 // eslint-disable-next-line import/no-cycle
 import { getArtistsTC } from './gallery-reducer';
@@ -13,11 +14,11 @@ import { getArtistsTC } from './gallery-reducer';
 export type InitialCardsStateType = {
     artistInfo: ArtistResponseType;
     currentPainting: AuthorPaintingsType;
-    totalPagesCount: number;
-    currentPage: number;
-    portionSize: number;
-    currentPagesPortion: number;
-    // paintings: Array<>
+    artworksTotalPagesCount: number;
+  // artworksCurrentPage: number;
+    artworksPortionSize: number;
+  //    artworksCurrentPagesPortion: number;
+
 };
 
 export const setArtistInfo = (payload: { artistInfo: ArtistResponseType }) => ({
@@ -36,12 +37,17 @@ export const deletePainting = (id: string) => ({
   type: 'ARTIST_PAGE/DELETE-PICTURE',
   id,
 } as const);
-export const setTotalPagesCount = (payload: { totalPagesCount: number }) => ({
+export const setArtworksTotalPagesCount = (payload: { artworksTotalPagesCount: number }) => ({
   type: 'ARTIST_PAGE/SET-TOTAL-PAGES-COUNT',
   payload,
 } as const);
-export const setCurrentPagesPortion = (payload: { currentPagesPortion: number }) => ({
+export const setArtworksCurrentPagesPortion = (payload: {
+  artworksCurrentPagesPortion: number }) => ({
   type: 'ARTIST_PAGE/SET-CURRENT-PAGES-PORTION',
+  payload,
+} as const);
+export const setArtworksCurrentPage = (payload: { artworksCurrentPage: number }) => ({
+  type: 'ARTIST_PAGE/SET-CURRENT-PAGE',
   payload,
 } as const);
 
@@ -50,16 +56,19 @@ type ActionsType =
     | ReturnType<typeof addPainting>
     | ReturnType<typeof deletePainting>
     | ReturnType<typeof setCurrentPainting>
-    | ReturnType<typeof setTotalPagesCount>
-    | ReturnType<typeof setCurrentPagesPortion>
+    | ReturnType<typeof setArtworksTotalPagesCount>
+    | ReturnType<typeof setArtworksCurrentPagesPortion>
+    | ReturnType<typeof setArtworksCurrentPage>
 
 const initialState: InitialCardsStateType = {
   artistInfo: {} as ArtistResponseType,
   currentPainting: {} as AuthorPaintingsType,
-  totalPagesCount: 1000,
-  currentPage: 1,
-  portionSize: 9,
-  currentPagesPortion: 1,
+  artworksTotalPagesCount: 1000,
+  // artworksCurrentPage: 1,
+  artworksPortionSize: 1,
+  // currentPage: 1,
+  // portionSize: 9,
+  // artworksCurrentPagesPortion: 1,
 };
 
 export const artistPageReducer = (
@@ -71,6 +80,7 @@ export const artistPageReducer = (
     case 'ARTIST_PAGE/SET-CURRENT-PAINTING':
     case 'ARTIST_PAGE/SET-TOTAL-PAGES-COUNT':
     case 'ARTIST_PAGE/SET-CURRENT-PAGES-PORTION':
+    case 'ARTIST_PAGE/SET-CURRENT-PAGE':
       return { ...state, ...action.payload };
     case 'ARTIST_PAGE/ADD-PICTURE': {
       const stateCopy = { ...state };
@@ -94,25 +104,39 @@ export const artistPageReducer = (
 
 // thunk
 
-export const getArtistInfoStaticTC = (artistId: string): AppThunk => (dispatch) => {
+export const getArtistInfoStaticTC = (artistId: string): AppThunk => (dispatch,
+  getState: () => IAppStore) => {
   dispatch(setAppStatus({ status: 'loading' }));
+  const { artworksPortionSize } = getState().artistPage;
   artistsAPI
     .getArtistStatic(artistId)
     .then((res) => {
       dispatch(setArtistInfo({ artistInfo: res.data }));
+      dispatch(setArtworksTotalPagesCount({
+        artworksTotalPagesCount: Math.ceil(
+          res.data.paintings.length / artworksPortionSize,
+        ),
+      }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
     });
 };
-export const getArtistInfoTC = (artistId: string): AppThunk => (dispatch) => {
+export const getArtistInfoTC = (artistId: string): AppThunk => (dispatch,
+  getState: () => IAppStore) => {
   dispatch(setAppStatus({ status: 'loading' }));
+  const { artworksPortionSize } = getState().artistPage;
   artistsAPI
     .getArtist(artistId)
     .then((res) => {
       dispatch(setArtistInfo({ artistInfo: res.data }));
+      dispatch(setArtworksTotalPagesCount({
+        artworksTotalPagesCount: Math.ceil(
+          res.data.paintings.length / artworksPortionSize,
+        ),
+      }));
     })
-    .catch((error) => alert(error))
+    .catch((error) => console.log(error))
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
     });

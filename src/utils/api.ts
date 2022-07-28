@@ -24,16 +24,16 @@ const fingerprint = client.getFingerprint().toString();
 privateInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response.data.statusCode === 401) {
-      const refreshToken = Cookies.get('refreshToken');
-      if (refreshToken) {
-        authAPI.refresh({ refreshToken, fingerprint })
-          .then((res) => {
-            Cookies.set('accessToken', res.data.accessToken, { path: 'http://localhost:3000' });
-            Cookies.set('refreshToken', res.data.refreshToken, { path: 'http://localhost:3000' });
-          });
-      }
-    }
+    // if (error.response.data.statusCode === 401) {
+    //   const refreshToken = Cookies.get('refreshToken');
+    //   if (refreshToken) {
+    //     authAPI.refresh({ refreshToken, fingerprint })
+    //       .then((res) => {
+    //         Cookies.set('accessToken', res.data.accessToken, { path: 'http://localhost:3000' });
+    //         Cookies.set('refreshToken', res.data.refreshToken, { path: 'http://localhost:3000' });
+    //       });
+    //   }
+    // }
     // return Promise.reject(error);
   },
 );
@@ -202,7 +202,7 @@ export const artistsAPI = {
             AxiosResponse<ArtistResponseType>>(`artists${id}`, { payload });
   },
   deleteArtist(id: string) {
-    return privateInstance.delete<AxiosResponse<{ _id: string }>>(`artists${id}`);
+    return privateInstance.delete<AxiosResponse<{ _id: string }>>(`artists/${id}`);
   },
   updateMainPainting(paintingId: string, authorId: string) {
     return privateInstance.patch<AxiosResponse<UpdateMainPaintingResponseType>>(

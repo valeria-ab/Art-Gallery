@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { AppDispatch, IAppStore } from '../../store/store';
 import { getArtistsStaticTC, getArtistsTC, setCurrentPagesPortion } from '../../store/gallery-reducer';
 import { ArtistResponseType } from '../../utils/api';
-import { RequestStatusType } from '../../store/app-reducer';
 import Gallery from '../Gallery/Gallery';
 
 // eslint-disable-next-line react/display-name
@@ -18,7 +17,6 @@ const MainPage = () => {
   const currentPagesPortion = useSelector<IAppStore, number>(
     (state) => state.gallery.currentPagesPortion,
   );
-
   const accessToken = useSelector<IAppStore, string>(
     (state) => state.auth.accessToken,
   );
@@ -28,7 +26,6 @@ const MainPage = () => {
   const artistsCurrentPortion = artists.slice(
     portionSize * currentPagesPortion - portionSize, portionSize * currentPagesPortion,
   );
-  console.log(artistsCurrentPortion);
 
   const [artistsPortion, setArtistsPortion] = useState([] as ArtistResponseType[]);
 
@@ -37,16 +34,16 @@ const MainPage = () => {
   }, [artists]);
 
   useEffect(() => {
+    dispatch(setCurrentPagesPortion({ currentPagesPortion: 1 }));
+  }, []);
+
+  useEffect(() => {
     setArtistsPortion([...artistsPortion, ...artistsCurrentPortion]);
   }, [portionSize, currentPagesPortion]);
 
   const onLoadMore = () => {
     dispatch(setCurrentPagesPortion({ currentPagesPortion: currentPagesPortion + 1 }));
   };
-
-  // const loadingStatus = useSelector<IAppStore, RequestStatusType>(
-  //   (state) => state.app.status,
-  // );
 
   useEffect(() => {
     if (isInitialized) {

@@ -39,8 +39,8 @@ export const Authorization = ({
 }: AuthPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
-  const [username, setUsername] = useState('test@test.test');
-  const [password, setPassword] = useState('test123@TEST');
+  const [username, setUsername] = useState('RapGod@mail.ru');
+  const [password, setPassword] = useState('RapGod123');
   // console.log('user: test@test.test, pass: test123@TEST');
   const [emailError, setEmailError] = useState<null | string>(null);
   const [passError, setPassError] = useState<null | string>(null);

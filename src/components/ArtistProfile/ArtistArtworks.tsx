@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useContext, useEffect, useMemo, useState,
+} from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
@@ -7,7 +9,8 @@ import { AppDispatch, IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './ArtistPage.scss';
 import { ThemeContext } from '../../contexts/ThemeContext';
-import { setCurrentPagesPortion } from '../../store/artistPage-reducer';
+import { setArtworksCurrentPage, setArtworksCurrentPagesPortion } from '../../store/artistPage-reducer';
+import { Pagination } from '../Pagination/Pagination';
 
 const cx = classNames.bind(style);
 
@@ -16,6 +19,8 @@ type PropsType = {
     // addEditPictureModeOn: boolean;
     onDeletePictureClick: (paintingId: string) => void;
 }
+
+const PageSize = 10;
 
 const ArtistArtworks = ({
   onAddEditPictureClick,
@@ -27,31 +32,46 @@ const ArtistArtworks = ({
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
     (state) => state.artistPage.artistInfo.paintings,
   );
+  const [currentPagesPortion, setCurrentPagesPortion] = useState(1);
 
-  const portionSize = useSelector<IAppStore, number>(
-    (state) => state.artistPage.portionSize,
-  );
-  const currentPagesPortion = useSelector<IAppStore, number>(
-    (state) => state.artistPage.currentPagesPortion,
-  );
+  const [artworksPortion, setArtworksPortion] = useState([] as Array<AuthorPaintingsType>);
 
-  const paintingsCurrentPortion = artworks.slice(
-    portionSize * currentPagesPortion - portionSize, portionSize * currentPagesPortion,
+  const artworksPortionSize = useSelector<IAppStore, number>(
+    (state) => state.artistPage.artworksPortionSize,
   );
 
-  const [paintingsPortion, setPaintingsPortion] = useState([] as AuthorPaintingsType[]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return artworks.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage]);
+
+  // const artworksCurrentPagesPortion = useSelector<IAppStore, number>(
+  //   (state) => state.artistPage.artworksCurrentPagesPortion,
+  // );
+  // const artworksCurrentPage = useSelector<IAppStore, number>(
+  //   (state) => state.artistPage.artworksCurrentPage,
+  // );
+
+  const accessToken = useSelector<IAppStore, string>(
+    (state) => state.auth.accessToken,
+  );
+
+  const artworksCurrentPortion = artworks && artworks.slice(
+    artworksPortionSize * currentPagesPortion - artworksPortionSize,
+    artworksPortionSize * currentPagesPortion,
+  );
+  console.log(artworksCurrentPortion);
 
   useEffect(() => {
-    setPaintingsPortion(paintingsCurrentPortion);
-  }, [artworks]);
+    setArtworksPortion(artworksCurrentPortion);
+  }, [artworks, currentPage, currentPagesPortion]);
 
   useEffect(() => {
-    setPaintingsPortion([...paintingsPortion, ...paintingsCurrentPortion]);
-  }, [portionSize, currentPagesPortion]);
-
-  const onLoadMore = () => {
-    dispatch(setCurrentPagesPortion({ currentPagesPortion: currentPagesPortion + 1 }));
-  };
+    dispatch(setArtworksCurrentPagesPortion({ artworksCurrentPagesPortion: 1 }));
+  }, []);
 
   return (
     <div className={cx('artistArtworks')}>
@@ -63,10 +83,21 @@ const ArtistArtworks = ({
         Artworks
       </div>
       <Gallery
-        artworks={artworks}
+        artworks={artworksPortion}
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
-        onLoadMore={onLoadMore}
+      />
+      {/* <Pagination */}
+      {/*  currentPagesPortion={currentPagesPortion} */}
+      {/*  setCurrentPage={setCurrentPage} */}
+      {/*  setCurrentPagesPortion={setCurrentPagesPortion} */}
+      {/* /> */}
+      <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={artworks.length}
+        pageSize={PageSize}
+        onPageChange={(page: number) => setCurrentPage(page)}
       />
     </div>
   );

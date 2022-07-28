@@ -6,7 +6,7 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 import s from './Gallery.module.scss';
 import PhotoItem from '../PhotoItem/PhotoItem';
 import {
-  getArtistsStaticTC, getArtistsTC, setCurrentPagesPortion, setPagesPortion,
+  getArtistsStaticTC, getArtistsTC, setCurrentPagesPortion,
 } from '../../store/gallery-reducer';
 import { Button } from '../Button/Button';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
@@ -16,7 +16,7 @@ type ArtistArtworksPropsType = {
     artworks?: Array<AuthorPaintingsType>;
     onAddEditPictureClick?: (mode: 'edit' | 'add') => void;
     onDeletePictureClick?: (paintingId: string) => void;
-    onLoadMore: () => void;
+    onLoadMore?: () => void;
 };
 
 // eslint-disable-next-line react/display-name
@@ -94,7 +94,7 @@ const Gallery = React.memo(({
           />
         ))}
       </div>
-      {currentPagesPortion !== Math.ceil(totalPagesCount / portionSize) && (
+      {artists && currentPagesPortion !== Math.ceil(totalPagesCount / portionSize) && (
       <Button
         value="load more"
         theme={theme}

@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 import ArtistProfile from './ArtistProfile';
 import {
   deleteArtistTC, deletePaintingTC,
   getArtistInfoStaticTC,
-  getArtistInfoTC,
+  getArtistInfoTC, setArtworksCurrentPage, setArtworksCurrentPagesPortion,
 } from '../../store/artistPage-reducer';
 import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
 // @ts-ignore
@@ -17,6 +17,7 @@ import { AddEditPicture } from '../modals/AddEditPicture/AddEditPicture';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 import { DeleteModal } from '../modals/delete/DeleteModal';
 import { ThemeContext } from '../../contexts/ThemeContext';
+import { setCurrentPagesPortion } from '../../store/gallery-reducer';
 
 const cx = classNames.bind(style);
 
@@ -24,6 +25,7 @@ const ArtistPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { authorId } = useParams();
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const navigate = useNavigate();
   const artistInfo = useSelector<IAppStore, ArtistResponseType>(
     (state) => state.artistPage.artistInfo,
   );
@@ -41,7 +43,11 @@ const ArtistPage = () => {
 
   const onDeleteArtistClick = () => setDeletePictureModeOn(true);
   const onCancelDeleteArtistClick = () => setDeletePictureModeOn(false);
-  const onDeleteArtistCallback = () => authorId && dispatch(deleteArtistTC(authorId));
+  const onDeleteArtistCallback = () => {
+    if (authorId) dispatch(deleteArtistTC(authorId));
+    setDeleteArtistModeOn(false);
+    navigate('/artists');
+  };
 
   // picture
 
@@ -68,6 +74,10 @@ const ArtistPage = () => {
       dispatch(getArtistInfoTC(authorId));
     }
   }, [authorId, isInitialized]);
+
+  // useEffect(() =>  return () => dispatch(setArtworksCurrentPagesPortion(
+  //     { artworksCurrentPagesPortion: 1 })),
+  //     [])
 
   return (
     <div className={cx('artistPage')}>
