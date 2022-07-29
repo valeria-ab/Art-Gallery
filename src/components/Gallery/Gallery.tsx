@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
 import { ThemeContext } from '../../contexts/ThemeContext';
-import s from './Gallery.module.scss';
+import style from './style.scss';
 import PhotoItem from '../PhotoItem/PhotoItem';
-import {
-  getArtistsStaticTC, getArtistsTC, setCurrentPagesPortion,
-} from '../../store/gallery-reducer';
 import { Button } from '../Button/Button';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
+import settingsIconLight from '../../assets/mainPageFilters/settingsIconLight.png';
+import searchIconLight from '../../assets/mainPageFilters/searchIconLight.png';
+
+const cx = classNames.bind(style);
 
 type ArtistArtworksPropsType = {
     artists?: Array<ArtistResponseType>;
@@ -44,9 +46,15 @@ const Gallery = React.memo(({
   const [isAddArtistMode, setAddArtistMode] = useState(false);
 
   return (
-    <div className={s.main}>
+    <div className={cx('main')}>
       {isAddArtistMode && <AddEditArtist onCancelCallback={setAddArtistMode} />}
       {isInitialized && artists && (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+
+      }}
+      >
         <Button
           value="add artist"
           type="outlined"
@@ -54,6 +62,47 @@ const Gallery = React.memo(({
           width="100px"
           callback={() => setAddArtistMode(true)}
         />
+        <div style={{
+          display: 'flex',
+          width: '400px',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        >
+          <div style={{
+            width: '344px',
+            height: '32px',
+            border: '1px solid',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          >
+            <div style={{ padding: '8px 20px' }}>
+              <img
+                src={searchIconLight}
+                alt="searchIconLight"
+                width="16px"
+                height="16px"
+              />
+            </div>
+
+            <input style={{
+              outline: 'none', border: 'none', width: '288px', height: '31px',
+            }}
+            />
+          </div>
+          <div style={{ width: '28px', height: '28px', backgroundColor: '' }}>
+            <img
+              src={settingsIconLight}
+              alt="settingsIconLight"
+              style={{
+                width: '15.91px',
+                height: '13px',
+              }}
+            />
+          </div>
+        </div>
+      </div>
       )}
       {isInitialized && artworks && (
         <Button
@@ -65,7 +114,7 @@ const Gallery = React.memo(({
         />
       )}
 
-      <div className={s.mainContainer}>
+      <div className={cx('mainContainer')}>
         {artists && artists.map((a) => (
           <PhotoItem
             key={a._id}
