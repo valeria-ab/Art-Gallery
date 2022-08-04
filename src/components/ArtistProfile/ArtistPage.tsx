@@ -26,10 +26,10 @@ const ArtistPage = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const artistInfo = useSelector<IAppStore, ArtistResponseType>(
-    (state) => state.artistPage.artistInfo,
+    ({ artistPage }) => artistPage.artistInfo,
   );
   const isInitialized = useSelector<IAppStore, boolean>(
-    (state) => state.auth.isInitialized,
+    ({ auth }) => auth.isInitialized,
   );
   const [addEditPictureModeOn, setAddEditPictureModeOn] = useState(false);
   const [deletePictureModeOn, setDeletePictureModeOn] = useState(false);
@@ -38,15 +38,11 @@ const ArtistPage = () => {
   const [paintingId, setPaintingId] = useState<string>();
   const [addEditPictureMode, setAddEditPictureMode] = useState<'edit' | 'add'>('add');
 
-  // artist
-
   const onDeleteArtistCallback = () => {
     if (authorId) dispatch(deleteArtistTC(authorId));
-    setDeleteArtistModeOn(false);
+    // setDeleteArtistModeOn(false);
     navigate('/artists');
   };
-
-  // picture
 
   const onDeletePaintingCallback = () => {
     if (authorId && paintingId) dispatch(deletePaintingTC(authorId, paintingId));

@@ -39,9 +39,7 @@ const PhotoItem = ({
   const [isMenuOpened, setMenuOpened] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { authorId } = useParams();
-  const baseURL = useSelector<IAppStore, string>(
-    (state) => state.gallery.baseURL,
-  );
+
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
@@ -145,7 +143,7 @@ const PhotoItem = ({
           className={cx('photoItem__img', {
             'photoItem__img-active': hover && onHover === 'artists',
           })}
-          src={picture === 'no image' ? noImagePlug : `${baseURL}${picture}`}
+          src={picture === 'no image' ? noImagePlug : `${process.env.REACT_APP_BASE_URL}${picture}`}
           alt="mainPicture"
         />
         <div className={cx('hoverButton', {

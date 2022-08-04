@@ -172,8 +172,8 @@ export const artistsAPI = {
   },
 
   // requests for authorized user
-  getArtists() {
-    return privateInstance.get<AxiosResponse<Array<ArtistResponseType>>>('artists');
+  getArtists(payload?: {data:URLSearchParams}) {
+    return privateInstance.get<AxiosResponse<Array<ArtistResponseType>>>(payload ? `artists?${payload.data}` : 'artists');
   },
   getArtist(id: string) {
     return privateInstance.get<ArtistResponseType>(`artists/${id}`);
@@ -247,7 +247,7 @@ export const genresAPI = {
 
   // requests for authorized user
   getGenres() {
-    return privateInstance.get<AxiosResponse<Array<GenreResponseType>>>('genres');
+    return privateInstance.get<Array<GenreResponseType>>('genres');
   },
   getSpecifiedGenreById(id: string) {
     return privateInstance.get<AxiosResponse<GenreResponseType>>(`genres/${id}`);

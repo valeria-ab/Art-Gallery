@@ -1,20 +1,18 @@
-import React, {
-  useContext, useEffect, useMemo, useState,
-} from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
+import type { AuthorPaintingsType } from '../../utils/api';
 import Gallery from '../Gallery/Gallery';
-import { AppDispatch, IAppStore } from '../../store/store';
+import { IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './ArtistPage.scss';
 import { ThemeContext } from '../../contexts/ThemeContext';
-import { setArtworksCurrentPage, setArtworksCurrentPagesPortion } from '../../store/artistPage-reducer';
 import { Pagination } from '../Pagination/Pagination';
+import { PageSize } from '../../constants';
 
 const cx = classNames.bind(style);
 
-type PropsType = {
+type ArtistArtworksPropsType = {
     onAddEditPictureClick: (mode: 'edit' | 'add') => void;
     onDeletePictureClick: (paintingId: string) => void;
 }
@@ -22,13 +20,12 @@ type PropsType = {
 const ArtistArtworks = ({
   onAddEditPictureClick,
   onDeletePictureClick,
-}: PropsType) => {
+}: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
-    (state) => state.artistPage.artistInfo.paintings,
+    ({ artistPage }) => artistPage.artistInfo.paintings,
   );
 
-  const PageSize = 2;
   const [currentPage, setCurrentPage] = useState(1);
 
   const currentTableData = useMemo(() => {
@@ -53,7 +50,7 @@ const ArtistArtworks = ({
       />
       <Pagination
         currentPage={currentPage}
-        totalCount={artworks && artworks.length}
+        totalCount={artworks?.length}
         pageSize={PageSize}
         onPageChange={(page: number) => setCurrentPage(page)}
         siblingCount={1}

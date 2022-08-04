@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Navigate, Route, Routes, useSearchParams,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 // @ts-ignore
 import style from './App.scss';
@@ -11,14 +9,9 @@ import Header from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { ThemeContext, themes } from './contexts/ThemeContext';
 import ArtistPage from './components/ArtistProfile/ArtistPage';
-import { AppDispatch, IAppStore } from './store/store';
-import { RequestStatusType } from './store/app-reducer';
-import { Loader } from './components/loader/Loader';
-import { ArtistResponseType } from './utils/api';
-import { refreshTC, setInitialized, setUserData } from './store/auth-reducer';
-import Gallery from './components/Gallery/Gallery';
+import { AppDispatch } from './store/store';
+import { setInitialized, setUserData } from './store/auth-reducer';
 import MainPage from './components/MainPage/MainPage';
-import { Pagination } from './components/Pagination/Pagination';
 
 // @ts-ignore
 const cx = classNames.bind(style);

@@ -31,9 +31,7 @@ export const AddEditPicture = ({
   const currentPainting = useSelector<IAppStore, AuthorPaintingsType>(
     (state) => state.artistPage.currentPainting,
   );
-  const baseURL = useSelector<IAppStore, string>(
-    (state) => state.gallery.baseURL,
-  );
+
   const [name, setName] = useState(currentPainting.name || '');
   const [yearOfCreation, setYear] = useState(currentPainting.yearOfCreation || '');
   const [drag, setDrag] = useState(false);
@@ -98,7 +96,7 @@ export const AddEditPicture = ({
   };
 
   useEffect(() => {
-    if (currentPainting.image) setSrc(`${baseURL}${currentPainting.image.src}`);
+    if (currentPainting.image) setSrc(`${process.env.REACT_APP_BASE_URL}${currentPainting.image.src}`);
 
     // return () => dispatch(setCurrentPainting({
     //   currentPainting: {} as AuthorPaintingsType,

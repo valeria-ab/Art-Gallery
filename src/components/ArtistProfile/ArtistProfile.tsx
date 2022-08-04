@@ -18,10 +18,10 @@ import { Button } from '../Button/Button';
 const cx = classNames.bind(style);
 
 type PropsType = {
-    artistInfo: ArtistResponseType
+    artistInfo: ArtistResponseType;
     setDeleteArtistModeOn: (value: boolean) => void;
     setEditArtistModeOn: (value: boolean) => void;
-    deleteArtistModeOn: boolean
+    deleteArtistModeOn: boolean;
 }
 
 const ArtistProfile = (props: PropsType) => {
@@ -33,9 +33,6 @@ const ArtistProfile = (props: PropsType) => {
   } = props;
 
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const baseURL = useSelector<IAppStore, string>(
-    (state) => state.gallery.baseURL,
-  );
 
   return (
     <div className={cx('artistPage')}>
@@ -69,18 +66,15 @@ const ArtistProfile = (props: PropsType) => {
         <div className={cx('artistProfile')}>
           <div className={cx('mainPhoto')}>
             <img
-                // src="https://internship-front.framework.team/images/62a32e09269fa5c416c53d91/original.jpg"
-              src={`${baseURL}${artistInfo.avatar.src2x}`}
+              src={`${process.env.REACT_APP_BASE_URL}${artistInfo.avatar.src2x}`}
               alt="artist_picture"
               className={cx('profilePicture')}
             />
-
             <div className={cx('infoBlock', {
               infoBlock__light: theme === 'light',
               infoBlock__dark: theme === 'dark',
             })}
             >
-
               <div className={cx('artistInfo')}>
                 <span className={cx('infoBlock__padding')}>
                   {artistInfo.yearsOfLife}

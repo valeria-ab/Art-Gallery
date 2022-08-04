@@ -44,9 +44,7 @@ export const AddEditArtist = ({
   const [selectedGenres, setSelectedGenres] = useState<Array<GenreResponseType>>([]);
   const [drag, setDrag] = useState(false);
   const [image, setImage] = useState<File>();
-  const baseURL = useSelector<IAppStore, string>(
-    (state) => state.gallery.baseURL,
-  );
+
   const [src, setSrc] = useState<string>();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const inRef = useRef<HTMLInputElement>(null);
@@ -112,7 +110,7 @@ export const AddEditArtist = ({
   };
 
   useEffect(() => {
-    if (avatar) setSrc(`${baseURL}${avatar}`);
+    if (avatar) setSrc(`${process.env.REACT_APP_BASE_URL}${avatar}`);
   }, [avatar]);
 
   useEffect(() => {

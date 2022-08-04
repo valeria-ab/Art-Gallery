@@ -1,17 +1,29 @@
 // eslint-disable-next-line import/no-cycle
-import { ArtistResponseType, artistsAPI } from '../utils/api';
+import {
+  ArtistResponseType, artistsAPI, GenreResponseType, genresAPI,
+} from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk, IAppStore } from './store';
 import { setAppStatus } from './app-reducer';
 // eslint-disable-next-line import/no-cycle
 
-export type InitialCardsStateType = {
-  baseURL: string;
-  artists: Array<ArtistResponseType>;
-  totalPagesCount: number;
-  currentPage: number;
-  portionSize: number;
-  currentPagesPortion: number;
+export type UrlParamsType = {
+    name?: string;
+    sortBy?: string;
+    orderBy?: 'asc' | 'desc';
+    perPage?: string;
+    genres?: string;
+    pageNumber?: string;
+}
+
+export type InitialGalleryStateType = {
+    artists: Array<ArtistResponseType>;
+    totalPagesCount: number;
+    currentPage: number;
+    portionSize: number;
+    currentPagesPortion: number;
+    urlParams: UrlParamsType;
+    genres: GenreResponseType[];
 };
 
 export const setArtists = (payload: { artists: Array<ArtistResponseType> }) => ({
@@ -22,16 +34,22 @@ export const createArtist = (artist: ArtistResponseType) => ({
   type: 'GALLERY/CREATE-ARTISTS',
   artist,
 } as const);
-export const setTotalPagesCount = (payload: {totalPagesCount: number}) => ({
+export const setGenres = (payload: { genres: GenreResponseType[] }) => ({
+  type: 'GALLERY/SET-GENRES',
+  payload,
+} as const);
+export const setTotalPagesCount = (payload: { totalPagesCount: number }) => ({
   type: 'GALLERY/SET-TOTAL-PAGES-COUNT',
   payload,
 } as const);
-const setPagesPortion = (payload: {pagesPortion: number}) => ({
-  type: 'GALLERY/SET-CURRENT-PAGE',
+
+export const setCurrentPagesPortion = (payload: { currentPagesPortion: number }) => ({
+  type: 'GALLERY/SET-CURRENT-PAGES-PORTION',
   payload,
 } as const);
-export const setCurrentPagesPortion = (payload: {currentPagesPortion: number}) => ({
-  type: 'GALLERY/SET-CURRENT-PAGES-PORTION',
+
+export const setUrlParams = (payload: { urlParams: UrlParamsType }) => ({
+  type: 'GALLERY/SET-URL-PARAMS',
   payload,
 } as const);
 
@@ -39,24 +57,29 @@ type ActionsType = ReturnType<typeof setArtists>
     | ReturnType<typeof createArtist>
     | ReturnType<typeof setTotalPagesCount>
     | ReturnType<typeof setCurrentPagesPortion>
+    | ReturnType<typeof setUrlParams>
+    | ReturnType<typeof setGenres>
 
-const initialState: InitialCardsStateType = {
+const initialState: InitialGalleryStateType = {
   artists: [],
-  baseURL: 'https://internship-front.framework.team',
   totalPagesCount: 1000,
   currentPage: 1,
   portionSize: 9,
   currentPagesPortion: 1,
+  urlParams: {},
+  genres: [],
 };
 
 export const galleryReducer = (
-  state: InitialCardsStateType = initialState,
+  state: InitialGalleryStateType = initialState,
   action: ActionsType,
-): InitialCardsStateType => {
+): InitialGalleryStateType => {
   switch (action.type) {
     case 'GALLERY/SET-ARTISTS':
     case 'GALLERY/SET-TOTAL-PAGES-COUNT':
     case 'GALLERY/SET-CURRENT-PAGES-PORTION':
+    case 'GALLERY/SET-URL-PARAMS':
+    case 'GALLERY/SET-GENRES':
       return { ...state, ...action.payload };
     case 'GALLERY/CREATE-ARTISTS': {
       const stateCopy = { ...state };
@@ -87,38 +110,40 @@ export const getArtistsStaticTC = (): AppThunk => (dispatch) => {
       dispatch(setAppStatus({ status: 'idle' }));
     });
 };
-export const getArtistsTC = (): AppThunk => (dispatch, getState: () => IAppStore) => {
+export const getArtistsTC = (payload?: { data: URLSearchParams }): AppThunk => (
+  dispatch, getState: () => IAppStore,
+) => {
   dispatch(setAppStatus({ status: 'loading' }));
-  // const {
-  //   accessToken,
-  // } = getState().auth;
-  // privateInstance.interceptors.response.use((response) => response,
-  //   // eslint-disable-next-line consistent-return
-  //   async (error) => {
-  //     if (error.response.data.statusCode === 401) {
-  //       // const newAccessToken = dispatch(refreshTC());
-  //       await dispatch(refreshTC());
-  //     } else return Promise.reject(error);
-  //   });
-  // console.log(accessToken);
   artistsAPI
-    .getArtists()
+    .getArtists(payload && payload)
     .then((res) => {
-      // console.log(accessToken);
-      // debugger;
       dispatch(setArtists({ artists: res.data.data }));
       dispatch(setTotalPagesCount({ totalPagesCount: res.data.data.length }));
     })
     .catch((err) => {
-      // if (err.response.data.statusCode === 401) {
-      //   dispatch(refreshTC());
-      // }
+      console.log(err);
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
     });
 };
 
+export const getGenresTC = (): AppThunk => (
+  dispatch, getState: () => IAppStore,
+) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  genresAPI
+    .getGenres()
+    .then((res) => {
+      dispatch(setGenres({ genres: res.data }));
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};
 export const getArtistPageTC = (artistId: string): AppThunk => (dispatch) => {
   dispatch(setAppStatus({ status: 'loading' }));
   artistsAPI
@@ -132,7 +157,7 @@ export const getArtistPageTC = (artistId: string): AppThunk => (dispatch) => {
 };
 // CreateArtistRequestType
 export const createArtistTC = (payload: any):
-    AppThunk => (dispatch) => {
+        AppThunk => (dispatch) => {
   dispatch(setAppStatus({ status: 'loading' }));
   artistsAPI
     .createArtist(payload)

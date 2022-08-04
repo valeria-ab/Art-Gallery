@@ -8,7 +8,7 @@ type ButtonPropsType = {
     value: string;
     theme: string;
     type: 'filled' | 'outlined';
-    width: string;
+    width?: string;
     callback?: () => void;
 };
 export const Button = ({
@@ -23,7 +23,6 @@ export const Button = ({
     })}
     style={{ width }}
     onClick={callback}
-    onKeyDown={() => console.log('on click')}
   >
     <span
       className={cx('value', {

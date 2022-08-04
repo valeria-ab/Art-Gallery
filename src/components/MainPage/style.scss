@@ -1,0 +1,103 @@
+@import "./src/common/styles/sass/baseColors";
+@import "./src/common/styles/CommonStyles";
+
+.filtersMenu {
+  min-height: 100vh;
+  width: 500px;
+  position: absolute;
+  z-index: 200000000;
+  right: 0;
+  top: 0;
+  background-color: rgb(255, 255, 255);
+  padding: 30px;
+
+
+}
+.filters_block {
+  display: flex;
+  min-height: 70vh;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 150px;
+}
+
+.filter_title_button {
+  @include h4Heading;
+margin-bottom: 20px;
+  color: $primaryBlack;
+}
+.filter_buttons {
+  padding: 0;
+  border: none;
+  //font: inherit;
+  //color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+.filter_genreItem {
+  @include paragraphSmallLight12;
+  padding: 10px;
+  width: 50%;
+  &_chosen,
+  &:hover {
+    color: $primaryBlack;
+    @include paragraphSmallMedium12;
+  }
+
+}
+.sortByButtons {
+  @include paragraphSmallLight12;
+}
+.buttons_wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.filterButtons_wrapper {
+  display: flex;
+  width: 400px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchContainer {
+  width: 344px;
+  height: 32px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
+
+  &_dark {
+    background-color: $secondaryBlack;
+  }
+
+  &_light {
+    background-color: $primaryWhite;
+  }
+
+  .searchIconContainer {
+    padding: 6px 20px;
+
+    .searchIcon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &_input {
+    outline: none;
+    border: none;
+    width: 288px;
+    height: 31px;
+
+    //&_light {
+    //  background-color: $primaryWhite;
+    //}
+    //&_dark {
+    //  background-color: $secondaryBlack;
+    //}
+  }
+
+}
