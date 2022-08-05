@@ -12,7 +12,7 @@ export type UrlParamsType = {
     sortBy?: string;
     orderBy?: 'asc' | 'desc';
     perPage?: string;
-    genres?: string;
+    genres?: string[];
     pageNumber?: string;
 }
 
@@ -64,7 +64,7 @@ const initialState: InitialGalleryStateType = {
   artists: [],
   totalPagesCount: 1000,
   currentPage: 1,
-  portionSize: 9,
+  portionSize: 6,
   currentPagesPortion: 1,
   urlParams: {},
   genres: [],

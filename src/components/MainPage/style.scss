@@ -2,52 +2,99 @@
 @import "./src/common/styles/CommonStyles";
 
 .filtersMenu {
-  min-height: 100vh;
+  min-height: 100%;
   width: 500px;
   position: absolute;
   z-index: 200000000;
   right: 0;
   top: 0;
-  background-color: rgb(255, 255, 255);
-  padding: 30px;
+  padding: 60px 80px 60px 40px;
 
+  &_light {
+    background-color: $primaryWhite;
+  }
 
+  &_dark {
+    background-color: $primaryBlack;
+  }
 }
+
 .filters_block {
   display: flex;
   min-height: 70vh;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 150px;
+  margin-top: 120px;
+}
+
+.filter_title_buttons_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin-bottom: 20px;
 }
 
 .filter_title_button {
   @include h4Heading;
-margin-bottom: 20px;
-  color: $primaryBlack;
+
+  &_light {
+    color: $primaryBlack;
+  }
+
+  &_dark {
+    color: $primaryWhite;
+  }
 }
+
 .filter_buttons {
   padding: 0;
   border: none;
-  //font: inherit;
-  //color: inherit;
   background-color: transparent;
   cursor: pointer;
 }
+
+.inherit {
+  color: inherit;
+}
+
 .filter_genreItem {
   @include paragraphSmallLight12;
   padding: 10px;
   width: 50%;
-  &_chosen,
-  &:hover {
-    color: $primaryBlack;
-    @include paragraphSmallMedium12;
+
+  &_dark {
+    color: $primaryLightGray;
+
+    &_chosen {
+      @include paragraphSmallMedium12;
+      color: $accentGold;
+    }
+
+    &:hover {
+      color: $primaryWhite;
+    }
   }
 
+  &_light {
+    color: $primaryDarkGray;
+
+    &_chosen {
+      color: $primaryBlack;
+      @include paragraphSmallMedium12;
+    }
+
+    &:hover {
+      color: $primaryBlack;
+    }
+  }
 }
+
 .sortByButtons {
-  @include paragraphSmallLight12;
+  padding: 0;
+  width: auto;
 }
+
 .buttons_wrapper {
   display: flex;
   justify-content: space-between;
@@ -91,13 +138,21 @@ margin-bottom: 20px;
     border: none;
     width: 288px;
     height: 31px;
-
-    //&_light {
-    //  background-color: $primaryWhite;
-    //}
-    //&_dark {
-    //  background-color: $secondaryBlack;
-    //}
   }
 
+}
+
+.bottomButtonsBlock {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.genresList {
+  display: flex;
+  flex-wrap: wrap;
+}
+.settingsIcon {
+  width: 28px;
+  height: 28px;
 }

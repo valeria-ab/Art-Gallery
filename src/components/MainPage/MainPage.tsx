@@ -18,7 +18,12 @@ import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 import { Button } from '../Button/Button';
 import { ThemeContext, themes } from '../../contexts/ThemeContext';
 import searchIconLight from '../../assets/mainPageFilters/searchIconLight.png';
+import cancelLightMode from '../../assets/mainPageFilters/cancelLightMode.png';
+import cancelDarkMode from '../../assets/mainPageFilters/cancelDarkMode.png';
+import plusIconLight from '../../assets/mainPageFilters/plusIconLight.png';
+import plusIconDark from '../../assets/mainPageFilters/plusIconDark.png';
 import settingsIconLight from '../../assets/mainPageFilters/settingsIconLight.png';
+import settingsIconDark from '../../assets/mainPageFilters/settingsIconDark.png';
 import useDebounce from '../../hooks/useDebounce';
 
 const cx = classNames.bind(style);
@@ -33,7 +38,6 @@ const MainPage = () => {
     dispatch(setUrlParams({ urlParams: Object.fromEntries(searchParams) }));
     dispatch(getArtistsTC({ data: searchParams }));
   }, [searchParams]);
-
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized, shallowEqual,
   );
@@ -52,9 +56,9 @@ const MainPage = () => {
   const [name, setName] = useState('');
 
   const [artistsPortion, setArtistsPortion] = useState([] as ArtistResponseType[]);
-  const [isSettingsMode, setSettingsMode] = useState(true);
-  const [chosenGenres, setChosenGenres] = useState<string[]>([]);
-  const [order, setOrder] = useState<'asc' | 'desc'>();
+  const [isSettingsMode, setSettingsMode] = useState(false);
+  const [chosenGenres, setChosenGenres] = useState<string[]>(Array.from(searchParams.getAll('genres')));
+  const [order, setOrder] = useState<string| null>(searchParams.get('orderBy'));
   const prevParams = Object.fromEntries(searchParams);
 
   const [isGenresFiltersOpened, setGenresFiltersOpened] = useState(false);
@@ -85,6 +89,11 @@ const MainPage = () => {
         genres: chosenGenres,
       });
     }
+  };
+  const onClear = () => {
+    setChosenGenres([]);
+    setOrder(null);
+    setSearchParams({});
   };
 
   const onLoadMore = () => {
@@ -163,20 +172,19 @@ const MainPage = () => {
                 onKeyPress={onEnterPressHandler}
               />
             </div>
-            <div style={{ width: '28px', height: '28px', backgroundColor: '' }}>
+            <div className={cx('settingsIcon')}>
               <button
+                className={cx('filter_buttons')}
                 type="button"
                 onClick={() => {
                   setSettingsMode(!isSettingsMode);
                 }}
               >
                 <img
-                  src={settingsIconLight}
+                  src={theme === 'light' ? settingsIconLight : settingsIconDark}
                   alt="settingsIconLight"
-                  style={{
-                    width: '16px',
-                    height: '13px',
-                  }}
+                  width="16px"
+                  height="13px"
                 />
               </button>
 
@@ -185,37 +193,67 @@ const MainPage = () => {
         </div>
       )}
       {isSettingsMode && (
-
-        <div className={cx('filtersMenu')}>
+        <div className={cx('filtersMenu', `filtersMenu_${theme}`)}>
           <button
+            style={{ float: 'right' }}
+            className={cx('filter_buttons')}
             type="button"
             onClick={() => setSettingsMode(!isSettingsMode)}
           >
-            x
+            <img
+              width="16px"
+              height="16px"
+              src={theme === themes.light
+                ? cancelLightMode
+                : cancelDarkMode}
+              alt="cancel"
+            />
           </button>
 
           <div className={cx('filters_block')}>
             <div>
-
-              <div>
+              <div className={cx('filter_title_buttons_wrapper')}>
                 <button
                   type="button"
-                  className={cx('filter_title_button', 'filter_buttons')}
+                  className={cx('filter_title_button', 'filter_buttons', {
+                    filter_title_button_light: theme === 'light',
+                    filter_title_button_dark: theme === 'dark',
+                  })}
                   onClick={() => setGenresFiltersOpened(!isGenresFiltersOpened)}
                 >
                   GENRES
+                  {chosenGenres.length > 0 && (
+                  <span>
+                    (
+                    {chosenGenres.length}
+                    )
+                  </span>
+                  )}
+                </button>
+                <button
+                  className={cx('filter_buttons')}
+                  type="button"
+                  onClick={() => setGenresFiltersOpened(!isGenresFiltersOpened)}
+                >
+                  <img
+                    width="16px"
+                    height="16px"
+                    src={theme === themes.light
+                      ? plusIconLight
+                      : plusIconDark}
+                    alt="openGenres"
+                  />
                 </button>
               </div>
               {isGenresFiltersOpened && (
-                <div style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                }}
-                >
+                <div className={cx('genresList')}>
                   {genres.map((genre) => (
                     <div
                       className={cx('filter_genreItem', {
-                        filter_genreItem_chosen: !!chosenGenres.find((cg) => cg === genre._id),
+                        filter_genreItem_dark: theme === 'dark',
+                        filter_genreItem_dark_chosen: !!chosenGenres.find((cg) => cg === genre._id) && theme === 'dark',
+                        filter_genreItem_light_chosen: !!chosenGenres.find((cg) => cg === genre._id) && theme === 'light',
+                        filter_genreItem_light: theme === 'light',
                       })}
                       key={genre._id}
                       onClick={() => {
@@ -232,35 +270,82 @@ const MainPage = () => {
                 </div>
               )}
 
-              <div style={{ marginTop: '35px' }}>
-                <button
-                  className={cx('filter_title_button', 'filter_buttons')}
-                  onClick={() => setSortByFiltersOpened(!isSortByFiltersOpened)}
-                  type="button"
-                >
-                  SORT BY
-                </button>
-
+              <div
+                style={{ marginTop: '35px' }}
+              >
+                <div className={cx('filter_title_buttons_wrapper')}>
+                  <button
+                    className={cx('filter_title_button', 'filter_buttons', {
+                      filter_title_button_light: theme === 'light',
+                      filter_title_button_dark: theme === 'dark',
+                    })}
+                    onClick={() => setSortByFiltersOpened(!isSortByFiltersOpened)}
+                    type="button"
+                  >
+                    SORT BY
+                    {order && (
+                    <span>
+                      (
+                      {order === 'asc' ? 'a-z' : 'z-a'}
+                      )
+                    </span>
+                    )}
+                  </button>
+                  <button
+                    className={cx('filter_buttons')}
+                    type="button"
+                    onClick={() => setSortByFiltersOpened(!isSortByFiltersOpened)}
+                  >
+                    <img
+                      width="16px"
+                      height="16px"
+                      src={theme === themes.light
+                        ? plusIconLight
+                        : plusIconDark}
+                      alt="openSortBy"
+                    />
+                  </button>
+                </div>
                 <>
                   {isSortByFiltersOpened && (
-                  <div className={cx('sortByButtons')}>
-                    <div className={cx()}>Recently added</div>
-                    <div>
-                      {' '}
-                      <button
-                        className={cx('sortByButtons', 'filter_buttons')}
-                        type="button"
-                        onClick={() => setOrder('desc')}
-                        style={{ color: 'inherit' }}
-                      >
-                        Z-A
-                      </button>
+                  <div className={cx()}>
+                    <div className={cx('filter_genreItem', 'sortByButtons', {
+                      filter_genreItem_light: theme === 'light',
+                      filter_genreItem_dark: theme === 'dark',
+                    })}
+                    >
+                      Recently added
                     </div>
+                      {' '}
+                    <button
+                      className={cx('filter_buttons',
+                        'filter_genreItem',
+                        'sortByButtons', {
+                          filter_genreItem_light_chosen: order === 'desc' && theme === 'light',
+                          filter_genreItem_dark_chosen: order === 'desc' && theme === 'dark',
+                          inherit: order !== 'desc',
+                          filter_genreItem_light: theme === 'light',
+                          filter_genreItem_dark: theme === 'dark',
+                        })}
+                      type="button"
+                      onClick={() => setOrder('desc')}
+                    >
+                      Z-A
+                    </button>
 
                     <div>
                       <button
-                        className={cx('sortByButtons', 'filter_buttons')}
-                        style={{ color: 'inherit' }}
+                        className={cx(
+                          'filter_buttons',
+                          'filter_genreItem',
+                          'sortByButtons', {
+                            filter_genreItem_light_chosen: order === 'asc' && theme === 'light',
+                            filter_genreItem_dark_chosen: order === 'asc' && theme === 'dark',
+                            inherit: order !== 'asc',
+                            filter_genreItem_light: theme === 'light',
+                            filter_genreItem_dark: theme === 'dark',
+                          },
+                        )}
                         type="button"
                         onClick={() => setOrder('asc')}
                       >
@@ -270,12 +355,11 @@ const MainPage = () => {
                   </div>
                   )}
                 </>
-
               </div>
 
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className={cx('bottomButtonsBlock')}>
               <Button
                 value="Show the results"
                 type="outlined"
@@ -286,11 +370,8 @@ const MainPage = () => {
                 value="Clear"
                 type="outlined"
                 theme={theme}
-                callback={() => {
-                  setSettingsMode(!isSettingsMode);
-                }}
+                callback={onClear}
               />
-
             </div>
           </div>
         </div>
