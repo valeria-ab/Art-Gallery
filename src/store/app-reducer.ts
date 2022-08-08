@@ -3,27 +3,26 @@
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 
 export type InitialCardsStateType = {
-  isNightModeOn: boolean;
   status: RequestStatusType;
+  error: string
 };
-
-export const setIsNightModeOn = (payload: { isNightModeOn: boolean }) => ({
-  type: 'APP/SET-IS-NIGHT-MODE-ON',
-  payload,
-} as const);
 
 export const setAppStatus = (payload: { status: RequestStatusType }) => ({
   type: 'APP/SET-STATUS',
   payload,
 } as const);
+export const setAppError = (payload: { error: string }) => ({
+  type: 'APP/SET-APP-ERROR',
+  payload,
+} as const);
 
 type ActionsType =
-  | ReturnType<typeof setIsNightModeOn>
-  | ReturnType<typeof setAppStatus>;
+  | ReturnType<typeof setAppStatus>
+  | ReturnType<typeof setAppError>;
 
 const initialState: InitialCardsStateType = {
-  isNightModeOn: false,
   status: 'idle',
+  error: '',
 };
 
 export const appReducer = (
@@ -31,7 +30,7 @@ export const appReducer = (
   action: ActionsType,
 ): InitialCardsStateType => {
   switch (action.type) {
-    case 'APP/SET-IS-NIGHT-MODE-ON':
+    case 'APP/SET-APP-ERROR':
       return { ...state, ...action.payload };
 
     default:

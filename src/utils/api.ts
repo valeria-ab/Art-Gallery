@@ -3,6 +3,10 @@ import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 // @ts-ignore
 import { ClientJS } from 'clientjs';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { AppDispatch, IAppStore } from '../store/store';
+import { refreshTC } from '../store/auth-reducer';
 
 export const BASE_URL = 'https://internship-front.framework.team/';
 
@@ -21,22 +25,23 @@ export const privateInstance = axios.create({
 const client = new ClientJS();
 const fingerprint = client.getFingerprint().toString();
 
-privateInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    // if (error.response.data.statusCode === 401) {
-    //   const refreshToken = Cookies.get('refreshToken');
-    //   if (refreshToken) {
-    //     authAPI.refresh({ refreshToken, fingerprint })
-    //       .then((res) => {
-    //         Cookies.set('accessToken', res.data.accessToken, { path: 'http://localhost:3000' });
-    //         Cookies.set('refreshToken', res.data.refreshToken, { path: 'http://localhost:3000' });
-    //       });
-    //   }
-    // }
-    // return Promise.reject(error);
-  },
-);
+// privateInstance.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     if (error.response.data.statusCode === 401 || error.response.data.message ===
+//     'Unauthorized') {
+//       const refreshToken = Cookies.get('refreshToken');
+//       if (refreshToken) {
+//         authAPI.refresh({ refreshToken, fingerprint })
+//           .then((res) => {
+//             Cookies.set('accessToken', res.data.accessToken, { path: 'http://localhost:3000' });
+//             Cookies.set('refreshToken', res.data.refreshToken, { path: 'http://localhost:3000' });
+//           });
+//       }
+//     }
+//     return Promise.reject(error);
+//   },
+// );
 
 export type ImageType = {
     _id: string;
@@ -149,7 +154,7 @@ export const authAPI = {
             AxiosResponse<RegisterResponseType>>('auth/register', payload);
   },
   login(username: string, password: string) {
-    return privateInstance.post<{ username: string, password: string, fingerprint: string },
+    return instance.post<{ username: string, password: string, fingerprint: string },
             AxiosResponse<RegisterResponseType, any>>('auth/login', { username, password, fingerprint });
   },
   refresh(payload: RefreshRequestType) {
@@ -173,7 +178,7 @@ export const artistsAPI = {
 
   // requests for authorized user
   getArtists(payload?: {data:URLSearchParams}) {
-    return privateInstance.get<AxiosResponse<Array<ArtistResponseType>>>(payload ? `artists?${payload.data}` : 'artists');
+    return instance.get<AxiosResponse<Array<ArtistResponseType>>>(payload ? `artists?${payload.data}` : 'artists');
   },
   getArtist(id: string) {
     return privateInstance.get<ArtistResponseType>(`artists/${id}`);
@@ -240,7 +245,7 @@ export const artistsAPI = {
 export const genresAPI = {
   // requests for not authorised user
   getGenresStatic() {
-    return instance.get<AxiosResponse<Array<GenreResponseType>>>(
+    return instance.get<Array<GenreResponseType>>(
       'genres/static',
     );
   },

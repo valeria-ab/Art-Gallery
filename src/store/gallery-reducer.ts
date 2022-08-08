@@ -4,7 +4,7 @@ import {
 } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk, IAppStore } from './store';
-import { setAppStatus } from './app-reducer';
+import { setAppError, setAppStatus } from './app-reducer';
 // eslint-disable-next-line import/no-cycle
 
 export type UrlParamsType = {
@@ -103,8 +103,8 @@ export const getArtistsStaticTC = (): AppThunk => (dispatch) => {
       dispatch(setArtists({ artists: res.data }));
       dispatch(setTotalPagesCount({ totalPagesCount: res.data.length }));
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -120,8 +120,8 @@ export const getArtistsTC = (payload?: { data: URLSearchParams }): AppThunk => (
       dispatch(setArtists({ artists: res.data.data }));
       dispatch(setTotalPagesCount({ totalPagesCount: res.data.data.length }));
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -137,8 +137,24 @@ export const getGenresTC = (): AppThunk => (
     .then((res) => {
       dispatch(setGenres({ genres: res.data }));
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};
+export const getGenresStaticTC = (): AppThunk => (
+  dispatch, getState: () => IAppStore,
+) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  genresAPI
+    .getGenresStatic()
+    .then((res) => {
+      dispatch(setGenres({ genres: res.data }));
+    })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -150,6 +166,9 @@ export const getArtistPageTC = (artistId: string): AppThunk => (dispatch) => {
     .getArtistStatic(artistId)
     .then((res: any) => {
       dispatch(setArtists({ artists: res.data }));
+    })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -163,6 +182,9 @@ export const createArtistTC = (payload: any):
     .createArtist(payload)
     .then((res) => {
       dispatch(createArtist(res.data.data));
+    })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));

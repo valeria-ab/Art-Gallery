@@ -48,11 +48,7 @@ const App = () => {
   // }
 
   return (
-    <div className={cx('App', {
-      dark: currentTheme === 'dark',
-      light: currentTheme === 'light',
-    })}
-    >
+    <div className={cx('App', currentTheme)}>
       <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
         <div className="AppContainer">
           <Header />

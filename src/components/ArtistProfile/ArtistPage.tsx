@@ -17,6 +17,7 @@ import { AddEditPicture } from '../modals/AddEditPicture/AddEditPicture';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 import { DeleteModal } from '../modals/delete/DeleteModal';
 import { ThemeContext } from '../../contexts/ThemeContext';
+import { ToastMessage } from '../ToastMessage/ToastMessage';
 
 const cx = classNames.bind(style);
 
@@ -37,6 +38,9 @@ const ArtistPage = () => {
   const [editArtist, setEditArtistModeOn] = useState(false);
   const [paintingId, setPaintingId] = useState<string>();
   const [addEditPictureMode, setAddEditPictureMode] = useState<'edit' | 'add'>('add');
+  const error = useSelector<IAppStore, string>(
+    (state) => state.app.error,
+  );
 
   const onDeleteArtistCallback = () => {
     if (authorId) dispatch(deleteArtistTC(authorId));
@@ -116,6 +120,7 @@ const ArtistPage = () => {
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
       />
+      {error && <ToastMessage />}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 // eslint-disable-next-line import/no-cycle
 import { authAPI } from '../utils/api';
-import { setAppStatus } from './app-reducer';
+import { setAppError, setAppStatus } from './app-reducer';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk, IAppStore } from './store';
 
@@ -50,7 +50,6 @@ export const authReducer = (
 ) => {
   switch (action.type) {
     case 'AUTH/SET-IS_INITIALIZED': {
-      console.log('IS_INITIALIZED', action.payload);
       return { ...state, ...action.payload };
     }
     case 'AUTH/SET-FINGERPRINT':
@@ -78,8 +77,8 @@ export const signUpTC = (
       );
       dispatch(setInitialized({ isInitialized: true }));
     })
-    .catch((err) => {
-      console.error(err.message);
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -104,8 +103,8 @@ export const loginTC = (username: string, password: string): AppThunk => (dispat
       );
       dispatch(setInitialized({ isInitialized: true }));
     })
-    .catch((err) => {
-      console.error(err.message);
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -131,8 +130,8 @@ export const refreshTC = (): AppThunk => (dispatch,
         );
         dispatch(setInitialized({ isInitialized: true }));
       })
-      .catch((err) => {
-        console.error(err.message);
+      .catch((error) => {
+        dispatch(setAppError({ error: error.response.data.message }));
       })
       .finally(() => {
         dispatch(setAppStatus({ status: 'idle' }));

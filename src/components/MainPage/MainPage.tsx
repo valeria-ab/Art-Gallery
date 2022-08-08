@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 import {
   getArtistsStaticTC,
-  getArtistsTC,
+  getArtistsTC, getGenresStaticTC,
   getGenresTC,
   InitialGalleryStateType,
   setCurrentPagesPortion,
@@ -25,6 +25,7 @@ import plusIconDark from '../../assets/mainPageFilters/plusIconDark.png';
 import settingsIconLight from '../../assets/mainPageFilters/settingsIconLight.png';
 import settingsIconDark from '../../assets/mainPageFilters/settingsIconDark.png';
 import useDebounce from '../../hooks/useDebounce';
+import { ToastMessage } from '../ToastMessage/ToastMessage';
 
 const cx = classNames.bind(style);
 
@@ -33,6 +34,9 @@ const MainPage = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const urlParams = useSelector<IAppStore, UrlParamsType>((state) => state.gallery.urlParams);
+  const error = useSelector<IAppStore, string>(
+    (state) => state.app.error,
+  );
 
   useEffect(() => {
     dispatch(setUrlParams({ urlParams: Object.fromEntries(searchParams) }));
@@ -69,9 +73,6 @@ const MainPage = () => {
       setSearchParams({ ...prevParams, name });
     }
   };
-  useEffect(() => {
-    if (urlParams.name) setName(urlParams.name);
-  }, [urlParams.name]);
 
   const onShowResults = () => {
     if (order) {
@@ -130,8 +131,16 @@ const MainPage = () => {
   }, [isInitialized, accessToken]);
 
   useEffect(() => {
-    dispatch(getGenresTC());
+    if (isInitialized) {
+      dispatch(getGenresTC());
+    } else {
+      dispatch(getGenresStaticTC());
+    }
   }, []);
+
+  useEffect(() => {
+    if (urlParams.name) setName(urlParams.name);
+  }, [urlParams.name]);
 
   return (
     <>
@@ -381,6 +390,7 @@ const MainPage = () => {
         artists={artistsPortion}
         onLoadMore={onLoadMore}
       />
+      {error && <ToastMessage />}
     </>
   );
 };

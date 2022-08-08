@@ -1,4 +1,3 @@
-import { log } from 'util';
 import {
   AddPaintingToArtistRequestType,
   ArtistResponseType,
@@ -7,9 +6,9 @@ import {
 } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk, IAppStore } from './store';
-import { setAppStatus } from './app-reducer';
+import { setAppError, setAppStatus } from './app-reducer';
 // eslint-disable-next-line import/no-cycle
-import { getArtistsTC } from './gallery-reducer';
+import { getArtistsTC, setGenres } from './gallery-reducer';
 
 export type InitialCardsStateType = {
     artistInfo: ArtistResponseType;
@@ -111,6 +110,9 @@ export const getArtistInfoStaticTC = (artistId: string): AppThunk => (dispatch,
         ),
       }));
     })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
+    })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
     });
@@ -129,7 +131,13 @@ export const getArtistInfoTC = (artistId: string): AppThunk => (dispatch,
         ),
       }));
     })
-    .catch((error) => console.log(error))
+    // .catch((error) => {
+    //   debugger;
+    //   dispatch(setAppError({ error: error.response.data.message }));
+    // })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
+    })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
     });
@@ -142,6 +150,9 @@ export const updateMainPaintingTC = (paintingId: string, authorId: string):
     .updateMainPainting(paintingId, authorId)
     .then((res) => {
       dispatch(getArtistsTC());
+    })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -156,6 +167,9 @@ export const addNewPaintingTC = (artistId: string, payload: any):
     .then((res) => {
       dispatch(addPainting(res.data));
     })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
+    })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
     });
@@ -167,6 +181,9 @@ export const editPaintingTC = (artistId: string, paintingId: string, payload: an
     .updatePainting(artistId, paintingId, payload)
     .then((res) => {
       // dispatch(addPainting(res.data));
+    })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -180,6 +197,9 @@ export const deletePaintingTC = (artistId: string, paintingId: string):
     .then((res) => {
       dispatch(deletePainting(res.data));
     })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
+    })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
     });
@@ -191,6 +211,9 @@ export const deleteArtistTC = (artistId: string):
     .deleteArtist(artistId)
     .then((res) => {
       // dispatch(deletePainting(res.data));
+    })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
     })
     .finally(() => {
       dispatch(setAppStatus({ status: 'idle' }));
