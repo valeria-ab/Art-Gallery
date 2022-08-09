@@ -9,6 +9,9 @@
   align-items: center;
   justify-content: space-around;
   cursor: pointer;
+  padding: 0;
+  border: none;
+  background-color: transparent;
 }
 .button__darkMode {
 background-color: $accentGold;

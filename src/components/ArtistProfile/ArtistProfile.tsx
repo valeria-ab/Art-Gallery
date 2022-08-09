@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { NavLink } from 'react-router-dom';
 // @ts-ignore
 import style from './ArtistPage.scss';
-import arrowBack from '../../assets/buttons/arrowBack.png';
+import arrowBack from '../../assets/buttons/arrowBackLight.png';
 import dash from '../../assets/artistProfile/dash.png';
 import edit from '../../assets/artistProfile/edit.png';
 import deleteIcon from '../../assets/artistProfile/deleteIcon.png';
@@ -31,21 +31,24 @@ const ArtistProfile = (props: PropsType) => {
     setDeleteArtistModeOn,
     setEditArtistModeOn,
   } = props;
-
+  const isInitialized = useSelector<IAppStore, boolean>(
+    ({ auth }) => auth.isInitialized,
+  );
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <div className={cx('artistPage')}>
       <div className={cx('profile_top')}>
         <NavLink to="/artists" className={cx('comeBackButton')}>
-          <img src={arrowBack} alt="arrowBack" width="10px" height="16px" />
+          {/* <img src={arrowBack} alt="arrowBack" width="10px" height="16px" /> */}
           <Button
             value="back"
             theme={theme}
-            type="outlined"
-            width="50px"
+            type="arrow"
+            width="100px"
           />
         </NavLink>
+        {isInitialized && (
         <div className={cx('deleteEditBlock')}>
           <img
             className={cx('deleteEditIcon')}
@@ -60,6 +63,7 @@ const ArtistProfile = (props: PropsType) => {
             onClick={() => setDeleteArtistModeOn(true)}
           />
         </div>
+        )}
       </div>
 
       {artistInfo.avatar && (

@@ -26,7 +26,7 @@ export const Footer = () => {
               href="https://framework.team/"
               target="_blank"
               rel="noreferrer"
-              className={cx('fwtLink', { darkMode: theme === 'dark', lightMode: theme === 'light' })}
+              className={cx('fwtLink', `fwtLink_${theme}`)}
             >
               Framework Team
             </a>

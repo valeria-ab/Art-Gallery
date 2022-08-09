@@ -13,21 +13,26 @@ import logoLightMode from '../../assets/logoLightMode.png';
 import logoDarkMode from '../../assets/logoDarkMode.png';
 import cancelLight from '../../assets/cancelLight.png';
 import cancelDark from '../../assets/cancelDark.png';
+import searchIconLight from '../../assets/mainPageFilters/searchIconLight.png';
+import searchIconDark from '../../assets/mainPageFilters/searchIconDark.png';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { IAppStore } from '../../store/store';
 import { setInitialized, setUserData } from '../../store/auth-reducer';
 import { Authorization } from '../modals/authorization/Authorization';
+import { FilterInput } from '../MainPage/MainPage';
 
 const cx = classNames.bind(style);
 
 const Header = () => {
   const [isBurgerMenuOpened, setIsBurgerMenuOpened] = useState(false);
+  const [isFilterOpened, setFilterInputOpened] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
   const [login, setLogin] = useState(false);
   const [signUp, setSignUp] = useState(false);
+
   const dispatch = useDispatch();
 
   // тут не закроешь просто css-ом потому что, если у стиля будет условие,
@@ -41,6 +46,9 @@ const Header = () => {
     window.addEventListener('resize', displayWindowSize);
     if (w > 768 && isBurgerMenuOpened) {
       setIsBurgerMenuOpened(false);
+    }
+    if (w > 549 && isFilterOpened) {
+      setFilterInputOpened(false);
     }
   }
 
@@ -100,6 +108,8 @@ const Header = () => {
           <img
             src={theme === 'light' ? logoLightMode : logoDarkMode}
             alt="logo"
+            height="15px"
+            width="39px"
           />
         </NavLink>
         <div className={cx('authBlock')}>
@@ -131,18 +141,18 @@ const Header = () => {
           )}
 
           {isInitialized && (
-            <div className={cx('authBlockTitles', 'cursorPointer')}>
-              <span
-                onClick={onLogOutClick}
-                role="button"
-                tabIndex={-1}
-                onKeyDown={() => {
-                  console.log('keyboard listener');
-                }}
-              >
-                LOG OUT
-              </span>
-            </div>
+          <div className={cx('authBlockTitles', 'cursorPointer')}>
+            <span
+              onClick={onLogOutClick}
+              role="button"
+              tabIndex={-1}
+              onKeyDown={() => {
+                console.log('keyboard listener');
+              }}
+            >
+              LOG OUT
+            </span>
+          </div>
           )}
 
           <div
@@ -164,43 +174,34 @@ const Header = () => {
             />
           </div>
         </div>
-        <div
-          className={cx('mobileMode')}
-          onClick={() => setIsBurgerMenuOpened(!isBurgerMenuOpened)}
-          role="button"
-          tabIndex={-1}
-          onKeyDown={() => {
-            console.log('keyboard listener');
-          }}
-        >
-          <img
-            src={theme === 'light' ? burgerLightMode : burgerDarkMode}
-            alt="burgerMenu"
-          />
-        </div>
 
-        <div
-          className={cx('burgerMenu', {
-            burgerMenuOnClick: isBurgerMenuOpened,
-          })}
-        >
-          <div
-            className={cx('burgerMenuOpacityBlock', {
-              dark: theme === 'dark',
-              light: theme === 'light',
-            })}
-          >
-            {' '}
-          </div>
-          <div
-            className={cx('burgerMenuContent', {
-              dark: theme === 'dark',
-              light: theme === 'light',
-            })}
-          >
+        {isFilterOpened && (
+        <div className={cx('filterInput')}>
+          <FilterInput />
+        </div>
+        )}
+        <div className={cx('mobileMode')}>
+          <div className={cx('mobileMode_settings')}>
+            {!isFilterOpened && (
+            <div className={cx('searchMobile')}>
+              <button
+                className={cx('button')}
+                type="button"
+                style={{ marginRight: '20px' }}
+                onClick={() => setFilterInputOpened(true)}
+              >
+                <img
+                  src={theme === 'light' ? searchIconLight : searchIconDark}
+                  alt="searchIcon"
+                  width="16px"
+                  height="16px"
+                />
+              </button>
+            </div>
+            )}
             <div
+              className={cx('mobileMode')}
               onClick={() => setIsBurgerMenuOpened(!isBurgerMenuOpened)}
-              className={cx('cancelButton')}
               role="button"
               tabIndex={-1}
               onKeyDown={() => {
@@ -208,38 +209,74 @@ const Header = () => {
               }}
             >
               <img
-                src={theme === 'light' ? cancelLight : cancelDark}
-                alt="cancel"
-                className={cx('cursorPointer')}
+                src={theme === 'light' ? burgerLightMode : burgerDarkMode}
+                alt="burgerMenu"
+                height="18px"
+                width="24px"
               />
             </div>
-            <div className={cx('burgerMenuContainer')}>
+          </div>
+          <div
+            className={cx('burgerMenu', {
+              burgerMenuOnClick: isBurgerMenuOpened,
+            })}
+          >
+            <div
+              className={cx('burgerMenuOpacityBlock', {
+                dark: theme === 'dark',
+                light: theme === 'light',
+              })}
+            >
+              {' '}
+            </div>
+            <div
+              className={cx('burgerMenuContent', {
+                dark: theme === 'dark',
+                light: theme === 'light',
+              })}
+            >
               <div
+                onClick={() => setIsBurgerMenuOpened(!isBurgerMenuOpened)}
+                className={cx('cancelButton')}
                 role="button"
-                className={cx('changeModeBlock', 'cursorPointer')}
                 tabIndex={-1}
                 onKeyDown={() => {
                   console.log('keyboard listener');
                 }}
-                onClick={toggleTheme}
               >
                 <img
-                  src={
-                                        theme === 'light' ? toDarkThemeToggler : toLightThemeToggler
-                                    }
-                  alt="themeIcon"
-                  className={cx({
-                    toNightThemeIcon: theme === 'light',
-                    toLightThemeIcon: theme === 'dark',
-                  })}
+                  src={theme === 'light' ? cancelLight : cancelDark}
+                  alt="cancel"
+                  className={cx('cursorPointer')}
                 />
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span className={cx('changeModeTitle')}>
-                  {theme === 'light' ? 'Dark mode' : 'Light mode'}
-                </span>
               </div>
+              <div className={cx('burgerMenuContainer')}>
+                <div
+                  role="button"
+                  className={cx('changeModeBlock', 'cursorPointer')}
+                  tabIndex={-1}
+                  onKeyDown={() => {
+                    console.log('keyboard listener');
+                  }}
+                  onClick={toggleTheme}
+                >
+                  <img
+                    src={theme === 'light'
+                      ? toDarkThemeToggler
+                      : toLightThemeToggler}
+                    alt="themeIcon"
+                    className={cx({
+                      toNightThemeIcon: theme === 'light',
+                      toLightThemeIcon: theme === 'dark',
+                    })}
+                  />
+                  <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span className={cx('changeModeTitle')}>
+                    {theme === 'light' ? 'Dark mode' : 'Light mode'}
+                  </span>
+                </div>
 
-              {!isInitialized && (
+                {!isInitialized && (
                 <>
                   <div
                     className={cx(
@@ -275,8 +312,8 @@ const Header = () => {
                     Sign up
                   </div>
                 </>
-              )}
-              {isInitialized && (
+                )}
+                {isInitialized && (
                 <div className={cx('loginButtons', 'cursorPointer')}>
                   <span
                     onClick={onLogOutClick}
@@ -289,7 +326,8 @@ const Header = () => {
                     LOG OUT
                   </span>
                 </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

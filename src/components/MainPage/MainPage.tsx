@@ -57,7 +57,7 @@ const MainPage = () => {
     portionSize * currentPagesPortion - portionSize, portionSize * currentPagesPortion,
   );
   const [isAddArtistMode, setAddArtistMode] = useState(false);
-  const [name, setName] = useState('');
+  // const [name, setName] = useState('');
 
   const [artistsPortion, setArtistsPortion] = useState([] as ArtistResponseType[]);
   const [isSettingsMode, setSettingsMode] = useState(false);
@@ -68,11 +68,11 @@ const MainPage = () => {
   const [isGenresFiltersOpened, setGenresFiltersOpened] = useState(false);
   const [isSortByFiltersOpened, setSortByFiltersOpened] = useState(false);
 
-  const onEnterPressHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.charCode === 13) {
-      setSearchParams({ ...prevParams, name });
-    }
-  };
+  // const onEnterPressHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (event.charCode === 13) {
+  //     setSearchParams({ ...prevParams, name });
+  //   }
+  // };
 
   const onShowResults = () => {
     if (order) {
@@ -101,14 +101,14 @@ const MainPage = () => {
     dispatch(setCurrentPagesPortion({ currentPagesPortion: currentPagesPortion + 1 }));
   };
 
-  const onKeyUpHandler = useDebounce(() => {
-    if (name) {
-      setSearchParams({ ...prevParams, name });
-    } else {
-      delete prevParams.name;
-      setSearchParams({ ...prevParams });
-    }
-  }, 1000);
+  // const onKeyUpHandler = useDebounce(() => {
+  //   if (name) {
+  //     setSearchParams({ ...prevParams, name });
+  //   } else {
+  //     delete prevParams.name;
+  //     setSearchParams({ ...prevParams });
+  //   }
+  // }, 1000);
 
   useEffect(() => {
     setArtistsPortion(artistsCurrentPortion);
@@ -138,9 +138,9 @@ const MainPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (urlParams.name) setName(urlParams.name);
-  }, [urlParams.name]);
+  // useEffect(() => {
+  //   if (urlParams.name) setName(urlParams.name);
+  // }, [urlParams.name]);
 
   return (
     <>
@@ -150,36 +150,15 @@ const MainPage = () => {
         <div className={cx('buttons_wrapper')}>
           <Button
             value="add artist"
-            type="outlined"
+            type="add"
             theme={theme}
             width="100px"
             callback={() => setAddArtistMode(true)}
           />
           <div className={cx('filterButtons_wrapper')}>
-            <div className={cx('searchContainer', {
-              searchContainer_dark: themes.dark,
-              searchContainer_light: themes.light,
-            })}
-            >
-              <div className={cx('searchIconContainer')}>
-                <img
-                  src={searchIconLight}
-                  alt="searchIcon"
-                  className={cx('searchIcon')}
-                />
-              </div>
 
-              <input
-                className={cx('searchContainer_input', {
-                  searchContainer_input_light: themes.light,
-                  searchContainer_input_dark: themes.dark,
-                })}
-                onChange={(e) => {
-                  setName(e.currentTarget.value);
-                }}
-                onKeyUp={onKeyUpHandler}
-                onKeyPress={onEnterPressHandler}
-              />
+            <div className={cx('filterInput_wrapper')}>
+              <FilterInput />
             </div>
             <div className={cx('settingsIcon')}>
               <button
@@ -396,3 +375,64 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+export const FilterInput = () => {
+  const [name, setName] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const prevParams = Object.fromEntries(searchParams);
+  const urlParams = useSelector<IAppStore, UrlParamsType>((state) => state.gallery.urlParams);
+  const onEnterPressHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.charCode === 13) {
+      setSearchParams({ ...prevParams, name });
+    }
+  };
+
+  const onKeyUpHandler = useDebounce(() => {
+    if (name) {
+      setSearchParams({ ...prevParams, name });
+    } else {
+      delete prevParams.name;
+      setSearchParams({ ...prevParams });
+    }
+  }, 1000);
+
+  useEffect(() => {
+    if (urlParams.name) setName(urlParams.name);
+  }, [urlParams.name]);
+
+  return (
+    <div className={cx('searchContainer', `searchContainer_${theme}`)}>
+      <div className={cx('searchIconContainer', `searchIconContainer_${theme}`)}>
+        <img
+          src={searchIconLight}
+          alt="searchIcon"
+          className={cx('searchIcon')}
+        />
+      </div>
+      <input
+        className={cx('searchContainer_input', `searchContainer_input_${theme}`)}
+        onChange={(e) => {
+          setName(e.currentTarget.value);
+        }}
+        onKeyUp={onKeyUpHandler}
+        onKeyPress={onEnterPressHandler}
+        placeholder="Search"
+        value={name}
+      />
+      {name && (
+      <img
+        src={theme === 'light' ? cancelLightMode : cancelDarkMode}
+        alt="clearInput"
+        width="8px"
+        height="8px"
+        onClick={() => {
+          setName('');
+          delete prevParams.name;
+          setSearchParams({ ...prevParams });
+        }}
+      />
+      )}
+    </div>
+  );
+};

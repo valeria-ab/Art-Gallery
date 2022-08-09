@@ -9,6 +9,8 @@ import { deletePaintingTC, setCurrentPainting, updateMainPaintingTC } from '../.
 import cogwheel from '../../assets/photoItem/cogwheel.png';
 import noImagePlug from '../../assets/photoItem/noImagePlug.png';
 import { AuthorPaintingsType } from '../../utils/api';
+import arrow from '../../assets/photoItem/arrow.png';
+import { themes } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
@@ -21,7 +23,7 @@ type PhotoItemPropsType = {
     onHover: 'artists' | 'artworks';
     onDeletePictureClick?: (paintingId: string) => void;
     onEditPictureClick?: (mode: 'edit' | 'add') => void
-  pictureData?: AuthorPaintingsType
+    pictureData?: AuthorPaintingsType
 };
 
 const PhotoItem = ({
@@ -82,15 +84,15 @@ const PhotoItem = ({
             </div>
             <div className={cx('displayNone', {
               settings__menu: isMenuOpened && onHover === 'artworks',
-              settings__menu_light: theme === 'light',
-              settings__menu_dark: theme === 'dark',
+              settings__menu_light: themes.light,
+              settings__menu_dark: themes.dark,
             })}
             >
               <div
                 className={cx({
                   menuItem: hover && onHover === 'artworks',
-                  menuItem_light: theme === 'light',
-                  menuItem_dark: theme === 'dark',
+                  menuItem_light: themes.light,
+                  menuItem_dark: themes.dark,
                 })}
                 role="button"
                 onKeyDown={() => {
@@ -107,8 +109,8 @@ const PhotoItem = ({
               <div
                 className={cx({
                   menuItem: hover && onHover === 'artworks',
-                  menuItem_light: theme === 'light',
-                  menuItem_dark: theme === 'dark',
+                  menuItem_light: themes.light,
+                  menuItem_dark: themes.dark,
                 })}
                 role="button"
                 onKeyDown={() => {
@@ -127,8 +129,8 @@ const PhotoItem = ({
                 tabIndex={-1}
                 className={cx({
                   menuItem: hover && onHover === 'artworks',
-                  menuItem_light: theme === 'light',
-                  menuItem_dark: theme === 'dark',
+                  menuItem_light: themes.light,
+                  menuItem_dark: themes.dark,
                 })}
                 onClick={() => onDeletePictureClick && onDeletePictureClick(id)}
               >
@@ -148,45 +150,33 @@ const PhotoItem = ({
         />
         <div className={cx('hoverButton', {
           'hoverButton-show': hover,
-          hoverButton__dark: theme === 'dark',
-          hoverButton__light: theme === 'light',
+          hoverButton__dark: themes.dark,
+          hoverButton__light: themes.light,
         })}
         >
           <span className={cx('hoverButtonSpan', {
-            hoverButtonSpan__dark: theme === 'dark',
-            hoverButtonSpan__light: theme === 'light',
+            hoverButtonSpan__dark: themes.dark,
+            hoverButtonSpan__light: themes.light,
           })}
           >
             Learn more
           </span>
         </div>
 
-        <div className={cx('titleContainer', {
-          titleContainer__dark: theme === 'dark',
-          titleContainer__light: theme === 'light',
-        })}
-        >
-          <div className={cx('titleBlock', {
-            titleBlock__dark: theme === 'dark',
-            titleBlock__light: theme === 'light',
-          })}
-          >
-            <div className={cx('name', {
-              name__dark: theme === 'dark',
-              name__light: theme === 'light',
-            })}
-            >
+        <div className={cx('titleContainer', `titleContainer_${theme}`)}>
+          <div className={cx('titleBlock', `titleBlock_${theme}`)}>
+            <div className={cx('name', `name_${theme}`)}>
               {name}
             </div>
-            <div className={cx('years', {
-              years__dark: theme === 'dark',
-              years__light: theme === 'light',
-            })}
-            >
+            <div className={cx('years', `years_${theme}`)}>
               {years}
             </div>
           </div>
+          <div className={cx('learnMore_mobile', `learnMore_mobile_${theme}`)}>
+            <img src={arrow} alt="arrow" width="16px" height="10px" />
+          </div>
         </div>
+
       </NavLink>
     </div>
   );

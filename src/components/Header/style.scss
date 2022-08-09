@@ -16,7 +16,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  //height: 12vh;
   height: 100px;
 }
 .darkMode {
@@ -25,15 +24,6 @@
 .lightMode {
   background-color: $primaryWhite;
   color: $primaryDarkGray
-}
-.fwtLink {
-  text-decoration: underline;
-}
-.fwtLink:visited.lightMode{
-  color: $primaryBlack;
-}
-.fwtLink:visited.darkMode{
-  color: $primaryWhite;
 }
 
 .authBlock {
@@ -48,6 +38,11 @@
 .mobileMode {
   display: none;
 }
+.mobileMode_settings {
+  display: flex;
+  align-items: baseline;
+}
+
 .nightModeHandler {
   margin-left: 40px;
 }
@@ -159,4 +154,27 @@
   .loginButtons {
     @include h3Heading
   }
+}
+
+.searchMobile {
+  display: none;
+
+  @media screen and (max-width: 550px) {
+    display: block;
+  }
+}
+.filterInput {
+  width: 236px;
+  position: absolute;
+  z-index: 6667;
+  display: none;
+  @media screen and (max-width: 549px) {
+    display: block;
+  }
+}
+.button {
+  //padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }

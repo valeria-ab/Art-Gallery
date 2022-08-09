@@ -2,20 +2,24 @@ import React, { ChangeEvent } from 'react';
 import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
+import addLight from '../../assets/buttons/addLight.png';
+import addDark from '../../assets/buttons/addDark.png';
+import arrowBackLight from '../../assets/buttons/arrowBackLight.png';
+import arrowBackDark from '../../assets/buttons/arrowBackDark.png';
 
 const cx = classNames.bind(style);
 type ButtonPropsType = {
     value: string;
     theme: string;
-    type: 'filled' | 'outlined';
+    type: 'filled' | 'outlined' | 'add' | 'arrow';
     width?: string;
     callback?: () => void;
 };
 export const Button = ({
   value, theme, type, width, callback,
 }: ButtonPropsType) => (
-  <div
-    role="button"
+  <button
+    type="button"
     tabIndex={-1}
     className={cx('button', {
       button__darkMode: theme === 'dark' && type === 'filled',
@@ -24,13 +28,29 @@ export const Button = ({
     style={{ width }}
     onClick={callback}
   >
+    { type === 'add' && (
+    <img
+      src={theme === 'light' ? addLight : addDark}
+      alt="add"
+      width="16px"
+      height="16px"
+    />
+    )}
+    { type === 'arrow' && (
+      <img
+        src={theme === 'light' ? arrowBackLight : arrowBackDark}
+        alt="add"
+        width="16px"
+        height="10px"
+      />
+    )}
     <span
       className={cx('value', {
-        outlined__dark: theme === 'dark' && type === 'outlined',
-        outlined__light: theme === 'light' && type === 'outlined',
+        outlined__dark: theme === 'dark' && type !== 'filled',
+        outlined__light: theme === 'light' && type !== 'filled',
       })}
     >
       {value}
     </span>
-  </div>
+  </button>
 );
