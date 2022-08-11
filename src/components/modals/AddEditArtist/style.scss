@@ -89,7 +89,7 @@
   top: 10px;
   left: 30px;
   width: 100%;
-  z-index: -1;
+  //z-index: -1;
 }
 .userIcon {
   margin-bottom: 16px;
@@ -120,7 +120,6 @@
 .label__dark {
   color: $primaryWhite;
 }
-
 
 .textArea {
   width: 340px;
@@ -185,6 +184,27 @@
     @include paragraphSmallLight12;
   }
   .description_dark {
+    color: $primaryDarkGray;
+  }
+}
+
+.browseImageButton {
+    width: 200px;
+    height: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    cursor: pointer;
+  text-decoration: underline;
+
+    @include buttonBold12;
+    text-transform: uppercase;
+
+
+  &_dark {
+    color: $primaryWhite;
+  }
+  &_light {
     color: $primaryDarkGray;
   }
 }

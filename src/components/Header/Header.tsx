@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import Cookies from 'js-cookie';
@@ -34,6 +34,10 @@ const Header = () => {
   const [signUp, setSignUp] = useState(false);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // console.log(window.location.pathname === '/artists');
+  }, [window.location]);
 
   // тут не закроешь просто css-ом потому что, если у стиля будет условие,
   // завясящее от true/false (в нашем случает от isBurgerMenuOpened), то при

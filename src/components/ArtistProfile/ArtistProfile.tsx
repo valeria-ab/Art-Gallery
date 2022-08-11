@@ -14,6 +14,7 @@ import { ArtistResponseType } from '../../utils/api';
 import { Genre } from './Genre/Genre';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { Button } from '../Button/Button';
+import noImagePlug from '../../assets/photoItem/noImagePlug.png';
 
 const cx = classNames.bind(style);
 
@@ -21,13 +22,11 @@ type PropsType = {
     artistInfo: ArtistResponseType;
     setDeleteArtistModeOn: (value: boolean) => void;
     setEditArtistModeOn: (value: boolean) => void;
-    deleteArtistModeOn: boolean;
 }
 
 const ArtistProfile = (props: PropsType) => {
   const {
     artistInfo,
-    deleteArtistModeOn,
     setDeleteArtistModeOn,
     setEditArtistModeOn,
   } = props;
@@ -66,62 +65,77 @@ const ArtistProfile = (props: PropsType) => {
         )}
       </div>
 
-      {artistInfo.avatar && (
-        <div className={cx('artistProfile')}>
-          <div className={cx('mainPhoto')}>
+      <div className={cx('artistProfile')}>
+        <div className={cx('mainPhoto')}>
+          {artistInfo.avatar ? (
             <img
               src={`${process.env.REACT_APP_BASE_URL}${artistInfo.avatar.src2x}`}
               alt="artist_picture"
               className={cx('profilePicture')}
             />
-            <div className={cx('infoBlock', {
-              infoBlock__light: theme === 'light',
-              infoBlock__dark: theme === 'dark',
-            })}
-            >
-              <div className={cx('artistInfo')}>
-                <span className={cx('infoBlock__padding')}>
-                  {artistInfo.yearsOfLife}
-                </span>
-              </div>
-              <div
-                className={cx('artistNameContainer', {
-                  artistNameContainer__light: theme === 'light',
-                  artistNameContainer__dark: theme === 'dark',
-                })}
-              >
-                <span className={cx('artistName')}>{artistInfo.name}</span>
-              </div>
-              <div className={cx('dash')}>
-                <img src={dash} alt="dash" width="30px" />
-              </div>
-              <div className={cx('artistDescription')}>
-                {artistInfo.description}
-              </div>
-              <div className={cx('learnMoreButton')}>
-                <Button
-                  value="read more"
-                  width="200px"
-                  type="outlined"
-                  theme={theme}
-                />
-                <img
-                  src={learnMoreIcon}
-                  alt="learnMoreIcon"
-                  width="12px"
-                  height="7px"
-                />
-              </div>
+          )
+            : (
+              <div className={cx('noPictureBlock')}>
 
-              <div className={cx('genresBlock')}>
-                {artistInfo.genres.map((g) => (
-                  <Genre key={g._id} value={g.name} />
-                ))}
+                <img
+                  src={noImagePlug}
+                  width="254px"
+                  height="228px"
+                  alt="artist_picture"
+                  className={cx('noPicture')}
+                />
+
+                <p className={cx('noPictureDescription')}>No Image uploaded</p>
               </div>
+            )}
+          <div className={cx('infoBlock', {
+            infoBlock_light: theme === 'light',
+            infoBlock_dark: theme === 'dark',
+          })}
+          >
+            <div className={cx('artistInfo')}>
+              <span className={cx('infoBlock_padding')}>
+                {artistInfo.yearsOfLife ? artistInfo.yearsOfLife : ''}
+              </span>
+            </div>
+            <div
+              className={cx('artistNameContainer', {
+                artistNameContainer_light: theme === 'light',
+                artistNameContainer_dark: theme === 'dark',
+              })}
+            >
+              <span className={cx('artistName')}>{artistInfo.name || ''}</span>
+            </div>
+            <div className={cx('dash')}>
+              <img src={dash} alt="dash" width="30px" />
+            </div>
+            <div className={cx('artistDescription')}>
+              {artistInfo.description || ''}
+            </div>
+            <div className={cx('learnMoreButton')}>
+              <Button
+                value="read more"
+                width="200px"
+                type="outlined"
+                theme={theme}
+              />
+              <img
+                src={learnMoreIcon}
+                alt="learnMoreIcon"
+                width="12px"
+                height="7px"
+              />
+            </div>
+
+            <div className={cx('genresBlock')}>
+              {artistInfo.genres?.map((g) => (
+                <Genre key={g._id} value={g.name} />
+              ))}
             </div>
           </div>
         </div>
-      )}
+      </div>
+
     </div>
   );
 };

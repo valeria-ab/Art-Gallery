@@ -1,15 +1,16 @@
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 import ArtistProfile from './ArtistProfile';
 import {
-  deleteArtistTC, deletePaintingTC,
+  deleteArtistTC,
+  deletePaintingTC,
   getArtistInfoStaticTC,
-  getArtistInfoTC, setArtworksCurrentPage, setArtworksCurrentPagesPortion,
+  getArtistInfoTC,
 } from '../../store/artistPage-reducer';
-import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
+import { ArtistResponseType } from '../../utils/api';
 // @ts-ignore
 import style from './ArtistPage.scss';
 import ArtistArtworks from './ArtistArtworks';
@@ -44,7 +45,6 @@ const ArtistPage = () => {
 
   const onDeleteArtistCallback = () => {
     if (authorId) dispatch(deleteArtistTC(authorId));
-    // setDeleteArtistModeOn(false);
     navigate('/artists');
   };
 
@@ -68,7 +68,9 @@ const ArtistPage = () => {
       if (!isInitialized) {
         dispatch(getArtistInfoStaticTC(authorId));
       }
-      dispatch(getArtistInfoTC(authorId));
+      if (isInitialized) {
+        dispatch(getArtistInfoTC(authorId));
+      }
     }
   }, [authorId, isInitialized]);
 
@@ -102,17 +104,18 @@ const ArtistPage = () => {
       )}
       {editArtist && (
       <AddEditArtist
+        mode="edit"
         onCancelCallback={setEditArtistModeOn}
         artistDescription={artistInfo.description}
         artistName={artistInfo.name}
         artistYearsOfLife={artistInfo.yearsOfLife}
         avatar={artistInfo.avatar.src}
+        authorId={authorId}
       />
       )}
       <ArtistProfile
         artistInfo={artistInfo}
         setDeleteArtistModeOn={setDeleteArtistModeOn}
-        deleteArtistModeOn={deleteArtistModeOn}
         setEditArtistModeOn={setEditArtistModeOn}
       />
       <ArtistArtworks

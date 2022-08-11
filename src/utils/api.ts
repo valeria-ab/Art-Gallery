@@ -3,10 +3,6 @@ import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 // @ts-ignore
 import { ClientJS } from 'clientjs';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { AppDispatch, IAppStore } from '../store/store';
-import { refreshTC } from '../store/auth-reducer';
 
 export const BASE_URL = 'https://internship-front.framework.team/';
 
@@ -26,21 +22,34 @@ const client = new ClientJS();
 const fingerprint = client.getFingerprint().toString();
 
 privateInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(response);
+
+    return response;
+  },
   async (error) => {
-    if (error.response.data.statusCode === 401 || error.response.data.message
-    === 'Unauthorized') {
-      const refreshToken = Cookies.get('refreshToken');
+    const refreshToken = Cookies.get('refreshToken');
+
+    const prevRequest = error?.config;
+    if (error?.response?.status === 401 && !prevRequest?.sent) {
+      prevRequest.sent = true;
       if (refreshToken) {
         authAPI.refresh({ refreshToken, fingerprint })
           .then((res) => {
-            Cookies.set('accessToken', res.data.accessToken, { path: 'http://localhost:3000' });
-            Cookies.set('refreshToken', res.data.refreshToken, { path: 'http://localhost:3000' });
+            prevRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
+            return privateInstance(prevRequest);
+          })
+          .catch((err) => {
+            alert(err.response.data.message);
+            Cookies.remove('accessToken');
+            Cookies.remove('refreshToken');
           });
       }
     }
+
     return Promise.reject(error);
   },
+
 );
 
 export type ImageType = {
@@ -202,9 +211,9 @@ export const artistsAPI = {
               },
             });
   },
-  updateArtist(id: string, payload: UpdateArtistRequestType) {
+  updateArtist(id: string, payload: any) {
     return privateInstance.put<{ payload: UpdateArtistRequestType },
-            AxiosResponse<ArtistResponseType>>(`artists${id}`, { payload });
+            AxiosResponse<ArtistResponseType>>(`artists/${id}`, payload);
   },
   deleteArtist(id: string) {
     return privateInstance.delete<AxiosResponse<{ _id: string }>>(`artists/${id}`);

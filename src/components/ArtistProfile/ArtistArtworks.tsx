@@ -36,9 +36,9 @@ const ArtistArtworks = ({
 
   return (
     <div className={cx('artistArtworks')}>
-      <div className={cx('artistArtworks__heading', {
-        artistArtworks__heading__light: theme === 'light',
-        artistArtworks__heading__dark: theme === 'dark',
+      <div className={cx('artistArtworks_heading', {
+        artistArtworks_heading_light: theme === 'light',
+        artistArtworks_heading_dark: theme === 'dark',
       })}
       >
         Artworks

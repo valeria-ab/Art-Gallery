@@ -11,9 +11,6 @@
 
 
 
-
-
-
 .mainContainer {
   display: flex;
   flex-wrap: wrap;
@@ -24,4 +21,9 @@
   .main {
     justify-content: space-around;
   }
+}
+
+.loadMoreButton {
+  display: flex;
+  justify-content: center;
 }

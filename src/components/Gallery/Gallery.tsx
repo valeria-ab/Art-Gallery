@@ -37,89 +37,18 @@ const Gallery = React.memo(({
   const isInitialized = useSelector<IAppStore, boolean>(
     ({ auth }) => auth.isInitialized,
   );
-  // const urlParams = useSelector<IAppStore, UrlParamsType>((state) => state.gallery.urlParams);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const prevParams = Object.fromEntries(searchParams);
-  // const [name, setName] = useState('');
 
   const { portionSize, currentPagesPortion, totalPagesCount } = useSelector<IAppStore,
       InitialGalleryStateType>(({ gallery }) => gallery);
 
-  // const onKeyUpHandler = useDebounce(() => {
-  //   if (name) {
-  //     setSearchParams({ ...prevParams, name });
-  //   } else {
-  //     delete prevParams.name;
-  //     setSearchParams({ ...prevParams });
-  //   }
-  // }, 1000);
-
-  // const onEnterPressHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (event.charCode === 13) {
-  //     setSearchParams({ ...prevParams, name });
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (urlParams.name) setName(urlParams.name);
-  // }, [urlParams.name]);
-
   return (
     <div className={cx('main')}>
-      {/* {isAddArtistMode */}
-      {/*    && <AddEditArtist onCancelCallback={setAddArtistMode} />} */}
-      {/* {isInitialized && artists && ( */}
-      {/* <div className={cx('buttons_wrapper')}> */}
-      {/*  <Button */}
-      {/*    value="add artist" */}
-      {/*    type="outlined" */}
-      {/*    theme={theme} */}
-      {/*    width="100px" */}
-      {/*    callback={() => setAddArtistMode(true)} */}
-      {/*  /> */}
-      {/*  <div className={cx('filterButtons_wrapper')}> */}
-      {/*    <div className={cx('searchContainer', { */}
-      {/*      searchContainer_dark: themes.dark, */}
-      {/*      searchContainer_light: themes.light, */}
-      {/*    })} */}
-      {/*    > */}
-      {/*      <div className={cx('searchIconContainer')}> */}
-      {/*        <img */}
-      {/*          src={searchIconLight} */}
-      {/*          alt="searchIcon" */}
-      {/*          className={cx('searchIcon')} */}
-      {/*        /> */}
-      {/*      </div> */}
-
-      {/*      <input */}
-      {/*        className={cx('searchContainer_input', { */}
-      {/*          searchContainer_input_light: themes.light, */}
-      {/*          searchContainer_input_dark: themes.dark, */}
-      {/*        })} */}
-      {/*        onChange={(e) => { setName(e.currentTarget.value); }} */}
-      {/*        onKeyUp={onKeyUpHandler} */}
-      {/*        onKeyPress={onEnterPressHandler} */}
-      {/*      /> */}
-      {/*    </div> */}
-      {/*    <div style={{ width: '28px', height: '28px', backgroundColor: '' }}> */}
-      {/*      <img */}
-      {/*        src={settingsIconLight} */}
-      {/*        alt="settingsIconLight" */}
-      {/*        style={{ */}
-      {/*          width: '15.91px', */}
-      {/*          height: '13px', */}
-      {/*        }} */}
-      {/*      /> */}
-      {/*    </div> */}
-      {/*  </div> */}
-      {/* </div> */}
-      {/* )} */}
       {isInitialized && artworks && (
         <Button
           value="add picture"
-          type="outlined"
+          type="add"
           theme={theme}
-          width="100px"
+          width="110px"
           callback={onAddEditPictureClick && (() => onAddEditPictureClick('add'))}
         />
       )}
@@ -152,13 +81,16 @@ const Gallery = React.memo(({
         ))}
       </div>
       {artists && currentPagesPortion !== Math.ceil(totalPagesCount / portionSize) && (
-      <Button
-        value="load more"
-        theme={theme}
-        type="outlined"
-        width="200px"
-        callback={onLoadMore}
-      />
+      <div className={cx('loadMoreButton')}>
+        <Button
+          value="load more"
+          theme={theme}
+          type="outlined"
+          width="200px"
+          callback={onLoadMore}
+        />
+      </div>
+
       )}
     </div>
   );

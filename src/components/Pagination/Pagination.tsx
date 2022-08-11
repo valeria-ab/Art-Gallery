@@ -73,7 +73,7 @@ export const Pagination = (props: PaginationPropsType) => {
               selected_light: theme === 'light',
               selected_dark: theme === 'dark',
             })}
-            onClick={() => onPageChange(pageNumber)}
+            onClick={() => onPageChange(+pageNumber)}
           >
             {pageNumber}
           </li>
@@ -104,8 +104,7 @@ export const usePagination = ({
   currentPage,
 }: PropsType) => {
   const paginationRange = useMemo(() => {
-    // const totalPageCount = Math.ceil(totalCount / pageSize);
-    const totalPageCount = 9;
+    const totalPageCount = Math.ceil(totalCount / pageSize);
 
     const range = (start: number, end: number) => {
       const length = end - start + 1;

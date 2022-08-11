@@ -124,17 +124,15 @@ export const getArtistInfoTC = (artistId: string): AppThunk => (dispatch,
   artistsAPI
     .getArtist(artistId)
     .then((res) => {
+      dispatch(setAppError({ error: '' }));
       dispatch(setArtistInfo({ artistInfo: res.data }));
       dispatch(setArtworksTotalPagesCount({
         artworksTotalPagesCount: Math.ceil(
           res.data.paintings.length / artworksPortionSize,
         ),
       }));
+      dispatch(setAppError({ error: '' }));
     })
-    // .catch((error) => {
-    //   debugger;
-    //   dispatch(setAppError({ error: error.response.data.message }));
-    // })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));
     })
@@ -150,6 +148,7 @@ export const updateMainPaintingTC = (paintingId: string, authorId: string):
     .updateMainPainting(paintingId, authorId)
     .then((res) => {
       dispatch(getArtistsTC());
+      dispatch(setAppError({ error: '' }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));
@@ -166,6 +165,7 @@ export const addNewPaintingTC = (artistId: string, payload: any):
     .addPaintingToArtist(artistId, payload)
     .then((res) => {
       dispatch(addPainting(res.data));
+      dispatch(setAppError({ error: '' }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));
@@ -181,6 +181,7 @@ export const editPaintingTC = (artistId: string, paintingId: string, payload: an
     .updatePainting(artistId, paintingId, payload)
     .then((res) => {
       // dispatch(addPainting(res.data));
+      dispatch(setAppError({ error: '' }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));
@@ -196,6 +197,7 @@ export const deletePaintingTC = (artistId: string, paintingId: string):
     .deletePainting(artistId, paintingId)
     .then((res) => {
       dispatch(deletePainting(res.data));
+      dispatch(setAppError({ error: '' }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));
@@ -211,6 +213,7 @@ export const deleteArtistTC = (artistId: string):
     .deleteArtist(artistId)
     .then((res) => {
       // dispatch(deletePainting(res.data));
+      dispatch(setAppError({ error: '' }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));

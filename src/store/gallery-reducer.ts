@@ -31,7 +31,11 @@ export const setArtists = (payload: { artists: Array<ArtistResponseType> }) => (
   payload,
 } as const);
 export const createArtist = (artist: ArtistResponseType) => ({
-  type: 'GALLERY/CREATE-ARTISTS',
+  type: 'GALLERY/CREATE-ARTIST',
+  artist,
+} as const);
+export const updateArtist = (artist: ArtistResponseType) => ({
+  type: 'GALLERY/UPDATE-ARTIST',
   artist,
 } as const);
 export const setGenres = (payload: { genres: GenreResponseType[] }) => ({
@@ -59,6 +63,7 @@ type ActionsType = ReturnType<typeof setArtists>
     | ReturnType<typeof setCurrentPagesPortion>
     | ReturnType<typeof setUrlParams>
     | ReturnType<typeof setGenres>
+    | ReturnType<typeof updateArtist>
 
 const initialState: InitialGalleryStateType = {
   artists: [],
@@ -81,10 +86,19 @@ export const galleryReducer = (
     case 'GALLERY/SET-URL-PARAMS':
     case 'GALLERY/SET-GENRES':
       return { ...state, ...action.payload };
-    case 'GALLERY/CREATE-ARTISTS': {
+    case 'GALLERY/CREATE-ARTIST': {
       const stateCopy = { ...state };
       const { artists } = stateCopy;
       const newArrayArtists = [...artists, action.artist];
+      stateCopy.artists = newArrayArtists;
+      return stateCopy;
+    }
+    case 'GALLERY/UPDATE-ARTIST': {
+      const stateCopy = { ...state };
+      const { artists } = stateCopy;
+      let updatedArtist = artists.find((artist) => artist._id === action.artist._id);
+      updatedArtist = action.artist;
+      const newArrayArtists = [...artists, updatedArtist];
       stateCopy.artists = newArrayArtists;
       return stateCopy;
     }
@@ -119,6 +133,7 @@ export const getArtistsTC = (payload?: { data: URLSearchParams }): AppThunk => (
     .then((res) => {
       dispatch(setArtists({ artists: res.data.data }));
       dispatch(setTotalPagesCount({ totalPagesCount: res.data.data.length }));
+      dispatch(setAppError({ error: '' }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));
@@ -136,6 +151,7 @@ export const getGenresTC = (): AppThunk => (
     .getGenres()
     .then((res) => {
       dispatch(setGenres({ genres: res.data }));
+      dispatch(setAppError({ error: '' }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));
@@ -182,6 +198,23 @@ export const createArtistTC = (payload: any):
     .createArtist(payload)
     .then((res) => {
       dispatch(createArtist(res.data.data));
+      dispatch(setAppError({ error: '' }));
+    })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};
+export const updateArtistTC = (id: string, payload: FormData):
+    AppThunk => (dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  artistsAPI
+    .updateArtist(id, payload)
+    .then((res) => {
+      dispatch(updateArtist(res.data));
+      dispatch(setAppError({ error: '' }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));

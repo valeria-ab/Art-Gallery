@@ -38,10 +38,6 @@ const MainPage = () => {
     (state) => state.app.error,
   );
 
-  useEffect(() => {
-    dispatch(setUrlParams({ urlParams: Object.fromEntries(searchParams) }));
-    dispatch(getArtistsTC({ data: searchParams }));
-  }, [searchParams]);
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized, shallowEqual,
   );
@@ -50,9 +46,7 @@ const MainPage = () => {
   } = useSelector<IAppStore, InitialGalleryStateType>(
     (state) => state.gallery,
   );
-  const accessToken = useSelector<IAppStore, string>(
-    (state) => state.auth.accessToken,
-  );
+
   const artistsCurrentPortion = artists.slice(
     portionSize * currentPagesPortion - portionSize, portionSize * currentPagesPortion,
   );
@@ -125,18 +119,19 @@ const MainPage = () => {
   useEffect(() => {
     if (isInitialized) {
       dispatch(getArtistsTC());
+      dispatch(getGenresTC());
     } else {
       dispatch(getArtistsStaticTC());
+      dispatch(getGenresStaticTC());
     }
-  }, [isInitialized, accessToken]);
+  }, [isInitialized]);
 
   useEffect(() => {
     if (isInitialized) {
-      dispatch(getGenresTC());
-    } else {
-      dispatch(getGenresStaticTC());
+      dispatch(setUrlParams({ urlParams: Object.fromEntries(searchParams) }));
+      dispatch(getArtistsTC({ data: searchParams }));
     }
-  }, []);
+  }, [searchParams, isInitialized]);
 
   // useEffect(() => {
   //   if (urlParams.name) setName(urlParams.name);
@@ -145,7 +140,12 @@ const MainPage = () => {
   return (
     <>
       {isAddArtistMode
-                && <AddEditArtist onCancelCallback={setAddArtistMode} />}
+                && (
+                <AddEditArtist
+                  onCancelCallback={setAddArtistMode}
+                  mode="add"
+                />
+                )}
       {isInitialized && (
         <div className={cx('buttons_wrapper')}>
           <Button
@@ -203,10 +203,8 @@ const MainPage = () => {
               <div className={cx('filter_title_buttons_wrapper')}>
                 <button
                   type="button"
-                  className={cx('filter_title_button', 'filter_buttons', {
-                    filter_title_button_light: theme === 'light',
-                    filter_title_button_dark: theme === 'dark',
-                  })}
+                  className={cx('filter_title_button', 'filter_buttons',
+                    `filter_title_button_${theme}`)}
                   onClick={() => setGenresFiltersOpened(!isGenresFiltersOpened)}
                 >
                   GENRES

@@ -11,8 +11,7 @@ import { Button } from '../../Button/Button';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 import { Multiselect } from './Multiselect/Multiselect';
 import { AppDispatch, IAppStore } from '../../../store/store';
-import { addNewPaintingTC } from '../../../store/artistPage-reducer';
-import { createArtistTC } from '../../../store/gallery-reducer';
+import { createArtistTC, updateArtistTC } from '../../../store/gallery-reducer';
 import { GenreResponseType, genresAPI, privateInstance } from '../../../utils/api';
 import useDebounce from '../../../hooks/useDebounce';
 
@@ -25,6 +24,8 @@ type PropsType = {
     artistLocation?: string;
     artistDescription?: string;
     avatar?: string;
+    mode: 'add' | 'edit';
+    authorId?: string;
 }
 
 export const AddEditArtist = ({
@@ -33,13 +34,14 @@ export const AddEditArtist = ({
   artistYearsOfLife,
   artistLocation,
   artistDescription,
-  avatar,
+  avatar, mode,
+  authorId,
 }: PropsType) => {
+  const [error, setError] = useState('');
   const [name, setName] = useState(artistName || '');
   const [yearsOfLife, setYearsOfLife] = useState(artistYearsOfLife || '');
   const [country, setCountry] = useState(artistLocation || '');
   const [description, setDescription] = useState(artistDescription || '');
-  const [genres, setGenres] = useState(artistDescription || '');
   const [genresList, setGenresList] = useState<GenreResponseType[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<Array<GenreResponseType>>([]);
   const [drag, setDrag] = useState(false);
@@ -97,16 +99,40 @@ export const AddEditArtist = ({
 
   const onSubmit = () => {
     const formData = new FormData();
+    if (!image) {
+      setError('The field is required');
+    } else {
+      formData.append('avatar', image);
+    }
+    if (!name) {
+      setError('The field is required');
+    } else {
+      formData.append('name', name);
+    }
+    if (!yearsOfLife) {
+      setError('The field is required');
+    } else {
+      formData.append('yearsOfLife', yearsOfLife);
+    }
+    if (!description) {
+      setError('The field is required');
+    } else {
+      formData.append('description', description);
+    }
+
     // @ts-ignore
-    formData.append('avatar', image);
-    formData.append('name', name);
-    formData.append('yearsOfLife', yearsOfLife);
-    formData.append('description', description);
+    // formData.append('avatar', image);
+    // formData.append('name', name);
+    // formData.append('yearsOfLife', yearsOfLife);
+    // formData.append('description', description);
 
     selectedGenres.forEach((item) => formData.append('genres', item._id));
 
-    dispatch(createArtistTC(formData));
-    onCancelCallback(false);
+    if (image && name && yearsOfLife && description) {
+      if (mode === 'add') dispatch(createArtistTC(formData));
+      if (mode === 'edit' && authorId) dispatch(updateArtistTC(authorId, formData));
+      onCancelCallback(false);
+    }
   };
 
   useEffect(() => {
@@ -153,7 +179,6 @@ export const AddEditArtist = ({
                   Upload only .jpg or .png format less than 3 MB
                 </div>
               </div>
-
             </div>
           )
           : (
@@ -191,49 +216,45 @@ export const AddEditArtist = ({
               </div>
               <div className={cx('wrapper')}>
                 <div>
-                  <div className={cx('photoBlock', {
-                    imageAdded: image || avatar,
-                  })}
-                  >
-                    {image || avatar
-                      ? (
-                        <img
-                          src={src}
-                          alt="avatar"
-                          width="100%"
-                          height="100%"
-                        />
-                      )
-                      : (
-                        <>
-                          <img
-                            className={cx('userIcon')}
-                            src={userIcon}
-                            alt="userIcon"
-                            height="60px"
-                            width="60px"
-                          />
-                          <p>You can drop your image here</p>
-                        </>
-                      )}
-                  </div>
-                  <input
-                    type="file"
-                    ref={inRef}
-                    id="input_uploader"
-                    onChange={(e) => upload(e)}
-                    accept=".jpg, .jpeg, .png"
-                    className={cx('input_uploader')}
-                  />
                   <label htmlFor="input_uploader">
-                    {' '}
-                    <Button
-                      value="Browse Profile Photo"
-                      width="210px"
-                      type="outlined"
-                      theme={theme}
+                    <div className={cx('photoBlock', {
+                      imageAdded: image || avatar,
+                    })}
+                    >
+                      {image || avatar
+                        ? (
+                          <img
+                            src={src}
+                            alt="avatar"
+                            width="100%"
+                            height="100%"
+                          />
+                        )
+                        : (
+                          <>
+
+                            <img
+                              className={cx('userIcon')}
+                              src={userIcon}
+                              alt="userIcon"
+                              height="60px"
+                              width="60px"
+                            />
+                            <p>You can drop your image here</p>
+                          </>
+                        )}
+                    </div>
+                    <input
+                      type="file"
+                      ref={inRef}
+                      id="input_uploader"
+                      onChange={(e) => upload(e)}
+                      accept=".jpg, .jpeg, .png"
+                      className={cx('input_uploader')}
                     />
+                    <span className={cx('browseImageButton', `browseImageButton_${theme}`)}>Browse Profile Photo</span>
                   </label>
+                  <p style={{ color: 'red' }}>{error}</p>
                 </div>
                 <div className={cx('wrap')}>
                   <div className={cx('contentContainer')}>
@@ -249,6 +270,7 @@ export const AddEditArtist = ({
                         error={null}
                         propsValue={name}
                       />
+                      <p style={{ color: 'red' }}>{error}</p>
                       <Input
                         label="Years of life"
                         type="text"
@@ -256,6 +278,7 @@ export const AddEditArtist = ({
                         error={null}
                         propsValue={yearsOfLife}
                       />
+                      <p style={{ color: 'red' }}>{error}</p>
                       <Input
                         label="Location"
                         type="text"
@@ -267,6 +290,7 @@ export const AddEditArtist = ({
                         value={description}
                         callback={setDescription}
                       />
+                      <p style={{ color: 'red' }}>{error}</p>
                     </div>
                     <Multiselect
                       genres={genresList}

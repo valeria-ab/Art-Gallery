@@ -24,18 +24,13 @@ const App = () => {
     ));
   };
   const dispatch = useDispatch<AppDispatch>();
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // useEffect(() => {
-  //   dispatch(setUrlParams({ urlParams: Object.fromEntries(searchParams) }));
-  //   dispatch(getCardsTC({ data: searchParams }));
-  // }, [searchParams]);
 
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');
     const refreshToken = Cookies.get('refreshToken');
     if (accessToken && refreshToken) {
-      dispatch(setUserData({ refreshToken, accessToken }));
       dispatch(setInitialized({ isInitialized: true }));
+      dispatch(setUserData({ refreshToken, accessToken }));
     }
   }, []);
 
