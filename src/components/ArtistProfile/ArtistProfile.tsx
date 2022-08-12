@@ -1,18 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { NavLink } from 'react-router-dom';
 // @ts-ignore
 import style from './ArtistPage.scss';
 import arrowBack from '../../assets/buttons/arrowBackLight.png';
-import dash from '../../assets/artistProfile/dash.png';
+import dashDark from '../../assets/artistProfile/dashDark.png';
+import dashLight from '../../assets/artistProfile/dashLight.png';
 import edit from '../../assets/artistProfile/edit.png';
 import deleteIcon from '../../assets/artistProfile/deleteIcon.png';
-import learnMoreIcon from '../../assets/buttons/learnMoreIcon.png';
+import learnMoreIconLight from '../../assets/buttons/learnMoreIconLight.png';
+import learnMoreIconDark from '../../assets/buttons/learnMoreIconDark.png';
 import { IAppStore } from '../../store/store';
 import { ArtistResponseType } from '../../utils/api';
 import { Genre } from './Genre/Genre';
-import { ThemeContext } from '../../contexts/ThemeContext';
+import { ThemeContext, themes } from '../../contexts/ThemeContext';
 import { Button } from '../Button/Button';
 import noImagePlug from '../../assets/photoItem/noImagePlug.png';
 
@@ -34,6 +36,8 @@ const ArtistProfile = (props: PropsType) => {
     ({ auth }) => auth.isInitialized,
   );
   const { theme, toggleTheme } = useContext(ThemeContext);
+
+  const [isReadMoreMode, setReadMoreMode] = useState(false);
 
   return (
     <div className={cx('artistPage')}>
@@ -100,31 +104,49 @@ const ArtistProfile = (props: PropsType) => {
             </div>
             <div
               className={cx('artistNameContainer', {
-                artistNameContainer_light: theme === 'light',
-                artistNameContainer_dark: theme === 'dark',
+                artistNameContainer_light: theme === themes.light,
+                artistNameContainer_dark: theme === themes.dark,
               })}
             >
               <span className={cx('artistName')}>{artistInfo.name || ''}</span>
             </div>
             <div className={cx('dash')}>
-              <img src={dash} alt="dash" width="30px" />
+              <img src={theme === themes.light ? dashLight : dashDark} alt="dash" width="30px" />
             </div>
-            <div className={cx('artistDescription')}>
-              {artistInfo.description || ''}
+            <div className={cx('artistDescription', {
+              artistDescription_readMore: artistInfo.description?.length >= 256 && isReadMoreMode,
+            })}
+            >
+              {artistInfo.description?.length >= 256 && !isReadMoreMode
+                ? `${artistInfo.description?.slice(0, 256)}...`
+                : artistInfo.description
+                  || ''}
             </div>
+
             <div className={cx('learnMoreButton')}>
               <Button
-                value="read more"
+                value={isReadMoreMode ? 'read less' : 'read more'}
                 width="200px"
                 type="outlined"
                 theme={theme}
+                callback={() => setReadMoreMode(!isReadMoreMode)}
+                disabled={artistInfo.description?.length <= 265}
               />
-              <img
-                src={learnMoreIcon}
-                alt="learnMoreIcon"
-                width="12px"
-                height="7px"
-              />
+              <button
+                className={cx('buttonInvisible')}
+                type="button"
+                onClick={() => { setReadMoreMode(!isReadMoreMode); }}
+              >
+                <img
+                  src={theme === themes.light ? learnMoreIconLight : learnMoreIconDark}
+                  alt="learnMoreIcon"
+                  width="12px"
+                  height="7px"
+                  className={cx({
+                    readLess: isReadMoreMode,
+                  })}
+                />
+              </button>
             </div>
 
             <div className={cx('genresBlock')}>
@@ -141,3 +163,12 @@ const ArtistProfile = (props: PropsType) => {
 };
 
 export default ArtistProfile;
+
+export const NoArtworks = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  return (
+    <div className={cx('noArtworks', `noArtworks_${theme}`)}>
+      <img src={noImagePlug} alt="noImagePlug" />
+    </div>
+  );
+};

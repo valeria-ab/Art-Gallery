@@ -35,10 +35,6 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // console.log(window.location.pathname === '/artists');
-  }, [window.location]);
-
   // тут не закроешь просто css-ом потому что, если у стиля будет условие,
   // завясящее от true/false (в нашем случает от isBurgerMenuOpened), то при
   // уменьшении ширины экрана значение isBurgerMenuOpened не изменится само собой

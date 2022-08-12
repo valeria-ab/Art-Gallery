@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 // @ts-ignore
 import style from './App.scss';
@@ -9,7 +9,7 @@ import Header from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { ThemeContext, themes } from './contexts/ThemeContext';
 import ArtistPage from './components/ArtistProfile/ArtistPage';
-import { AppDispatch } from './store/store';
+import { AppDispatch, IAppStore } from './store/store';
 import { setInitialized, setUserData } from './store/auth-reducer';
 import MainPage from './components/MainPage/MainPage';
 
@@ -17,13 +17,16 @@ import MainPage from './components/MainPage/MainPage';
 const cx = classNames.bind(style);
 
 const App = () => {
-  const [currentTheme, setCurrentTheme] = useState(themes.light);
+  const [currentTheme, setCurrentTheme] = useState(Cookies.get('theme') || themes.light);
   const toggleTheme = () => {
     setCurrentTheme((prevCurrentTheme) => (
       prevCurrentTheme === themes.light ? themes.dark : themes.light
     ));
   };
   const dispatch = useDispatch<AppDispatch>();
+  const status = useSelector<IAppStore, string>(
+    (state) => state.app.status,
+  );
 
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');
@@ -34,13 +37,17 @@ const App = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (currentTheme) Cookies.set('theme', currentTheme, { path: 'http://localhost:3000' });
+  }, [currentTheme]);
+
   // const loadingStatus = useSelector<IAppStore, RequestStatusType>(
   //   (state) => state.app.status,
   // );
 
-  // if (loadingStatus === 'loading') {
-  //   return <Loader />;
-  // }
+  if (status === 'loading') {
+    return <div>loading...</div>;
+  }
 
   return (
     <div className={cx('App', currentTheme)}>

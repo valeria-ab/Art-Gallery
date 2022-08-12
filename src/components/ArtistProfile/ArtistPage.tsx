@@ -42,6 +42,9 @@ const ArtistPage = () => {
   const error = useSelector<IAppStore, string>(
     (state) => state.app.error,
   );
+  const status = useSelector<IAppStore, string>(
+    (state) => state.app.status,
+  );
 
   const onDeleteArtistCallback = () => {
     if (authorId) dispatch(deleteArtistTC(authorId));
@@ -73,6 +76,10 @@ const ArtistPage = () => {
       }
     }
   }, [authorId, isInitialized]);
+
+  if (status === 'loading') {
+    return <div>loading...</div>;
+  }
 
   return (
     <div className={cx('artistPage')}>

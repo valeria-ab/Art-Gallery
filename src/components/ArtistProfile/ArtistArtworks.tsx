@@ -9,6 +9,7 @@ import style from './ArtistPage.scss';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { Pagination } from '../Pagination/Pagination';
 import { PageSize } from '../../constants';
+import { NoArtworks } from './ArtistProfile';
 
 const cx = classNames.bind(style);
 
@@ -48,6 +49,7 @@ const ArtistArtworks = ({
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
       />
+      {artworks && (
       <Pagination
         currentPage={currentPage}
         totalCount={artworks?.length}
@@ -55,6 +57,8 @@ const ArtistArtworks = ({
         onPageChange={(page: number) => setCurrentPage(page)}
         siblingCount={1}
       />
+      )}
+      {!artworks && <NoArtworks />}
     </div>
   );
 };

@@ -14,9 +14,10 @@ type ButtonPropsType = {
     type: 'filled' | 'outlined' | 'add' | 'arrow';
     width?: string;
     callback?: () => void;
+    disabled?: boolean;
 };
 export const Button = ({
-  value, theme, type, width, callback,
+  value, theme, type, width, callback, disabled,
 }: ButtonPropsType) => (
   <button
     type="button"
@@ -27,6 +28,7 @@ export const Button = ({
     })}
     style={{ width }}
     onClick={callback}
+    disabled={disabled}
   >
     { type === 'add' && (
     <img

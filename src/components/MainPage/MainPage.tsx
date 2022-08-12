@@ -127,7 +127,7 @@ const MainPage = () => {
   }, [isInitialized]);
 
   useEffect(() => {
-    if (isInitialized) {
+    if (isInitialized && Object.keys(searchParams).length) {
       dispatch(setUrlParams({ urlParams: Object.fromEntries(searchParams) }));
       dispatch(getArtistsTC({ data: searchParams }));
     }
@@ -136,6 +136,13 @@ const MainPage = () => {
   // useEffect(() => {
   //   if (urlParams.name) setName(urlParams.name);
   // }, [urlParams.name]);
+
+  const status = useSelector<IAppStore, string>(
+    (state) => state.app.status,
+  );
+  if (status === 'loading') {
+    return <div>loading...</div>;
+  }
 
   return (
     <>

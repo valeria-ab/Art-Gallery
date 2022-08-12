@@ -3,15 +3,10 @@ import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 // @ts-ignore
 import { ClientJS } from 'clientjs';
-
-export const BASE_URL = 'https://internship-front.framework.team/';
-
-export const instance = axios.create({
-  baseURL: 'https://internship-front.framework.team',
-});
+import { instance } from './axiosInstance';
 
 export const privateInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     Accept: 'application/json',
     Authorization: `Bearer ${Cookies.get('accessToken')}`,
@@ -21,15 +16,21 @@ export const privateInstance = axios.create({
 const client = new ClientJS();
 const fingerprint = client.getFingerprint().toString();
 
-privateInstance.interceptors.response.use(
-  (response) => {
-    console.log(response);
+// privateInstance.interceptors.request.use(
+//
+//   (config) => {
+//     if (!config.headers?.Authorization) {
+//       // @ts-ignore
+//       config.headers.Authorization = `Bearer ${accessToken}`;
+//     }
+//     return config;
+//   }, (error) => Promise.reject(error),
+// );
 
-    return response;
-  },
+privateInstance.interceptors.response.use(
+  (response) => response,
   async (error) => {
     const refreshToken = Cookies.get('refreshToken');
-
     const prevRequest = error?.config;
     if (error?.response?.status === 401 && !prevRequest?.sent) {
       prevRequest.sent = true;
@@ -40,9 +41,10 @@ privateInstance.interceptors.response.use(
             return privateInstance(prevRequest);
           })
           .catch((err) => {
-            alert(err.response.data.message);
+            console.log(err.response.data.message);
             Cookies.remove('accessToken');
             Cookies.remove('refreshToken');
+            throw new Error();
           });
       }
     }
@@ -159,7 +161,7 @@ type RefreshRequestType = {
 }
 export const authAPI = {
   register(payload: RegisterDataType) {
-    return privateInstance.post<{ payload: RegisterDataType },
+    return instance.post<{ payload: RegisterDataType },
             AxiosResponse<RegisterResponseType>>('auth/register', payload);
   },
   login(username: string, password: string) {
