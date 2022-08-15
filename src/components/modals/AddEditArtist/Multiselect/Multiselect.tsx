@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 // @ts-ignore
 import style from './style.scss';
 import { ThemeContext } from '../../../../contexts/ThemeContext';
-import { Genre, GenreForMultiselect } from '../../../ArtistProfile/Genre/Genre';
+import { Genre, GenreForMultiselect } from '../../../ArtistPage/Genre/Genre';
 import { GenreResponseType } from '../../../../utils/api';
 
 const cx = classNames.bind(style);

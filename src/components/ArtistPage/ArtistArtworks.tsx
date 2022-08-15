@@ -9,7 +9,7 @@ import style from './ArtistPage.scss';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { Pagination } from '../Pagination/Pagination';
 import { PageSize } from '../../constants';
-import { NoArtworks } from './ArtistProfile';
+import { NoArtworks } from './ArtistProfile/ArtistProfile';
 
 const cx = classNames.bind(style);
 

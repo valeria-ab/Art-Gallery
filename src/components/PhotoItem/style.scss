@@ -5,7 +5,6 @@
 .photoItem__container {
   margin-top: 10px;
   margin-bottom: 40px;
-  //background-color: #827c7c;
   position: relative;
 
   .hoverButton {
@@ -51,7 +50,7 @@
   }
 
   .photoItem {
-    .photoItem__img {
+    &__img {
       display: block;
       min-width: 300px;
     }
@@ -59,7 +58,7 @@
     .titleContainer {
       display: block;
       position: absolute;
-      min-height: 82px;
+     min-height: 82px;
       padding: 20px 20px 20px 0;
       left: 0;
       bottom: 0;
@@ -80,8 +79,6 @@
 
       .titleBlock {
         padding-left: 20px;
-        //height: 42px;
-        //height: 50%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -172,7 +169,6 @@
   display: block;
   cursor: pointer;
   background: rgba(26, 24, 24, 0.1);
-  //opacity: 0.1;
   border-radius: 4px;
 
 }
@@ -236,8 +232,6 @@
   .photoItem,
   .photoItem__img,
   .photoItem__container {
-    //width: 280px;
-    //height: 185px;
     width: 100%;
   }
 }
@@ -247,7 +241,6 @@
   .photoItem__img,
   .photoItem__container {
     width: 352px;
-    //height: 220px;
   }
 }
 
@@ -256,6 +249,33 @@
   .photoItem__img,
   .photoItem__container {
     width: 392px;
-    //height: 260px;
+  }
+}
+
+.noImage {
+  height: 280px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: $Inter;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 12px;
+  line-height: 15px;
+  &_light {
+    background-color: $secondaryWhite;
+  }
+  &_dark {
+    background-color: $secondaryBlack;
+  }
+  &_img {
+    margin-top: 19%;
+  }
+  .description {
+     color: $secondaryGray;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 10px;
   }
 }

@@ -8,7 +8,7 @@ import style from './App.scss';
 import Header from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { ThemeContext, themes } from './contexts/ThemeContext';
-import ArtistPage from './components/ArtistProfile/ArtistPage';
+import ArtistPage from './components/ArtistPage/ArtistPage';
 import { AppDispatch, IAppStore } from './store/store';
 import { setInitialized, setUserData } from './store/auth-reducer';
 import MainPage from './components/MainPage/MainPage';

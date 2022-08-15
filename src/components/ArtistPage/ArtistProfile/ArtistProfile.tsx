@@ -2,21 +2,19 @@ import React, { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { NavLink } from 'react-router-dom';
-// @ts-ignore
-import style from './ArtistPage.scss';
-import arrowBack from '../../assets/buttons/arrowBackLight.png';
-import dashDark from '../../assets/artistProfile/dashDark.png';
-import dashLight from '../../assets/artistProfile/dashLight.png';
-import edit from '../../assets/artistProfile/edit.png';
-import deleteIcon from '../../assets/artistProfile/deleteIcon.png';
-import learnMoreIconLight from '../../assets/buttons/learnMoreIconLight.png';
-import learnMoreIconDark from '../../assets/buttons/learnMoreIconDark.png';
-import { IAppStore } from '../../store/store';
-import { ArtistResponseType } from '../../utils/api';
-import { Genre } from './Genre/Genre';
-import { ThemeContext, themes } from '../../contexts/ThemeContext';
-import { Button } from '../Button/Button';
-import noImagePlug from '../../assets/photoItem/noImagePlug.png';
+import style from './style.scss';
+import dashDark from '../../../assets/artistProfile/dashDark.png';
+import dashLight from '../../../assets/artistProfile/dashLight.png';
+import edit from '../../../assets/artistProfile/edit.png';
+import deleteIcon from '../../../assets/artistProfile/deleteIcon.png';
+import learnMoreIconLight from '../../../assets/buttons/learnMoreIconLight.png';
+import learnMoreIconDark from '../../../assets/buttons/learnMoreIconDark.png';
+import { IAppStore } from '../../../store/store';
+import { ArtistResponseType } from '../../../utils/api';
+import { Genre } from '../Genre/Genre';
+import { ThemeContext, themes } from '../../../contexts/ThemeContext';
+import { Button } from '../../Button/Button';
+import noImagePlug from '../../../assets/photoItem/noImagePlug.png';
 
 const cx = classNames.bind(style);
 
@@ -86,7 +84,7 @@ const ArtistProfile = (props: PropsType) => {
                   width="254px"
                   height="228px"
                   alt="artist_picture"
-                  className={cx('noPicture')}
+                  // className={cx('noPicture')}
                 />
 
                 <p className={cx('noPictureDescription')}>No Image uploaded</p>
@@ -97,7 +95,7 @@ const ArtistProfile = (props: PropsType) => {
             infoBlock_dark: theme === 'dark',
           })}
           >
-            <div className={cx('artistInfo')}>
+            <div className={cx('artistInfo', `artistInfo_${theme}`)}>
               <span className={cx('infoBlock_padding')}>
                 {artistInfo.yearsOfLife ? artistInfo.yearsOfLife : ''}
               </span>
@@ -110,7 +108,7 @@ const ArtistProfile = (props: PropsType) => {
             >
               <span className={cx('artistName')}>{artistInfo.name || ''}</span>
             </div>
-            <div className={cx('dash')}>
+            <div className={cx('dash', `dash_${theme}`)}>
               <img src={theme === themes.light ? dashLight : dashDark} alt="dash" width="30px" />
             </div>
             <div className={cx('artistDescription', {
@@ -136,6 +134,7 @@ const ArtistProfile = (props: PropsType) => {
                 className={cx('buttonInvisible')}
                 type="button"
                 onClick={() => { setReadMoreMode(!isReadMoreMode); }}
+                disabled={artistInfo.description?.length <= 265}
               >
                 <img
                   src={theme === themes.light ? learnMoreIconLight : learnMoreIconDark}
@@ -157,7 +156,6 @@ const ArtistProfile = (props: PropsType) => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };

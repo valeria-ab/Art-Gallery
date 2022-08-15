@@ -2,7 +2,6 @@
 @import "./src/common/styles/CommonStyles";
 
 .button {
-  //width: 200px;
   border-radius: 30px;
   height: 47px;
   display: flex;
@@ -12,6 +11,10 @@
   padding: 0;
   border: none;
   background-color: transparent;
+  &:disabled {
+    cursor: auto;
+    opacity: 0.4;
+  }
 }
 .button__darkMode {
 background-color: $accentGold;

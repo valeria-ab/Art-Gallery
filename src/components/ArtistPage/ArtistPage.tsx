@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
-import ArtistProfile from './ArtistProfile';
+import ArtistProfile from './ArtistProfile/ArtistProfile';
 import {
   deleteArtistTC,
   deletePaintingTC,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
@@ -54,7 +54,6 @@ const PhotoItem = ({
     <div
       className={cx('photoItem__container', {
         'photoItem__container-active': hover && onHover === 'artists',
-        // settings__hover: hover && onHover === 'artworks',
       })}
       onMouseOver={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -84,15 +83,15 @@ const PhotoItem = ({
             </div>
             <div className={cx('displayNone', {
               settings__menu: isMenuOpened && onHover === 'artworks',
-              settings__menu_light: themes.light,
-              settings__menu_dark: themes.dark,
+              settings__menu_light: theme === themes.light,
+              settings__menu_dark: theme === themes.dark,
             })}
             >
               <div
                 className={cx({
                   menuItem: hover && onHover === 'artworks',
-                  menuItem_light: themes.light,
-                  menuItem_dark: themes.dark,
+                  menuItem_light: theme === themes.light,
+                  menuItem_dark: theme === themes.dark,
                 })}
                 role="button"
                 onKeyDown={() => {
@@ -109,8 +108,8 @@ const PhotoItem = ({
               <div
                 className={cx({
                   menuItem: hover && onHover === 'artworks',
-                  menuItem_light: themes.light,
-                  menuItem_dark: themes.dark,
+                  menuItem_light: theme === themes.light,
+                  menuItem_dark: theme === themes.dark,
                 })}
                 role="button"
                 onKeyDown={() => {
@@ -129,8 +128,8 @@ const PhotoItem = ({
                 tabIndex={-1}
                 className={cx({
                   menuItem: hover && onHover === 'artworks',
-                  menuItem_light: themes.light,
-                  menuItem_dark: themes.dark,
+                  menuItem_light: theme === themes.light,
+                  menuItem_dark: theme === themes.dark,
                 })}
                 onClick={() => onDeletePictureClick && onDeletePictureClick(id)}
               >
@@ -141,22 +140,26 @@ const PhotoItem = ({
         </>
       )}
       <NavLink to={`/artists/${id}`} className={cx('photoItem')}>
-        <img
-          className={cx('photoItem__img', {
-            'photoItem__img-active': hover && onHover === 'artists',
-          })}
-          src={picture === 'no image' ? noImagePlug : `${process.env.REACT_APP_BASE_URL}${picture}`}
-          alt="mainPicture"
-        />
+        {(picture === 'no image')
+          ? <NoImage theme={theme} />
+          : (
+            <img
+              className={cx('photoItem__img', {
+                'photoItem__img-active': hover && onHover === 'artists',
+              })}
+              src={`${process.env.REACT_APP_BASE_URL}${picture}`}
+              alt="mainPicture"
+            />
+          )}
         <div className={cx('hoverButton', {
           'hoverButton-show': hover,
-          hoverButton__dark: themes.dark,
-          hoverButton__light: themes.light,
+          hoverButton__dark: theme === themes.dark,
+          hoverButton__light: theme === themes.light,
         })}
         >
           <span className={cx('hoverButtonSpan', {
-            hoverButtonSpan__dark: themes.dark,
-            hoverButtonSpan__light: themes.light,
+            hoverButtonSpan__dark: theme === themes.dark,
+            hoverButtonSpan__light: theme === themes.light,
           })}
           >
             Learn more
@@ -183,3 +186,23 @@ const PhotoItem = ({
 };
 
 export default PhotoItem;
+
+type NoImagePropsType = {
+    theme: string;
+}
+export const NoImage: FC<NoImagePropsType> = ({ theme }) => (
+  <div className={cx('noImage',
+    `noImage_${theme}`)}
+  >
+    <img
+      className={cx('noImage_img')}
+      src={noImagePlug}
+      alt="noImage"
+      width="65px"
+      height="60px"
+    />
+    <p className={cx('description')}>
+      No image uploaded
+    </p>
+  </div>
+);
