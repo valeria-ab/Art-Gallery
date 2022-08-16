@@ -3,14 +3,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
-import ArtistProfile from './ArtistProfile/ArtistProfile';
+import ArtistProfile, { NoArtworks } from './ArtistProfile/ArtistProfile';
 import {
   deleteArtistTC,
   deletePaintingTC,
   getArtistInfoStaticTC,
   getArtistInfoTC,
 } from '../../store/artistPage-reducer';
-import { ArtistResponseType } from '../../utils/api';
+import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
 // @ts-ignore
 import style from './ArtistPage.scss';
 import ArtistArtworks from './ArtistArtworks';
@@ -29,6 +29,9 @@ const ArtistPage = () => {
   const navigate = useNavigate();
   const artistInfo = useSelector<IAppStore, ArtistResponseType>(
     ({ artistPage }) => artistPage.artistInfo,
+  );
+  const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
+    ({ artistPage }) => artistPage.artistInfo.paintings,
   );
   const isInitialized = useSelector<IAppStore, boolean>(
     ({ auth }) => auth.isInitialized,
@@ -130,6 +133,20 @@ const ArtistPage = () => {
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
       />
+      {artworks?.length < 1 && (
+      <>
+        <NoArtworks
+          addArtwork={setAddEditPictureMode}
+          setAddEditPictureModeOn={setAddEditPictureModeOn}
+        />
+        <div className={cx('breakLineContainer')}>
+          <div className={cx('breakLine', `breakLine_${theme}`)} />
+        </div>
+        <div className={cx('noArtworksDescription')}>
+          The paintings of this artist have not been uploaded yet.
+        </div>
+      </>
+      )}
       {error && <ToastMessage />}
     </div>
   );

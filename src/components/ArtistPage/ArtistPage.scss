@@ -224,15 +224,3 @@
 //  cursor: pointer;
 //}
 
-.noArtworks {
-  width: 392px;
-  height: 260px;
-  border-radius: 2px;
-  &_light {
-    border: 1px dashed $primaryLightGray;
-  }
-  &_dark {
-    background-color: $secondaryBlack;
-    border: 1px dashed $primaryDarkGray;
-  }
-}

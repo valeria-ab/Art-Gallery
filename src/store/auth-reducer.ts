@@ -93,8 +93,8 @@ export const loginTC = (username: string, password: string): AppThunk => (dispat
   authAPI
     .login(username, password)
     .then((res) => {
-      Cookies.set('accessToken', res.data.accessToken, { path: 'http://localhost:3000' });
-      Cookies.set('refreshToken', res.data.refreshToken, { path: 'http://localhost:3000' });
+      Cookies.set('accessToken', res.data.accessToken);
+      Cookies.set('refreshToken', res.data.refreshToken);
       dispatch(
         setUserData({
           accessToken: res.data.accessToken,

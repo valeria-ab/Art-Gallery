@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { NavLink } from 'react-router-dom';
@@ -15,6 +15,7 @@ import { Genre } from '../Genre/Genre';
 import { ThemeContext, themes } from '../../../contexts/ThemeContext';
 import { Button } from '../../Button/Button';
 import noImagePlug from '../../../assets/photoItem/noImagePlug.png';
+import addDark from '../../../assets/buttons/addDark.png';
 
 const cx = classNames.bind(style);
 
@@ -84,7 +85,6 @@ const ArtistProfile = (props: PropsType) => {
                   width="254px"
                   height="228px"
                   alt="artist_picture"
-                  // className={cx('noPicture')}
                 />
 
                 <p className={cx('noPictureDescription')}>No Image uploaded</p>
@@ -95,21 +95,23 @@ const ArtistProfile = (props: PropsType) => {
             infoBlock_dark: theme === 'dark',
           })}
           >
-            <div className={cx('artistInfo', `artistInfo_${theme}`)}>
-              <span className={cx('infoBlock_padding')}>
-                {artistInfo.yearsOfLife ? artistInfo.yearsOfLife : ''}
-              </span>
-            </div>
-            <div
-              className={cx('artistNameContainer', {
-                artistNameContainer_light: theme === themes.light,
-                artistNameContainer_dark: theme === themes.dark,
-              })}
-            >
-              <span className={cx('artistName')}>{artistInfo.name || ''}</span>
-            </div>
-            <div className={cx('dash', `dash_${theme}`)}>
-              <img src={theme === themes.light ? dashLight : dashDark} alt="dash" width="30px" />
+            <div className={cx('qqq')}>
+              <div className={cx('artistInfo', `artistInfo_${theme}`)}>
+                <span className={cx('infoBlock_padding')}>
+                  {artistInfo.yearsOfLife ? artistInfo.yearsOfLife : ''}
+                </span>
+              </div>
+              <div
+                className={cx('artistNameContainer', {
+                  artistNameContainer_light: theme === themes.light,
+                  artistNameContainer_dark: theme === themes.dark,
+                })}
+              >
+                <span className={cx('artistName')}>{artistInfo.name || ''}</span>
+              </div>
+              <div className={cx('dash', `dash_${theme}`)}>
+                <img src={theme === themes.light ? dashLight : dashDark} alt="dash" width="30px" />
+              </div>
             </div>
             <div className={cx('artistDescription', {
               artistDescription_readMore: artistInfo.description?.length >= 256 && isReadMoreMode,
@@ -133,7 +135,9 @@ const ArtistProfile = (props: PropsType) => {
               <button
                 className={cx('buttonInvisible')}
                 type="button"
-                onClick={() => { setReadMoreMode(!isReadMoreMode); }}
+                onClick={() => {
+                  setReadMoreMode(!isReadMoreMode);
+                }}
                 disabled={artistInfo.description?.length <= 265}
               >
                 <img
@@ -162,11 +166,38 @@ const ArtistProfile = (props: PropsType) => {
 
 export default ArtistProfile;
 
-export const NoArtworks = () => {
+type NoArtworksPropsType = {
+  addArtwork: (value: 'add' | 'edit') => void;
+  setAddEditPictureModeOn: (value: boolean) => void;
+}
+export const NoArtworks:FC<NoArtworksPropsType> = ({ addArtwork, setAddEditPictureModeOn }) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   return (
     <div className={cx('noArtworks', `noArtworks_${theme}`)}>
-      <img src={noImagePlug} alt="noImagePlug" />
+      <div className={cx('noArtworksContainer')}>
+        <img
+          src={noImagePlug}
+          alt="noImagePlug"
+          width="168px"
+          height="151px"
+        />
+        <button
+          type="button"
+          className={cx('addFirstPictureButton',
+            `addFirstPictureButton_${theme}`)}
+          onClick={() => {
+            addArtwork('add');
+            setAddEditPictureModeOn(true);
+          }}
+        >
+          <img
+            src={addDark}
+            alt="addPicture"
+            width="16px"
+            height="16px"
+          />
+        </button>
+      </div>
     </div>
   );
 };

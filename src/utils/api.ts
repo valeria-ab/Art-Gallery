@@ -9,41 +9,45 @@ export const privateInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     Accept: 'application/json',
-    Authorization: `Bearer ${Cookies.get('accessToken')}`,
+    // Authorization: `Bearer ${Cookies.get('accessToken')}`,
   },
   withCredentials: true,
 });
 const client = new ClientJS();
 const fingerprint = client.getFingerprint().toString();
 
-// privateInstance.interceptors.request.use(
-//
-//   (config) => {
-//     if (!config.headers?.Authorization) {
-//       // @ts-ignore
-//       config.headers.Authorization = `Bearer ${accessToken}`;
-//     }
-//     return config;
-//   }, (error) => Promise.reject(error),
-// );
+privateInstance.interceptors.request.use(
+
+  (config) => {
+    // if (!config.headers?.Authorization) {
+    // @ts-ignore
+    config.headers.Authorization = `Bearer ${Cookies.get('accessToken')}`;
+    // console.log(Cookies.get('accessToken'));
+    // }
+    return config;
+  }, (error) => Promise.reject(error),
+);
 
 privateInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const refreshToken = Cookies.get('refreshToken');
     const prevRequest = error?.config;
+    console.log(error);
     if (error?.response?.status === 401 && !prevRequest?.sent) {
       prevRequest.sent = true;
       if (refreshToken) {
         authAPI.refresh({ refreshToken, fingerprint })
           .then((res) => {
-            prevRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
+            Cookies.set('accessToken', res.data.accessToken);
+            Cookies.set('refreshToken', res.data.refreshToken);
+            // prevRequest.headers./Authorization = `Bearer ${res.data.accessToken}`;
             return privateInstance(prevRequest);
           })
           .catch((err) => {
             console.log(err.response.data.message);
-            Cookies.remove('accessToken');
-            Cookies.remove('refreshToken');
+            // Cookies.remove('accessToken');
+            // Cookies.remove('refreshToken');
             throw new Error();
           });
       }

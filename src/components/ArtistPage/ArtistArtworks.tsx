@@ -49,7 +49,7 @@ const ArtistArtworks = ({
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
       />
-      {artworks && (
+      {artworks?.length > 0 && (
       <Pagination
         currentPage={currentPage}
         totalCount={artworks?.length}
@@ -58,7 +58,17 @@ const ArtistArtworks = ({
         siblingCount={1}
       />
       )}
-      {!artworks && <NoArtworks />}
+      {/* {artworks?.length < 1 && ( */}
+      {/* <> */}
+      {/*  <NoArtworks /> */}
+      {/*  <div className={cx('breakLineContainer')}> */}
+      {/*    <div className={cx('breakLine', `breakLine_${theme}`)} /> */}
+      {/*  </div> */}
+      {/*  <div className={cx('noArtworksDescription')}> */}
+      {/*    The paintings of this artist have not been uploaded yet. */}
+      {/*  </div> */}
+      {/* </> */}
+      {/* )} */}
     </div>
   );
 };
