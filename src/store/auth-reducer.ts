@@ -6,8 +6,6 @@ import { setAppError, setAppStatus } from './app-reducer';
 import { AppThunk, IAppStore } from './store';
 
 export type AuthState = {
-    // error: string;
-    // redirectToLogin: boolean;
     isInitialized: boolean;
     accessToken: string ;
     refreshToken: string ;
@@ -36,8 +34,6 @@ export type AuthActions =
     | ReturnType<typeof setFingerPrint>;
 
 export const AuthInitialState: AuthState = {
-  // error: string;
-  // redirectToLogin: boolean;
   isInitialized: false,
   accessToken: '',
   refreshToken: '',

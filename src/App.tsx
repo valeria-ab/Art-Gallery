@@ -38,7 +38,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (currentTheme) Cookies.set('theme', currentTheme, { path: 'http://localhost:3000' });
+    if (currentTheme) Cookies.set('theme', currentTheme);
   }, [currentTheme]);
 
   // const loadingStatus = useSelector<IAppStore, RequestStatusType>(
