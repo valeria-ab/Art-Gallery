@@ -114,19 +114,6 @@
       top: 300px;
       padding-right: 20px;
       padding-bottom: 20px;
-      .qqq {
-        @media screen and (max-width: 768px) {
-          //top: 80%;
-          //width: 95%;
-          //padding: 0;
-          //
-          //z-index: 101;
-          //position: absolute;
-          //min-height: 555px;
-          //max-width: 600px;
-          //right: 50%;
-
-        }
       }
 
       @media screen and (max-width: 1200px) {
@@ -281,7 +268,7 @@
       }
     }
   }
-}
+
 
 .noArtworks {
   width: 392px;

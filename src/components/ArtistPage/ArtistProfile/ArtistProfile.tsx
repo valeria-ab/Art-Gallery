@@ -95,23 +95,21 @@ const ArtistProfile = (props: PropsType) => {
             infoBlock_dark: theme === 'dark',
           })}
           >
-            <div className={cx('qqq')}>
-              <div className={cx('artistInfo', `artistInfo_${theme}`)}>
-                <span className={cx('infoBlock_padding')}>
-                  {artistInfo.yearsOfLife ? artistInfo.yearsOfLife : ''}
-                </span>
-              </div>
-              <div
-                className={cx('artistNameContainer', {
-                  artistNameContainer_light: theme === themes.light,
-                  artistNameContainer_dark: theme === themes.dark,
-                })}
-              >
-                <span className={cx('artistName')}>{artistInfo.name || ''}</span>
-              </div>
-              <div className={cx('dash', `dash_${theme}`)}>
-                <img src={theme === themes.light ? dashLight : dashDark} alt="dash" width="30px" />
-              </div>
+            <div className={cx('artistInfo', `artistInfo_${theme}`)}>
+              <span className={cx('infoBlock_padding')}>
+                {artistInfo.yearsOfLife ? artistInfo.yearsOfLife : ''}
+              </span>
+            </div>
+            <div
+              className={cx('artistNameContainer', {
+                artistNameContainer_light: theme === themes.light,
+                artistNameContainer_dark: theme === themes.dark,
+              })}
+            >
+              <span className={cx('artistName')}>{artistInfo.name || ''}</span>
+            </div>
+            <div className={cx('dash', `dash_${theme}`)}>
+              <img src={theme === themes.light ? dashLight : dashDark} alt="dash" width="30px" />
             </div>
             <div className={cx('artistDescription', {
               artistDescription_readMore: artistInfo.description?.length >= 256 && isReadMoreMode,

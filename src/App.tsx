@@ -12,6 +12,7 @@ import ArtistPage from './components/ArtistPage/ArtistPage';
 import { AppDispatch, IAppStore } from './store/store';
 import { setInitialized, setUserData } from './store/auth-reducer';
 import MainPage from './components/MainPage/MainPage';
+import Slider from './components/Slider/Slider';
 
 // @ts-ignore
 const cx = classNames.bind(style);
@@ -61,6 +62,7 @@ const App = () => {
               element={<MainPage />}
             />
             <Route path="/artists/:authorId" element={<ArtistPage />} />
+            <Route path="/artists/:authorId/paintings/:paintingId" element={<Slider />} />
             <Route path={'/*'} element={<div>Page not found</div>} />
           </Routes>
           <Footer />

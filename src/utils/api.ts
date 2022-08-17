@@ -103,7 +103,7 @@ type UpdateMainPaintingResponseType = {
     originalname: string;
 };
 
-type SpecifiedPaintingByIdType = {
+export type SpecifiedPaintingByIdType = {
     _id: string;
     name: string;
     yearOfCreation: string;
@@ -203,7 +203,7 @@ export const artistsAPI = {
       `artists/${authorId}/paintings`,
     );
   },
-  getSpecifiedPaintingById(paintingId: string, authorId: string) {
+  getSpecifiedPaintingById(authorId: string, paintingId: string) {
     return privateInstance.get<SpecifiedPaintingByIdType>(
       `artists/${authorId}/paintings/${paintingId}`,
     );

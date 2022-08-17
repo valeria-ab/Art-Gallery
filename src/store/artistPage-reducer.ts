@@ -2,7 +2,7 @@ import {
   AddPaintingToArtistRequestType,
   ArtistResponseType,
   artistsAPI,
-  AuthorPaintingsType, CreateArtistRequestType,
+  AuthorPaintingsType, CreateArtistRequestType, SpecifiedPaintingByIdType,
 } from '../utils/api';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk, IAppStore } from './store';
@@ -15,6 +15,8 @@ export type InitialCardsStateType = {
     currentPainting: AuthorPaintingsType;
     artworksTotalPagesCount: number;
     artworksPortionSize: number;
+    photoForSlider: SpecifiedPaintingByIdType;
+
 };
 
 export const setArtistInfo = (payload: { artistInfo: ArtistResponseType }) => ({
@@ -46,6 +48,10 @@ export const setArtworksCurrentPage = (payload: { artworksCurrentPage: number })
   type: 'ARTIST_PAGE/SET-CURRENT-PAGE',
   payload,
 } as const);
+export const setPhotoForSlider = (payload: { photoForSlider: SpecifiedPaintingByIdType }) => ({
+  type: 'ARTIST_PAGE/SET-PHOTO-FOR-SLIDER',
+  payload,
+} as const);
 
 type ActionsType =
     | ReturnType<typeof setArtistInfo>
@@ -55,12 +61,14 @@ type ActionsType =
     | ReturnType<typeof setArtworksTotalPagesCount>
     | ReturnType<typeof setArtworksCurrentPagesPortion>
     | ReturnType<typeof setArtworksCurrentPage>
+    | ReturnType<typeof setPhotoForSlider>
 
 const initialState: InitialCardsStateType = {
   artistInfo: {} as ArtistResponseType,
   currentPainting: {} as AuthorPaintingsType,
   artworksTotalPagesCount: 100,
   artworksPortionSize: 1,
+  photoForSlider: {} as SpecifiedPaintingByIdType,
 };
 
 export const artistPageReducer = (
@@ -73,6 +81,7 @@ export const artistPageReducer = (
     case 'ARTIST_PAGE/SET-TOTAL-PAGES-COUNT':
     case 'ARTIST_PAGE/SET-CURRENT-PAGES-PORTION':
     case 'ARTIST_PAGE/SET-CURRENT-PAGE':
+    case 'ARTIST_PAGE/SET-PHOTO-FOR-SLIDER':
       return { ...state, ...action.payload };
     case 'ARTIST_PAGE/ADD-PICTURE': {
       const stateCopy = { ...state };
@@ -214,6 +223,23 @@ export const deleteArtistTC = (artistId: string):
     .then((res) => {
       // dispatch(deletePainting(res.data));
       dispatch(setAppError({ error: '' }));
+    })
+    .catch((error) => {
+      dispatch(setAppError({ error: error.response.data.message }));
+    })
+    .finally(() => {
+      dispatch(setAppStatus({ status: 'idle' }));
+    });
+};
+
+export const getPaintingTC = (authorId: string, paintingId: string):
+    AppThunk => (dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }));
+  artistsAPI
+    .getSpecifiedPaintingById(paintingId, authorId)
+    .then((res) => {
+      console.log(res.data.image);
+      dispatch(setPhotoForSlider({ photoForSlider: res.data }));
     })
     .catch((error) => {
       dispatch(setAppError({ error: error.response.data.message }));

@@ -139,7 +139,12 @@ const PhotoItem = ({
           </div>
         </>
       )}
-      <NavLink to={`/artists/${id}`} className={cx('photoItem')}>
+      <NavLink
+        to={onHover === 'artists'
+          ? `/artists/${id}`
+          : `/artists/${id}/paintings/${pictureData?.image._id}`}
+        className={cx('photoItem')}
+      >
         {(picture === 'no image')
           ? <NoImage theme={theme} />
           : (

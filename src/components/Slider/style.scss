@@ -1,0 +1,23 @@
+@import "./src/common/styles/sass/baseColors.scss";
+@import "./src/common/styles/CommonStyles";
+
+.slider {
+  //height: 100vh;
+  max-width: 100vw;
+  //position: absolute;
+  //top: 0;
+  //z-index: 100000000;
+  //background: url("https://internship-front.framework.team//images/62e148214df711d4f7f68f46/original.jpg") no-repeat center;
+  .item {
+    height: 100%;
+    width: 100%;
+    max-width: 100vw;
+  }
+  .counter {
+    //position: absolute;
+    //bottom: 10%;
+    font-weight: bold;
+    color: red;
+    //z-index: 100000000;
+  }
+}

@@ -1,18 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import { useSearchParams } from 'react-router-dom';
 import { AppDispatch, IAppStore } from '../../store/store';
 import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
-import { ThemeContext, themes } from '../../contexts/ThemeContext';
+import { ThemeContext } from '../../contexts/ThemeContext';
 import style from './style.scss';
 import PhotoItem from '../PhotoItem/PhotoItem';
 import { Button } from '../Button/Button';
-import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
-import settingsIconLight from '../../assets/mainPageFilters/settingsIconLight.png';
-import searchIconLight from '../../assets/mainPageFilters/searchIconLight.png';
-import { InitialGalleryStateType, UrlParamsType } from '../../store/gallery-reducer';
-import useDebounce from '../../hooks/useDebounce';
+import { InitialGalleryStateType } from '../../store/gallery-reducer';
 
 const cx = classNames.bind(style);
 
