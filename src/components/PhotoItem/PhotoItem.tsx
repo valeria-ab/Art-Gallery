@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './style.scss';
-import { deletePaintingTC, setCurrentPainting, updateMainPaintingTC } from '../../store/artistPage-reducer';
+import { setCurrentPainting, updateMainPaintingTC } from '../../store/artistPage-reducer';
 import cogwheel from '../../assets/photoItem/cogwheel.png';
 import noImagePlug from '../../assets/photoItem/noImagePlug.png';
 import { AuthorPaintingsType } from '../../utils/api';
@@ -41,7 +41,7 @@ const PhotoItem = ({
   const [isMenuOpened, setMenuOpened] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { authorId } = useParams();
-
+  console.log(`PhotoItem ${id}`);
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
@@ -50,6 +50,7 @@ const PhotoItem = ({
     if (pictureData) dispatch(setCurrentPainting({ currentPainting: pictureData }));
     if (onEditPictureClick) onEditPictureClick('edit');
   };
+
   return (
     <div
       className={cx('photoItem__container', {
@@ -142,7 +143,7 @@ const PhotoItem = ({
       <NavLink
         to={onHover === 'artists'
           ? `/artists/${id}`
-          : `/artists/${id}/paintings/${pictureData?.image._id}`}
+          : `/artists/${authorId}/paintings/${id}`}
         className={cx('photoItem')}
       >
         {(picture === 'no image')

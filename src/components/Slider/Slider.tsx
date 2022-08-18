@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
 // @ts-ignore
@@ -12,6 +12,14 @@ import {
   setCurrentPainting,
 } from '../../store/artistPage-reducer';
 import { AuthorPaintingsType, SpecifiedPaintingByIdType } from '../../utils/api';
+import arrowLeft from '../../assets/slider/arrowLeft.png';
+import arrowRight from '../../assets/slider/arrowRight.png';
+import cancel from '../../assets/slider/cancel.png';
+import editIconLight from '../../assets/slider/editIconLight.png';
+import editIconDark from '../../assets/slider/editIconDark.png';
+import deleteIconDark from '../../assets/slider/deleteIconDark.png';
+import deleteIconLight from '../../assets/slider/deleteIconLight.png';
+import { ThemeContext, themes } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
@@ -29,6 +37,7 @@ type PhotoItemPropsType = {
 
 const Slider = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const { authorId, paintingId } = useParams();
   const photoForSlider = useSelector<IAppStore, SpecifiedPaintingByIdType>(
     ({ artistPage }) => artistPage.photoForSlider,
@@ -39,6 +48,8 @@ const Slider = () => {
   const isInitialized = useSelector<IAppStore, boolean>(
     ({ auth }) => auth.isInitialized,
   );
+
+  console.log(authorId, paintingId);
 
   useEffect(() => {
     if (authorId) {
@@ -54,9 +65,14 @@ const Slider = () => {
   useEffect(() => {
     if (authorId && paintingId) dispatch(getPaintingTC(authorId, paintingId));
   }, []);
-  console.log(artworks?.length);
+
   return (
     <div className={cx('slider')}>
+      <div className={cx('canselButton')}>
+        <NavLink to={`/artists/${photoForSlider._id}`} type="button">
+          <img src={cancel} height="16px" width="16px" alt="cancel" />
+        </NavLink>
+      </div>
       <picture className={cx('item')}>
         <source
           srcSet={`${process.env.REACT_APP_BASE_URL}${photoForSlider?.image?.webp}`}
@@ -72,6 +88,58 @@ const Slider = () => {
         />
       </picture>
       <span className={cx('counter')}>{artworks?.length}</span>
+      <div className={cx('arrowLeft')}>
+        <button type="button">
+          <img
+            src={arrowLeft}
+            alt="arrowLeft"
+            width="21px"
+            height="34px"
+          />
+        </button>
+      </div>
+      <div className={cx('arrowRight')}>
+        <button type="button">
+          <img
+            src={arrowRight}
+            alt="arrowRight"
+            width="21px"
+            height="34px"
+          />
+        </button>
+      </div>
+      <div className={cx('infoBlock', `infoBlock_${theme}`)}>
+        <div className={cx('iconsBlockContainer')}>
+          <div className={cx('iconsBlock')}>
+            <button type="button">
+              <img
+                src={theme === themes.light
+                  ? editIconLight
+                  : editIconDark}
+                alt="edit"
+                width="16px"
+                height="16px"
+              />
+            </button>
+            <button type="button">
+              <img
+                src={theme === themes.light
+                  ? deleteIconLight
+                  : deleteIconDark}
+                alt="delete"
+                width="16px"
+                height="16px"
+              />
+            </button>
+          </div>
+
+        </div>
+        <div className={cx('infoBlockContainer', `infoBlockContainer_${theme}`)}>
+
+          <div className={cx('year', `year_${theme}`)}>{photoForSlider.yearOfCreation}</div>
+          <div className={cx('name', `name_${theme}`)}>{photoForSlider.name}</div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -238,7 +238,6 @@ export const getPaintingTC = (authorId: string, paintingId: string):
   artistsAPI
     .getSpecifiedPaintingById(paintingId, authorId)
     .then((res) => {
-      console.log(res.data.image);
       dispatch(setPhotoForSlider({ photoForSlider: res.data }));
     })
     .catch((error) => {
