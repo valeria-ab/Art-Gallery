@@ -236,7 +236,7 @@ export const getPaintingTC = (authorId: string, paintingId: string):
     AppThunk => (dispatch) => {
   dispatch(setAppStatus({ status: 'loading' }));
   artistsAPI
-    .getSpecifiedPaintingById(paintingId, authorId)
+    .getSpecifiedPaintingById(authorId, paintingId)
     .then((res) => {
       dispatch(setPhotoForSlider({ photoForSlider: res.data }));
     })

@@ -16,7 +16,9 @@ button {
   }
   .counter {
     font-weight: bold;
-    color: red;
+    color: $primaryWhite;
+    @include h3Heading;
+
   }
 }
 .arrowLeft {
