@@ -6,6 +6,9 @@ button {
   background-color: inherit;
   cursor: pointer;
 }
+button:disabled {
+  cursor: auto;
+}
 .slider {
   max-width: 100vw;
   position: relative;

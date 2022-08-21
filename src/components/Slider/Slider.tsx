@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { log } from 'util';
 import { AppDispatch, IAppStore } from '../../store/store';
 // @ts-ignore
 import style from './style.scss';
@@ -24,6 +23,10 @@ import { ThemeContext, themes } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
+type ItemsType = {
+  index?: number;
+}
+
 const Slider = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -38,10 +41,10 @@ const Slider = () => {
     ({ auth }) => auth.isInitialized,
   );
 
-  // const [items, setItems] = useState<AuthorPaintingsType[]>([]);
+  const [items, setItems] = useState<Array<AuthorPaintingsType & ItemsType>>([]);
   // const [slide, setSlide] = useState(1);
 
-  const [currentIndex, setCurrentIndex] = useState<number>();
+  const [currentIndex, setCurrentIndex] = useState<number>(1);
   const [currentItem, setCurrentItem] = useState<AuthorPaintingsType>({} as AuthorPaintingsType);
 
   useEffect(() => {
@@ -53,7 +56,7 @@ const Slider = () => {
         dispatch(getArtistInfoTC(authorId));
       }
     }
-  }, [authorId, isInitialized, currentItem]);
+  }, [authorId, isInitialized]);
 
   // useEffect(() => {
   //   const currentIndex = artworks?.find((artwork) => artwork._id === photoForSlider._id)?._id;
@@ -72,26 +75,32 @@ const Slider = () => {
 
   useEffect(() => {
     if (authorId && paintingId) dispatch(getPaintingTC(authorId, paintingId));
-    if (authorId) {
-      if (!isInitialized) {
-        dispatch(getArtistInfoStaticTC(authorId));
-      }
-      if (isInitialized) {
-        dispatch(getArtistInfoTC(authorId));
-      }
-    }
+    const a = items.find((i) => i._id === photoForSlider._id);
+    setCurrentIndex(a?.index);
+    // // if (authorId) {
+    //   if (!isInitialized) {
+    //     dispatch(getArtistInfoStaticTC(authorId));
+    //   }
+    //   if (isInitialized) {
+    //     dispatch(getArtistInfoTC(authorId));
+    //   }
+    // }
   }, [authorId, paintingId]);
+
   useEffect(() => {
-    const bla = artworks?.find(
-      (artwork) => artwork._id === photoForSlider._id,
-    );
-    setCurrentIndex(Number(bla?._id));
-    bla && console.log(bla._id);
-  }, [artworks, photoForSlider]);
-  useEffect(() => {
-    // setItems(artworks);
-    if (currentIndex) setCurrentItem(artworks[currentIndex]);
-  }, [artworks, currentIndex]);
+    const newArray = artworks?.map((aw, index) => ({ ...aw, index: index + 1 }));
+
+    setItems(newArray);
+    // bla && setCurrentIndex(bla?.index + 1);
+    // bla && console.log(currentIndex);
+  }, [artworks]);
+
+  console.log(items);
+
+  // useEffect(() => {
+  //   // setItems(artworks);
+  //   if (currentIndex && artworks) setCurrentItem(artworks[currentIndex - 1]);
+  // }, [artworks, currentIndex]);
 
   // artworks && console.log(currentIndex);
 
@@ -122,39 +131,44 @@ const Slider = () => {
         {artworks?.length}
       </span>
       <div className={cx('arrowLeft')}>
-        {/* <NavLink */}
-        {/*  to={`/artists/${authorId}/paintings/${artworks[currentIndex - 1]?.image._id}`} */}
-        {/*  type="button" */}
-        {/*  onClick={() => { */}
-        {/*    setCurrentIndex(currentIndex - 1); */}
-        {/*    // if (currentIndex > 1) setCurrentItem(artworks[currentIndex - 1]); */}
-        {/*  }} */}
-        {/*  // disabled={currentIndex === 1} */}
-        {/* > */}
-        <img
-          src={arrowLeft}
-          alt="arrowLeft"
-          width="21px"
-          height="34px"
-        />
-        {/* </NavLink> */}
+        <button
+          // to={`/artists/${authorId}/paintings/${artworks[currentIndex - 1]?.image._id}`}
+          type="button"
+          onClick={() => {
+            setCurrentIndex(currentIndex - 1);
+            // if (currentIndex > 1) setCurrentItem(artworks[currentIndex - 1]);
+          }}
+        >
+          <NavLink to={`/artists/${authorId}/paintings/${artworks[currentIndex - 1]?._id}`}>
+            <img
+              src={arrowLeft}
+              alt="arrowLeft"
+              width="21px"
+              height="34px"
+            />
+          </NavLink>
+        </button>
       </div>
       <div className={cx('arrowRight')}>
+
         <button
           type="button"
           onClick={() => {
             setCurrentIndex(currentIndex + 1);
-            if (currentIndex < artworks?.length) setCurrentItem(artworks[currentIndex + 1]);
+            // if (currentIndex < artworks?.length) setCurrentItem(artworks[currentIndex + 1]);
           }}
           disabled={currentIndex === artworks?.length}
         >
-          <img
-            src={arrowRight}
-            alt="arrowRight"
-            width="21px"
-            height="34px"
-          />
+          <NavLink to={`/artists/${authorId}/paintings/${artworks[currentIndex + 1]?._id}`}>
+            <img
+              src={arrowRight}
+              alt="arrowRight"
+              width="21px"
+              height="34px"
+            />
+          </NavLink>
         </button>
+
       </div>
       <div className={cx('infoBlock', `infoBlock_${theme}`)}>
         <div className={cx('iconsBlockContainer')}>
