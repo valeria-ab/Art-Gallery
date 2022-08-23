@@ -55,17 +55,16 @@ const App = () => {
       <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
         <div className="AppContainer">
           <Header />
-          {/* <Routes> */}
-          {/*  <Route path="/" element={<Navigate to="/artists" />} /> */}
-          {/*  <Route */}
-          {/*    path="/artists" */}
-          {/*    element={<MainPage />} */}
-          {/*  /> */}
-          {/*  <Route path="/artists/:authorId" element={<ArtistPage />} /> */}
-          {/*  <Route path="/artists/:authorId/paintings/:paintingId" element={<Slider />} /> */}
-          {/*  <Route path={'/*'} element={<div>Page not found</div>} /> */}
-          {/* </Routes> */}
-          <Slider />
+          <Routes>
+            <Route path="/" element={<Navigate to="/artists" />} />
+            <Route
+              path="/artists"
+              element={<MainPage />}
+            />
+            <Route path="/artists/:authorId" element={<ArtistPage />} />
+            <Route path="/artists/:authorId/paintings/:paintingId" element={<Slider />} />
+            <Route path={'/*'} element={<div>Page not found</div>} />
+          </Routes>
           <Footer />
         </div>
       </ThemeContext.Provider>
