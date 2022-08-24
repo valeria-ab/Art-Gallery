@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
@@ -7,10 +9,16 @@ import {
 } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { AppDispatch, IAppStore } from '../../store/store';
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/scss';
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/scss/pagination';
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/scss/navigation';
 // @ts-ignore
 import style from './style.scss';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+// import 'swiper/css/pagination';
+// import 'swiper/css/navigation';
 import {
   getArtistInfoStaticTC,
   getArtistInfoTC,
@@ -31,7 +39,11 @@ type ItemsType = {
 }
 const cn = classNames.bind(style);
 
-const Slider = () => {
+type SliderPropsType = {
+  // setSliderVisible: () => void;
+}
+
+const Slider: FC<SliderPropsType> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { authorId, paintingId } = useParams();
@@ -163,7 +175,13 @@ const Slider = () => {
         }}
         navigation
         modules={[Pagination, Navigation]}
-        className="mySwiper"
+        onSlideChange={(swiper) => {
+          if (swiper.isEnd) swiper.allowSlideNext = false;
+          if (!swiper.isEnd) swiper.allowSlideNext = true;
+          if (swiper.isBeginning) swiper.allowSlidePrev = false;
+          if (!swiper.isBeginning) swiper.allowSlidePrev = true;
+        }}
+        // onSwiper={(swiper) => swiper.slideTo(1, 0, false)}
       >
         {artworks?.map((aw) => (
           <SwiperSlide key={aw._id}>
@@ -171,6 +189,44 @@ const Slider = () => {
               src={`${process.env.REACT_APP_BASE_URL}${aw.image?.original}`}
               alt="image1"
             />
+            <div className={cn('canselButton')}>
+              <NavLink to={`/artists/${authorId}`} type="button">
+                <img src={cancel} height="16px" width="16px" alt="cancel" />
+              </NavLink>
+            </div>
+            <div className={cn('infoBlock', `infoBlock_${theme}`)}>
+              {isInitialized && (
+              <div className={cn('iconsBlockContainer')}>
+                <div className={cn('iconsBlock')}>
+                  <button type="button" className={cn('iconsBlock_iconButton')}>
+                    <img
+                      src={theme === themes.light
+                        ? editIconLight
+                        : editIconDark}
+                      alt="edit"
+                      width="16px"
+                      height="16px"
+                    />
+                  </button>
+                  <button type="button" className={cn('iconsBlock_iconButton')}>
+                    <img
+                      src={theme === themes.light
+                        ? deleteIconLight
+                        : deleteIconDark}
+                      alt="delete"
+                      width="16px"
+                      height="16px"
+                    />
+                  </button>
+                </div>
+              </div>
+              )}
+              <div className={cn('infoBlockContainer', `infoBlockContainer_${theme}`)}>
+                <div className={cn('year', `year_${theme}`)}>{aw.yearOfCreation}</div>
+                <div className={cn('name', `name_${theme}`)}>{aw.name}</div>
+              </div>
+            </div>
+
           </SwiperSlide>
         ))}
 

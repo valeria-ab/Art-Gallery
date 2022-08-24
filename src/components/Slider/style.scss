@@ -1,14 +1,16 @@
 @import "./src/common/styles/sass/baseColors.scss";
 @import "./src/common/styles/CommonStyles";
 
-//button {
-//  border: none;
-//  background-color: inherit;
-//  cursor: pointer;
-//}
-//button:disabled {
-//  cursor: auto;
-//}
+button {
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: auto;
+}
+
 //.slider {
 //  max-width: 100vw;
 //  position: relative;
@@ -36,80 +38,33 @@
 //  top: 55%;
 //  right: 10px;
 //}
-//.canselButton {
-//  position: absolute;
-//  z-index: 100;
-//  top: 3%;
-//  right: 10%;
-//  background: rgba(26, 24, 24, 0.1);
-//}
-//.infoBlock {
-//  width: 498px;
-//  height: 100px;
-//  position: absolute;
-//  bottom: 10%;
-//  left: 20px;
-//  padding-top: 20px;
-//  padding-right: 20px;
-//
-//  &_light {
-//    background-color: $secondaryWhite;
-//  }
-//  &_dark {
-//    background-color: $primaryBlack;
-//  }
-//&Container {
-//  padding-left: 20px;
-//  &_light {
-// border-left: 2px solid $accentRed;
-//  }
-//  &_dark {
-//    border-left: 2px solid $accentGold;
-//  }
-//  .name {
-//    @include h4Heading;
-//    @include captionMedium16;
-//    &_light {
-//      color: $primaryBlack;
-//    }
-//    &_dark {
-//      color: $primaryWhite;
-//    }
-//  }
-//  .year {
-//    @include buttonBold12;
-//    &_light {
-//      color: $accentRed;
-//    }
-//    &_dark {
-//      color: $accentGold;
-//    }
-//  }
-//
-//}
-//}
-//.iconsBlockContainer {
-//  width: 100%;
-//  float: right;
-//  .iconsBlock {
-//    display: flex;
-//    width: 50px;
-//    align-items: end;
-//    float: right;
-//    justify-content: space-between;
-//  }
-//}
+.canselButton {
+  position: absolute;
+  z-index: 100;
+  top: 10%;
+  right: 10%;
+  width: 16px;
+  height: 16px;
+  //background: rgba(26, 24, 24, 0.1);
+}
 
-//.swiper-container {
-//  width: 500px;
-//}
-//.swiper-pagination {
-//  bottom: 0;
-//  padding-bottom: 10px;
-//}
-//.swiper-wrapper {
-//  padding-inline-start: 0;
-//}
+.iconsBlockContainer {
+  width: 100%;
+  float: right;
+
+  .iconsBlock {
+    display: flex;
+    width: 50px;
+    align-items: end;
+    float: right;
+    justify-content: space-between;
+
+    &_iconButton {
+      height: 16px;
+      width: 16px;
+    }
+  }
+}
 
 
 //.swiper {
@@ -389,10 +344,6 @@
 //  }
 //}
 
-.swiper {
-  width: 500px;
-  //height: 100vh;
-}
 
 .swiper-slide {
   text-align: center;
@@ -420,3 +371,89 @@
   height: 100%;
   object-fit: cover;
 }
+
+.swiper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100000000;
+
+  &-button-next,
+  &-button-prev {
+    display: none;
+  }
+
+  &-pagination {
+    @include h3Heading;
+    margin-bottom: 15px;
+    text-align: end;
+    padding-right: 10%;
+    padding-bottom: 10%;
+    text-transform: uppercase;
+    color: $primaryLightGray;
+  }
+
+  .infoBlock {
+    width: 498px;
+    height: 100px;
+    position: absolute;
+    bottom: 10%;
+    left: 20px;
+    padding-top: 20px;
+    padding-right: 20px;
+
+    &_light {
+      background-color: $secondaryWhite;
+    }
+
+    &_dark {
+      background-color: $primaryBlack;
+    }
+
+    &Container {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+
+      &_light {
+        border-left: 2px solid $accentRed;
+      }
+
+      &_dark {
+        border-left: 2px solid $accentGold;
+      }
+
+      .name {
+        @include h4Heading;
+        @include captionMedium16;
+        margin-top: 10px;
+
+        &_light {
+          color: $primaryBlack;
+        }
+
+        &_dark {
+          color: $primaryWhite;
+        }
+      }
+
+      .year {
+        @include buttonBold12;
+        float: left;
+
+        &_light {
+          color: $accentRed;
+        }
+
+        &_dark {
+          color: $accentGold;
+        }
+      }
+
+    }
+  }
+}
+

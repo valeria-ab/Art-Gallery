@@ -143,7 +143,7 @@ const PhotoItem = ({
       <NavLink
         to={onHover === 'artists'
           ? `/artists/${id}`
-          : `/artists/${authorId}/paintings/${id}`}
+          : `/artists/${authorId}/paintings/gallery`}
         className={cx('photoItem')}
       >
         {(picture === 'no image')

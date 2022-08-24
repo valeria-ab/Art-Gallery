@@ -19,6 +19,7 @@ import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 import { DeleteModal } from '../modals/delete/DeleteModal';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { ToastMessage } from '../ToastMessage/ToastMessage';
+import Slider from '../Slider/Slider';
 
 const cx = classNames.bind(style);
 
@@ -42,6 +43,8 @@ const ArtistPage = () => {
   const [editArtist, setEditArtistModeOn] = useState(false);
   const [paintingId, setPaintingId] = useState<string>();
   const [addEditPictureMode, setAddEditPictureMode] = useState<'edit' | 'add'>('add');
+  const [sliderVisible, setSliderVisible] = useState<boolean>(false);
+
   const error = useSelector<IAppStore, string>(
     (state) => state.app.error,
   );
@@ -123,6 +126,7 @@ const ArtistPage = () => {
         authorId={authorId}
       />
       )}
+      {sliderVisible && <Slider setSliderVisible={() => setSliderVisible(false)} />}
       <ArtistProfile
         artistInfo={artistInfo}
         setDeleteArtistModeOn={setDeleteArtistModeOn}

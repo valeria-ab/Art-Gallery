@@ -62,7 +62,7 @@ const App = () => {
               element={<MainPage />}
             />
             <Route path="/artists/:authorId" element={<ArtistPage />} />
-            <Route path="/artists/:authorId/paintings/:paintingId" element={<Slider />} />
+            <Route path="/artists/:authorId/paintings/gallery" element={<Slider />} />
             <Route path={'/*'} element={<div>Page not found</div>} />
           </Routes>
           <Footer />
