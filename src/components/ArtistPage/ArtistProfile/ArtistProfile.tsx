@@ -51,18 +51,27 @@ const ArtistProfile = (props: PropsType) => {
         </NavLink>
         {isInitialized && (
         <div className={cx('deleteEditBlock')}>
-          <img
-            className={cx('deleteEditIcon')}
-            src={edit}
-            alt="edit"
+          <button
+            type="button"
             onClick={() => setEditArtistModeOn(true)}
-          />
-          <img
-            className={cx('deleteEditIcon')}
-            src={deleteIcon}
-            alt="delete"
+          >
+            <img
+              className={cx('deleteEditIcon')}
+              src={edit}
+              alt="edit"
+            />
+          </button>
+          <button
+            type="button"
             onClick={() => setDeleteArtistModeOn(true)}
-          />
+          >
+            <img
+              className={cx('deleteEditIcon')}
+              src={deleteIcon}
+              alt="delete"
+            />
+          </button>
+
         </div>
         )}
       </div>

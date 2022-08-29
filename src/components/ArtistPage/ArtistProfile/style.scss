@@ -1,16 +1,13 @@
 @import "../../../common/styles/sass/baseColors";
 @import "../../../common/styles/CommonStyles";
 
-.artistPage {
-  width: 100%;
-  padding: 20px 0;
-}
 
 .artistArtworks {
 
   &_heading {
     @include h1Heading;
     margin-left: 100px;
+    margin-top: 140px;
     @media screen and (max-width: 1200px) {
       margin-left: 20px;
     }
@@ -95,7 +92,6 @@
   .infoBlock {
     z-index: 101;
     position: absolute;
-    //min-height: 555px;
     max-width: 600px;
     right: 50%;
     top: 300px;
@@ -244,18 +240,6 @@
     }
   }
 }
-}
-.noArtworks {
-  width: 392px;
-  height: 260px;
-  border-radius: 2px;
-  &_light {
-    border: 1px dashed $primaryLightGray;
-  }
-  &_dark {
-    background-color: $secondaryBlack;
-    border: 1px dashed $primaryDarkGray;
-  }
 }
 
 .noArtworks {

@@ -149,48 +149,47 @@ const PhotoItem = ({
           if (setSliderVisible) { setSliderVisible(true); }
         }}
       >
-        {(picture === 'no image')
-          ? <NoImage theme={theme} />
-          : (
-            <img
-              className={cx('photoItem__img', {
-                'photoItem__img-active': hover && onHover === 'artists',
-              })}
-              src={`${process.env.REACT_APP_BASE_URL}${picture}`}
-              alt="mainPicture"
-            />
-          )}
-        <div className={cx('hoverButton', {
-          'hoverButton-show': hover,
-          hoverButton__dark: theme === themes.dark,
-          hoverButton__light: theme === themes.light,
-        })}
-        >
-          <span className={cx('hoverButtonSpan', {
-            hoverButtonSpan__dark: theme === themes.dark,
-            hoverButtonSpan__light: theme === themes.light,
+          {(picture === 'no image')
+            ? <NoImage theme={theme} />
+            : (
+              <img
+                className={cx('photoItem__img', {
+                  'photoItem__img-active': hover && onHover === 'artists',
+                })}
+                src={`${process.env.REACT_APP_BASE_URL}${picture}`}
+                alt="mainPicture"
+              />
+            )}
+          <div className={cx('hoverButton', {
+            'hoverButton-show': hover,
+            hoverButton__dark: theme === themes.dark,
+            hoverButton__light: theme === themes.light,
           })}
           >
-            Learn more
-          </span>
-        </div>
+            <span className={cx('hoverButtonSpan', {
+              hoverButtonSpan__dark: theme === themes.dark,
+              hoverButtonSpan__light: theme === themes.light,
+            })}
+            >
+              Learn more
+            </span>
+          </div>
 
-        <div className={cx('titleContainer', `titleContainer_${theme}`)}>
-          <div className={cx('titleBlock', `titleBlock_${theme}`)}>
-            <div className={cx('name', `name_${theme}`)}>
-              {name}
+          <div className={cx('titleContainer', `titleContainer_${theme}`)}>
+            <div className={cx('titleBlock', `titleBlock_${theme}`)}>
+              <div className={cx('name', `name_${theme}`)}>
+                {name}
+              </div>
+              <div className={cx('years', `years_${theme}`)}>
+                {years}
+              </div>
             </div>
-            <div className={cx('years', `years_${theme}`)}>
-              {years}
+            <div className={cx('learnMore_mobile', `learnMore_mobile_${theme}`)}>
+              <img src={arrow} alt="arrow" width="16px" height="10px" />
             </div>
           </div>
-          <div className={cx('learnMore_mobile', `learnMore_mobile_${theme}`)}>
-            <img src={arrow} alt="arrow" width="16px" height="10px" />
-          </div>
         </div>
-
       </NavLink>
-    </div>
   );
 };
 

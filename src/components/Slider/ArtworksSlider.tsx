@@ -1,12 +1,10 @@
 import React, {
-  FC, useContext, useEffect, useState,
+  FC, useContext, useEffect,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import {
-  Navigation, Pagination, Thumbs, Controller,
-} from 'swiper';
+import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { AppDispatch, IAppStore } from '../../store/store';
 // eslint-disable-next-line import/no-unresolved
@@ -17,16 +15,8 @@ import 'swiper/scss/pagination';
 import 'swiper/scss/navigation';
 // @ts-ignore
 import style from './style.scss';
-// import 'swiper/css/pagination';
-// import 'swiper/css/navigation';
-import {
-  getArtistInfoStaticTC,
-  getArtistInfoTC,
-  getPaintingTC,
-} from '../../store/artistPage-reducer';
-import { ArtistResponseType, AuthorPaintingsType, SpecifiedPaintingByIdType } from '../../utils/api';
-import arrowLeft from '../../assets/slider/arrowLeft.png';
-import arrowRight from '../../assets/slider/arrowRight.png';
+import { getArtistInfoStaticTC, getArtistInfoTC } from '../../store/artistPage-reducer';
+import { AuthorPaintingsType } from '../../utils/api';
 import cancel from '../../assets/slider/cancel.png';
 import editIconLight from '../../assets/slider/editIconLight.png';
 import editIconDark from '../../assets/slider/editIconDark.png';
@@ -36,15 +26,12 @@ import { ThemeContext, themes } from '../../contexts/ThemeContext';
 import { Button } from '../Button/Button';
 import removeTheCover from '../../assets/slider/removeTheCover.png';
 
-type ItemsType = {
-    index?: number;
-}
 const cn = classNames.bind(style);
 
 type SliderPropsType = {
     setSliderVisible: (value: boolean) => void;
-     onAddEditPictureClick: (mode: 'edit' | 'add') => void;
-    onDeletePictureClick: (value: boolean) => void;
+    onAddEditPictureClick: (mode: 'edit' | 'add') => void;
+    onDeletePictureClick: (pictureId: string) => void;
 }
 
 const ArtworksSlider: FC<SliderPropsType> = ({
@@ -55,26 +42,13 @@ const ArtworksSlider: FC<SliderPropsType> = ({
   const dispatch = useDispatch<AppDispatch>();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { authorId, paintingId } = useParams();
-  const photoForSlider = useSelector<IAppStore, SpecifiedPaintingByIdType>(
-    ({ artistPage }) => artistPage.photoForSlider,
-  );
-  const artistInfo = useSelector<IAppStore, ArtistResponseType>(
-    ({ artistPage }) => artistPage.artistInfo,
-  );
+
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
     ({ artistPage }) => artistPage.artistInfo.paintings,
   );
   const isInitialized = useSelector<IAppStore, boolean>(
     ({ auth }) => auth.isInitialized,
   );
-  const slides = [];
-  const [items, setItems] = useState<Array<AuthorPaintingsType & ItemsType>>([]);
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const [controlledSwiper, setControlledSwiper] = useState(null);
-  // const [slide, setSlide] = useState(1);
-
-  const [currentIndex, setCurrentIndex] = useState<number>(1);
-  const [currentItem, setCurrentItem] = useState<AuthorPaintingsType>({} as AuthorPaintingsType);
 
   useEffect(() => {
     if (authorId) {
@@ -86,20 +60,6 @@ const ArtworksSlider: FC<SliderPropsType> = ({
       }
     }
   }, [authorId, isInitialized]);
-
-  // useEffect(() => {
-  //   if (authorId && paintingId) dispatch(getPaintingTC(authorId, paintingId));
-  //   const item = items.find((i) => i._id === photoForSlider._id);
-  //   if (item?.index) {
-  //     setCurrentIndex(item.index);
-  //   }
-  // }, [authorId, paintingId, items]);
-
-  useEffect(() => {
-    const newArray = artworks?.map((aw, index) => ({ ...aw, index: index + 1 }));
-    setItems(newArray);
-  }, [artworks]);
-  console.log(items);
 
   return (
     <>
@@ -119,10 +79,10 @@ const ArtworksSlider: FC<SliderPropsType> = ({
         }}
       >
         {
-                    artworks?.map((aw) => (
-                      <SwiperSlide key={aw._id}>
+                    artworks?.map((artwork) => (
+                      <SwiperSlide key={artwork._id}>
                         <img
-                          src={`${process.env.REACT_APP_BASE_URL}${aw.image?.original}`}
+                          src={`${process.env.REACT_APP_BASE_URL}${artwork.image?.original}`}
                           alt="image1"
                         />
                         <div className={cn('canselButton')}>
@@ -176,7 +136,7 @@ const ArtworksSlider: FC<SliderPropsType> = ({
                                         <button
                                           type="button"
                                           className={cn('iconsBlock_iconButton')}
-                                          onClick={() => onDeletePictureClick(true)}
+                                          onClick={() => onDeletePictureClick(artwork._id)}
                                         >
                                           <img
                                             src={theme === themes.light
@@ -193,12 +153,12 @@ const ArtworksSlider: FC<SliderPropsType> = ({
                                 }
                           <div className={cn('infoBlockContainer', `infoBlockContainer_${theme}`)}>
                             <div className={cn('year', `year_${theme}`)}>
-                              { aw.yearOfCreation }
+                              {artwork.yearOfCreation}
                             </div>
                             <div
                               className={cn('name', `name_${theme}`)}
                             >
-                              { aw.name }
+                              {artwork.name}
                             </div>
                           </div>
                         </div>
@@ -206,7 +166,6 @@ const ArtworksSlider: FC<SliderPropsType> = ({
                       </SwiperSlide>
                     ))
                 }
-
       </Swiper>
     </>
   );
