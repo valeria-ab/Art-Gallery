@@ -19,7 +19,7 @@ import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
 import { DeleteModal } from '../modals/delete/DeleteModal';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { ToastMessage } from '../ToastMessage/ToastMessage';
-import Slider from '../Slider/Slider';
+import ArtworksSlider from '../Slider/ArtworksSlider';
 
 const cx = classNames.bind(style);
 
@@ -126,7 +126,13 @@ const ArtistPage = () => {
         authorId={authorId}
       />
       )}
-      {sliderVisible && <Slider setSliderVisible={() => setSliderVisible(false)} />}
+      {sliderVisible && (
+      <ArtworksSlider
+        setSliderVisible={setSliderVisible}
+        onAddEditPictureClick={onAddEditPictureClick}
+        onDeletePictureClick={onDeletePictureClick}
+      />
+      )}
       <ArtistProfile
         artistInfo={artistInfo}
         setDeleteArtistModeOn={setDeleteArtistModeOn}
@@ -136,6 +142,7 @@ const ArtistPage = () => {
         // setAddEditPictureModeOn={() => setAddEditPictureModeOn}
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
+        setSliderVisible={setSliderVisible}
       />
       {artworks?.length < 1 && (
       <>

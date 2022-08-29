@@ -7,18 +7,6 @@
 }
 
 .artistArtworks {
-  //@media screen and (min-width: 0px) and (max-width: 568px) {
-  //  margin-top: 400px;
-  //}
-  //@media screen and (min-width: 568px) and (max-width: 768px) {
-  //  margin-top: 230px;
-  //}
-  //@media screen and (min-width: 768px) and (max-width: 1200px) {
-  //  margin-top: 270px;
-  //}
-  //@media screen and (min-width: 1201px) {
-  //  margin-top: 180px;
-  //}
 
   &_heading {
     @include h1Heading;
@@ -72,12 +60,11 @@
   .mainPhoto {
     display: flex;
     justify-content: right;
+    position: relative;
     @media screen and (max-width: 1200px) {
-      position: relative;
+      width: 100%; flex-direction: column;
     }
-    @media screen and (max-width: 768px) {
-      flex-direction: column;
-    }
+
 
     .profilePicture {
       @media screen and (max-width: 1200px) {
@@ -85,191 +72,179 @@
       }
     }
 
-    .noPictureBlock {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      margin-right: 100px;
-      margin-top: 100px;
+  .noPictureBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-right: 100px;
+    margin-top: 100px;
+  }
+
+  .noPictureDescription {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 24px;
+    text-transform: uppercase;
+    color: $secondaryGray;
+    margin-top: 20px;
+  }
+
+  .infoBlock {
+    z-index: 101;
+    position: absolute;
+    //min-height: 555px;
+    max-width: 600px;
+    right: 50%;
+    top: 300px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+
+    @media screen and (max-width: 1200px) {
+      z-index: 0;
+      position: static;
     }
 
-    .noPictureDescription {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 900;
-      font-size: 20px;
-      line-height: 24px;
-      text-transform: uppercase;
-      color: $secondaryGray;
-      margin-top: 20px;
+    &_light {
+      @media screen and (min-width: 1200px) {
+        background-color: $primaryWhite;
+      }
     }
 
-    .infoBlock {
-      z-index: 101;
-      position: absolute;
-      //min-height: 555px;
-      max-width: 600px;
-      right: 50%;
-      top: 300px;
-      padding-right: 20px;
-      padding-bottom: 20px;
+    &_dark {
+      @media screen and (min-width: 1200px) {
+        background-color: $primaryBlack;
       }
+    }
 
-      @media screen and (max-width: 1200px) {
-        min-width: 75%;
-        left: 0;
-        top: 85%;
-      }
-      @media screen and (max-width: 768px) {
-        //top: 80%;
-        //width: 95%;
-        //padding: 0;
-
-        z-index: 0;
-        position: static;
-
-      }
-
+    .artistInfo {
+      @include h4Heading;
       &_light {
-        @media screen and (min-width: 1200px) {
-          background-color: $primaryWhite;
-        }
+        background-color: $primaryWhite;
       }
-
       &_dark {
-        @media screen and (min-width: 1200px) {
-          background-color: $primaryBlack;
-        }
+        background-color: $primaryBlack;
       }
+    }
 
-      .artistInfo {
-        @include h4Heading;
-
-        &_light {
-          background-color: $primaryWhite;
-        }
-
-        &_dark {
-          background-color: $primaryBlack;
-        }
+    &_padding {
+      display: inline-block;
+      padding: 60px 80px 20px 80px;
+      @media screen and (max-width: 1200px) {
+        padding: 20px;
       }
+    }
 
-      &_padding {
+    .artistNameContainer {
+      padding-bottom: 20px;
+
+      .artistName {
+        @include h1Heading;
         display: inline-block;
-        padding: 60px 80px 20px 80px;
-        @media screen and (max-width: 1200px) {
-          padding: 20px;
-        }
-      }
-
-      .artistNameContainer {
-        padding-bottom: 20px;
-
-        .artistName {
-          @include h1Heading;
-          display: inline-block;
-          padding-left: 80px;
-          @media screen and (max-width: 1200px) {
-            padding-left: 20px;
-          }
-          @media screen and (max-width: 768px) {
-            @include h3Heading;
-          }
-        }
-
-        &_light {
-          border-left: 2px solid $accentRed;
-          color: $accentRed;
-          background-color: $primaryWhite;
-        }
-
-        &_dark {
-          border-left: 2px solid $accentGold;
-          color: $accentGold;
-          background-color: $primaryBlack;
-        }
-      }
-
-      .dash {
-        margin-bottom: 20px;
         padding-left: 80px;
-
-        &_light {
-          background-color: $primaryWhite;
-        }
-
-        &_dark {
-          background-color: $primaryBlack;
-        }
-
         @media screen and (max-width: 1200px) {
           padding-left: 20px;
+          width: 100%;
         }
-      }
-
-      .artistDescription {
-        @include paragraphBaseLight16;
-        text-align: justify;
-        margin-top: 10px;
-        padding-left: 80px;
-        margin-bottom: 20px;
-        text-overflow: ellipsis;
-
-        &_readMore {
-          height: auto;
-        }
-
-        @media screen and (max-width: 1200px) {
-          width: 95vw;
-          padding-left: 20px;
-        }
-        @media screen and (max-width: 550px) {
+        @media screen and (max-width: 768px) {
+          @include h3Heading;
           width: 100%;
         }
       }
 
-      .learnMoreButton {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 96px;
-        height: 16px;
-        margin-bottom: 30px;
-        margin-left: 80px;
+      &_light {
+        border-left: 2px solid $accentRed;
+        color: $accentRed;
+        background-color: $primaryWhite;
+      }
+
+      &_dark {
+        border-left: 2px solid $accentGold;
+        color: $accentGold;
+        background-color: $primaryBlack;
+      }
+    }
+
+    .dash {
+      margin-bottom: 20px;
+      padding-left: 80px;
+
+      &_light {
+        background-color: $primaryWhite;
+      }
+
+      &_dark {
+        background-color: $primaryBlack;
+      }
+
+      @media screen and (max-width: 1200px) {
+        padding-left: 20px;
+      }
+    }
+
+    .artistDescription {
+      @include paragraphBaseLight16;
+      text-align: justify;
+      margin-top: 10px;
+      padding-left: 80px;
+      margin-bottom: 20px;
+      text-overflow: ellipsis;
+
+      &_readMore {
+        height: auto;
+      }
+
+      @media screen and (max-width: 1200px) {
+        width: 95vw;
+        padding-left: 20px;
+      }
+      @media screen and (max-width: 550px) {
+        width: 100%;
+      }
+    }
+
+    .learnMoreButton {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 96px;
+      height: 16px;
+      margin-bottom: 30px;
+      margin-left: 80px;
+      cursor: pointer;
+
+      .readLess {
+        transform: rotate(180deg);
+      }
+
+      .buttonInvisible {
+        border: none;
+        background-color: transparent;
         cursor: pointer;
 
-        .readLess {
-          transform: rotate(180deg);
-        }
-
-        .buttonInvisible {
-          border: none;
-          background-color: transparent;
-          cursor: pointer;
-
-          &:disabled {
-            cursor: auto;
-            opacity: 0.4;
-          }
-        }
-
-        @media screen and (max-width: 1200px) {
-          margin-left: 20px;
+        &:disabled {
+          cursor: auto;
+          opacity: 0.4;
         }
       }
 
-      .genresBlock {
-        padding-left: 80px;
-        display: flex;
-        @media screen and (max-width: 1200px) {
-          padding-left: 20px;
-        }
+      @media screen and (max-width: 1200px) {
+        margin-left: 20px;
+      }
+    }
+
+    .genresBlock {
+      padding-left: 80px;
+      display: flex;
+      @media screen and (max-width: 1200px) {
+        padding-left: 20px;
       }
     }
   }
-
-
+}
+}
 .noArtworks {
   width: 392px;
   height: 260px;

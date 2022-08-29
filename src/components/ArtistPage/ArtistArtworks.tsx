@@ -16,11 +16,13 @@ const cx = classNames.bind(style);
 type ArtistArtworksPropsType = {
     onAddEditPictureClick: (mode: 'edit' | 'add') => void;
     onDeletePictureClick: (paintingId: string) => void;
+    setSliderVisible: (value: boolean) => void;
 }
 
 const ArtistArtworks = ({
   onAddEditPictureClick,
   onDeletePictureClick,
+  setSliderVisible,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
@@ -48,6 +50,7 @@ const ArtistArtworks = ({
         artworks={currentTableData}
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
+        setSliderVisible={setSliderVisible}
       />
       {artworks?.length > 0 && (
       <Pagination
@@ -58,17 +61,6 @@ const ArtistArtworks = ({
         siblingCount={1}
       />
       )}
-      {/* {artworks?.length < 1 && ( */}
-      {/* <> */}
-      {/*  <NoArtworks /> */}
-      {/*  <div className={cx('breakLineContainer')}> */}
-      {/*    <div className={cx('breakLine', `breakLine_${theme}`)} /> */}
-      {/*  </div> */}
-      {/*  <div className={cx('noArtworksDescription')}> */}
-      {/*    The paintings of this artist have not been uploaded yet. */}
-      {/*  </div> */}
-      {/* </> */}
-      {/* )} */}
     </div>
   );
 };

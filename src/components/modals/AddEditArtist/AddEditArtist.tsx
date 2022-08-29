@@ -232,7 +232,6 @@ export const AddEditArtist = ({
                         )
                         : (
                           <>
-
                             <img
                               className={cx('userIcon')}
                               src={userIcon}

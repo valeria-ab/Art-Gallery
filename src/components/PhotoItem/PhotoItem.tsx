@@ -22,6 +22,7 @@ type PhotoItemPropsType = {
     theme: string;
     onHover: 'artists' | 'artworks';
     onDeletePictureClick?: (paintingId: string) => void;
+    setSliderVisible?: (value: boolean) => void;
     onEditPictureClick?: (mode: 'edit' | 'add') => void
     pictureData?: AuthorPaintingsType
 };
@@ -35,13 +36,14 @@ const PhotoItem = ({
   onHover,
   onDeletePictureClick,
   onEditPictureClick,
+  setSliderVisible,
   pictureData,
 }: PhotoItemPropsType) => {
   const [hover, setHover] = useState(false);
   const [isMenuOpened, setMenuOpened] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { authorId } = useParams();
-  console.log(`PhotoItem ${id}`);
+
   const isInitialized = useSelector<IAppStore, boolean>(
     (state) => state.auth.isInitialized,
   );
@@ -141,10 +143,11 @@ const PhotoItem = ({
         </>
       )}
       <NavLink
-        to={onHover === 'artists'
-          ? `/artists/${id}`
-          : `/artists/${authorId}/paintings/gallery`}
+        to={`/artists/${id}`}
         className={cx('photoItem')}
+        onClick={() => {
+          if (setSliderVisible) { setSliderVisible(true); }
+        }}
       >
         {(picture === 'no image')
           ? <NoImage theme={theme} />

@@ -42,7 +42,6 @@ const ArtistProfile = (props: PropsType) => {
     <div className={cx('artistPage')}>
       <div className={cx('profile_top')}>
         <NavLink to="/artists" className={cx('comeBackButton')}>
-          {/* <img src={arrowBack} alt="arrowBack" width="10px" height="16px" /> */}
           <Button
             value="back"
             theme={theme}
@@ -99,14 +98,15 @@ const ArtistProfile = (props: PropsType) => {
               <span className={cx('infoBlock_padding')}>
                 {artistInfo.yearsOfLife ? artistInfo.yearsOfLife : ''}
               </span>
-            </div>
-            <div
-              className={cx('artistNameContainer', {
-                artistNameContainer_light: theme === themes.light,
-                artistNameContainer_dark: theme === themes.dark,
-              })}
-            >
-              <span className={cx('artistName')}>{artistInfo.name || ''}</span>
+
+              <div
+                className={cx('artistNameContainer', {
+                  artistNameContainer_light: theme === themes.light,
+                  artistNameContainer_dark: theme === themes.dark,
+                })}
+              >
+                <span className={cx('artistName')}>{artistInfo.name || ''}</span>
+              </div>
             </div>
             <div className={cx('dash', `dash_${theme}`)}>
               <img src={theme === themes.light ? dashLight : dashDark} alt="dash" width="30px" />
@@ -118,7 +118,7 @@ const ArtistProfile = (props: PropsType) => {
               {artistInfo.description?.length >= 256 && !isReadMoreMode
                 ? `${artistInfo.description?.slice(0, 256)}...`
                 : artistInfo.description
-                  || ''}
+                                || ''}
             </div>
 
             <div className={cx('learnMoreButton')}>
@@ -165,10 +165,10 @@ const ArtistProfile = (props: PropsType) => {
 export default ArtistProfile;
 
 type NoArtworksPropsType = {
-  addArtwork: (value: 'add' | 'edit') => void;
-  setAddEditPictureModeOn: (value: boolean) => void;
+    addArtwork: (value: 'add' | 'edit') => void;
+    setAddEditPictureModeOn: (value: boolean) => void;
 }
-export const NoArtworks:FC<NoArtworksPropsType> = ({ addArtwork, setAddEditPictureModeOn }) => {
+export const NoArtworks: FC<NoArtworksPropsType> = ({ addArtwork, setAddEditPictureModeOn }) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   return (
     <div className={cx('noArtworks', `noArtworks_${theme}`)}>

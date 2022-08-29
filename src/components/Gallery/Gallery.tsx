@@ -16,6 +16,7 @@ type ArtistArtworksPropsType = {
     artworks?: Array<AuthorPaintingsType>;
     onAddEditPictureClick?: (mode: 'edit' | 'add') => void;
     onDeletePictureClick?: (paintingId: string) => void;
+    setSliderVisible?: (value: boolean) => void;
     onLoadMore?: () => void;
 };
 
@@ -25,6 +26,7 @@ const Gallery = React.memo(({
   artworks,
   onAddEditPictureClick,
   onDeletePictureClick,
+  setSliderVisible,
   onLoadMore,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -34,7 +36,7 @@ const Gallery = React.memo(({
   );
 
   const { portionSize, currentPagesPortion, totalPagesCount } = useSelector<IAppStore,
-      InitialGalleryStateType>(({ gallery }) => gallery);
+        InitialGalleryStateType>(({ gallery }) => gallery);
 
   return (
     <div className={cx('main')}>
@@ -72,19 +74,20 @@ const Gallery = React.memo(({
             onHover="artworks"
             onDeletePictureClick={onDeletePictureClick}
             onEditPictureClick={onAddEditPictureClick && onAddEditPictureClick}
+            setSliderVisible={setSliderVisible}
           />
         ))}
       </div>
       {artists && currentPagesPortion !== Math.ceil(totalPagesCount / portionSize) && (
-      <div className={cx('loadMoreButton')}>
-        <Button
-          value="load more"
-          theme={theme}
-          type="outlined"
-          width="200px"
-          callback={onLoadMore}
-        />
-      </div>
+        <div className={cx('loadMoreButton')}>
+          <Button
+            value="load more"
+            theme={theme}
+            type="outlined"
+            width="200px"
+            callback={onLoadMore}
+          />
+        </div>
 
       )}
     </div>
