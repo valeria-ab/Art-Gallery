@@ -15,8 +15,8 @@ import 'swiper/scss/pagination';
 import 'swiper/scss/navigation';
 // @ts-ignore
 import style from './style.scss';
-import { getArtistInfoStaticTC, getArtistInfoTC } from '../../store/artistPage-reducer';
-import { AuthorPaintingsType } from '../../utils/api';
+import { getArtistInfoStaticTC, getArtistInfoTC, setCurrentPainting } from '../../store/artistPage-reducer';
+import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
 import cancel from '../../assets/slider/cancel.png';
 import editIconLight from '../../assets/slider/editIconLight.png';
 import editIconDark from '../../assets/slider/editIconDark.png';
@@ -46,9 +46,20 @@ const ArtworksSlider: FC<SliderPropsType> = ({
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
     ({ artistPage }) => artistPage.artistInfo.paintings,
   );
+  const mainPainting = useSelector<IAppStore, string>(
+    ({ artistPage }) => artistPage.artistInfo.mainPainting._id,
+  );
+  const artistInfo = useSelector<IAppStore, any>(
+    ({ artistPage }) => artistPage.artistInfo,
+  );
   const isInitialized = useSelector<IAppStore, boolean>(
     ({ auth }) => auth.isInitialized,
   );
+  console.log(artistInfo);
+  const onEditPainting = (pictureData: AuthorPaintingsType) => {
+    dispatch(setCurrentPainting({ currentPainting: pictureData }));
+    if (onAddEditPictureClick) onAddEditPictureClick('edit');
+  };
 
   useEffect(() => {
     if (authorId) {
@@ -105,12 +116,23 @@ const ArtworksSlider: FC<SliderPropsType> = ({
                             src={removeTheCover}
                             alt=""
                           />
-                          <Button
-                            value="remove the cover"
-                            type="outlined"
-                            theme={themes.dark}
-                            width="200px"
-                          />
+                          {mainPainting === artwork._id
+                            ? (
+                              <Button
+                                value="remove the cover"
+                                type="outlined"
+                                theme={themes.dark}
+                                width="200px"
+                              />
+                            )
+                            : (
+                              <Button
+                                value="make the cover"
+                                type="outlined"
+                                theme={themes.dark}
+                                width="200px"
+                              />
+                            )}
                         </div>
                         <div
                           className={cn('infoBlock', `infoBlock_${theme}`)}
@@ -122,7 +144,7 @@ const ArtworksSlider: FC<SliderPropsType> = ({
                                         <button
                                           type="button"
                                           className={cn('iconsBlock_iconButton')}
-                                          onClick={() => onAddEditPictureClick('edit')}
+                                          onClick={() => onEditPainting(artwork)}
                                         >
                                           <img
                                             src={theme === themes.light

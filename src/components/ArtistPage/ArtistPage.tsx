@@ -111,7 +111,7 @@ const ArtistPage = () => {
         theme={theme}
         primaryTitle="artist profile"
         secondaryTitle="profile"
-        cancelCallback={() => setDeleteArtistModeOn}
+        cancelCallback={() => setDeleteArtistModeOn(false)}
         onDeleteCallback={onDeleteArtistCallback}
       />
       )}
