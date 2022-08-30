@@ -8,6 +8,7 @@ import style from './style.scss';
 import PhotoItem from '../PhotoItem/PhotoItem';
 import { Button } from '../Button/Button';
 import { InitialGalleryStateType } from '../../store/gallery-reducer';
+import { PhotoItemForArtists } from '../PhotoItem/PhotoItemForArtists';
 
 const cx = classNames.bind(style);
 
@@ -30,7 +31,6 @@ const Gallery = React.memo(({
   onLoadMore,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const dispatch = useDispatch<AppDispatch>();
   const isInitialized = useSelector<IAppStore, boolean>(
     ({ auth }) => auth.isInitialized,
   );
@@ -52,14 +52,13 @@ const Gallery = React.memo(({
 
       <div className={cx('mainContainer')}>
         {artists?.map((artist) => (
-          <PhotoItem
+          <PhotoItemForArtists
             key={artist._id}
             id={artist._id}
             name={artist.name}
             years={artist.yearsOfLife}
             picture={artist.mainPainting?.image?.src || 'no image'}
             theme={theme}
-            onHover="artists"
           />
         ))}
         {artworks && artworks.map((i) => (
@@ -71,7 +70,6 @@ const Gallery = React.memo(({
             years={i.yearOfCreation}
             picture={i.image.src ? i.image.src : 'no image'}
             theme={theme}
-            onHover="artworks"
             onDeletePictureClick={onDeletePictureClick}
             onEditPictureClick={onAddEditPictureClick && onAddEditPictureClick}
             setSliderVisible={setSliderVisible}
