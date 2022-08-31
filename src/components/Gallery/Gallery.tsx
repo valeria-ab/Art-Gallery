@@ -18,6 +18,7 @@ type ArtistArtworksPropsType = {
     onAddEditPictureClick?: (mode: 'edit' | 'add') => void;
     onDeletePictureClick?: (paintingId: string) => void;
     setSliderVisible?: (value: boolean) => void;
+    setPaintingId?: (id: string) => void;
     onLoadMore?: () => void;
 };
 
@@ -29,6 +30,7 @@ const Gallery = React.memo(({
   onDeletePictureClick,
   setSliderVisible,
   onLoadMore,
+  setPaintingId,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const isInitialized = useSelector<IAppStore, boolean>(
@@ -73,6 +75,7 @@ const Gallery = React.memo(({
             onDeletePictureClick={onDeletePictureClick}
             onEditPictureClick={onAddEditPictureClick && onAddEditPictureClick}
             setSliderVisible={setSliderVisible}
+            setPaintingId={setPaintingId}
           />
         ))}
       </div>

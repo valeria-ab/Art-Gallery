@@ -17,12 +17,14 @@ type ArtistArtworksPropsType = {
     onAddEditPictureClick: (mode: 'edit' | 'add') => void;
     onDeletePictureClick: (paintingId: string) => void;
     setSliderVisible: (value: boolean) => void;
+    setPaintingId: (id: string) => void;
 }
 
 const ArtistArtworks = ({
   onAddEditPictureClick,
   onDeletePictureClick,
   setSliderVisible,
+  setPaintingId,
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
@@ -51,6 +53,7 @@ const ArtistArtworks = ({
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
         setSliderVisible={setSliderVisible}
+        setPaintingId={setPaintingId}
       />
       {artworks?.length > 0 && (
       <Pagination

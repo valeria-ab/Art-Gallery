@@ -35,6 +35,7 @@ export const AddEditPicture = ({
   const [name, setName] = useState(currentPainting.name || '');
   const [yearOfCreation, setYear] = useState(currentPainting.yearOfCreation || '');
   const [drag, setDrag] = useState(false);
+  const [width, setWidth] = useState('105px');
   const [image, setImage] = useState<File>();
   const [src, setSrc] = useState<string>();
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -80,10 +81,26 @@ export const AddEditPicture = ({
     setDrag(false);
   };
 
+  function displayWindowSize() {
+    // функция, которая передаёт ширину инпута для мобильных версий экрана
+
+    const w = document.documentElement.clientWidth;
+    window.addEventListener('resize', displayWindowSize);
+    if (w <= 768 && w > 500 && width !== '340px') {
+      setWidth('340px');
+    }
+    if (w < 500 && width !== '260px') {
+      setWidth('260px');
+    }
+    if (w > 768 && width !== '105px') {
+      setWidth('105px');
+    }
+  }
+
+  displayWindowSize();
+
   const onSubmit = () => {
     const formData = new FormData();
-    // @ts-ignore
-    // formData.append('image', image || src);
     formData.append('image', 'images/62a32e10269fa5c416c53dc1/image.jpg');
     formData.append('name', name);
     formData.append('yearOfCreation', yearOfCreation);
@@ -97,13 +114,8 @@ export const AddEditPicture = ({
 
   useEffect(() => {
     if (currentPainting.image) setSrc(`${process.env.REACT_APP_BASE_URL}${currentPainting.image.src}`);
-
-    // return () => dispatch(setCurrentPainting({
-    //   currentPainting: {} as AuthorPaintingsType,
-    // }));
   }, [currentPainting]);
 
-  // @ts-ignore
   return (
     <div className={cx('modal')}>
       <div className={cx('addPictureModal', {
@@ -146,7 +158,7 @@ export const AddEditPicture = ({
             />
             <Input
               label="Year Of Creation"
-              width="105px"
+              width={width}
               type="text"
               callback={setYear}
               error={null}

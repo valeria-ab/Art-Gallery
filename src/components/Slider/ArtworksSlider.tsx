@@ -1,11 +1,11 @@
 import React, {
-  FC, useContext, useEffect,
+  FC, useContext, useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { Navigation, Pagination } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { AppDispatch, IAppStore } from '../../store/store';
 // eslint-disable-next-line import/no-unresolved
 import 'swiper/scss';
@@ -15,7 +15,12 @@ import 'swiper/scss/pagination';
 import 'swiper/scss/navigation';
 // @ts-ignore
 import style from './style.scss';
-import { getArtistInfoStaticTC, getArtistInfoTC, setCurrentPainting } from '../../store/artistPage-reducer';
+import {
+  getArtistInfoStaticTC,
+  getArtistInfoTC,
+  setCurrentPainting,
+  updateMainPaintingTC,
+} from '../../store/artistPage-reducer';
 import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
 import cancel from '../../assets/slider/cancel.png';
 import editIconLight from '../../assets/slider/editIconLight.png';
@@ -32,12 +37,14 @@ type SliderPropsType = {
     setSliderVisible: (value: boolean) => void;
     onAddEditPictureClick: (mode: 'edit' | 'add') => void;
     onDeletePictureClick: (pictureId: string) => void;
+    currentIndex: number;
 }
 
 const ArtworksSlider: FC<SliderPropsType> = ({
   setSliderVisible,
   onDeletePictureClick,
   onAddEditPictureClick,
+  currentIndex,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -49,17 +56,21 @@ const ArtworksSlider: FC<SliderPropsType> = ({
   const mainPainting = useSelector<IAppStore, string>(
     ({ artistPage }) => artistPage.artistInfo.mainPainting._id,
   );
-  const artistInfo = useSelector<IAppStore, any>(
-    ({ artistPage }) => artistPage.artistInfo,
-  );
+
   const isInitialized = useSelector<IAppStore, boolean>(
     ({ auth }) => auth.isInitialized,
   );
-  console.log(artistInfo);
+
   const onEditPainting = (pictureData: AuthorPaintingsType) => {
     dispatch(setCurrentPainting({ currentPainting: pictureData }));
     if (onAddEditPictureClick) onAddEditPictureClick('edit');
   };
+
+  const [paintingIndex, setPaintingIndex] = useState<number>(currentIndex);
+  console.log(paintingIndex);
+  useEffect(() => setPaintingIndex(currentIndex), [currentIndex]);
+  const onMakeTheCoverClick = (id: string) => authorId
+      && dispatch(updateMainPaintingTC(id, authorId));
 
   useEffect(() => {
     if (authorId) {
@@ -82,12 +93,14 @@ const ArtworksSlider: FC<SliderPropsType> = ({
                 }
         navigation
         modules={[Pagination, Navigation]}
-        onSlideChange={(swiper) => {
-          if (swiper.isEnd) swiper.allowSlideNext = false;
-          if (!swiper.isEnd) swiper.allowSlideNext = true;
-          if (swiper.isBeginning) swiper.allowSlidePrev = false;
-          if (!swiper.isBeginning) swiper.allowSlidePrev = true;
-        }}
+        // onSwiper={slideTo}
+        onSwiper={(swiper) => swiper.slideTo(paintingIndex, 0, false)}
+        // onSlideChange={(swiper) => {
+        //   if (swiper.isEnd) swiper.allowSlideNext = false;
+        //   if (!swiper.isEnd) swiper.allowSlideNext = true;
+        //   if (swiper.isBeginning) swiper.allowSlidePrev = false;
+        //   if (!swiper.isBeginning) swiper.allowSlidePrev = true;
+        // }}
       >
         {
                     artworks?.map((artwork) => (
@@ -131,6 +144,7 @@ const ArtworksSlider: FC<SliderPropsType> = ({
                                 type="outlined"
                                 theme={themes.dark}
                                 width="200px"
+                                callback={() => onMakeTheCoverClick(artwork._id)}
                               />
                             )}
                         </div>

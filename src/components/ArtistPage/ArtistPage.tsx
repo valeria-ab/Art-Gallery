@@ -52,6 +52,13 @@ const ArtistPage = () => {
     (state) => state.app.status,
   );
 
+  const [paintingIndex, setPaintingIndex] = useState<number>();
+
+  useEffect(() => {
+    const index = artworks?.findIndex((artwork) => artwork._id === paintingId);
+    if (index >= 0) setPaintingIndex(index);
+  }, [paintingId]);
+
   const onDeleteArtistCallback = () => {
     if (authorId) dispatch(deleteArtistTC(authorId));
     navigate('/artists');
@@ -126,8 +133,9 @@ const ArtistPage = () => {
         authorId={authorId}
       />
       )}
-      {sliderVisible && (
+      {sliderVisible && paintingIndex !== undefined && (
       <ArtworksSlider
+        currentIndex={paintingIndex}
         setSliderVisible={setSliderVisible}
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
@@ -143,6 +151,7 @@ const ArtistPage = () => {
         onAddEditPictureClick={onAddEditPictureClick}
         onDeletePictureClick={onDeletePictureClick}
         setSliderVisible={setSliderVisible}
+        setPaintingId={setPaintingId}
       />
       {artworks?.length < 1 && (
       <>

@@ -22,6 +22,7 @@ type PhotoItemPropsType = {
     onDeletePictureClick?: (paintingId: string) => void;
     setSliderVisible?: (value: boolean) => void;
     onEditPictureClick?: (mode: 'edit' | 'add') => void
+  setPaintingId?: (id: string) => void;
     pictureData?: AuthorPaintingsType
 };
 
@@ -35,6 +36,7 @@ const PhotoItem = ({
   onEditPictureClick,
   setSliderVisible,
   pictureData,
+  setPaintingId,
 }: PhotoItemPropsType) => {
   const [hover, setHover] = useState(false);
   const [isMenuOpened, setMenuOpened] = useState(false);
@@ -140,7 +142,8 @@ const PhotoItem = ({
       <div
         className={cx('photoItem')}
         onClick={() => {
-          if (setSliderVisible) {
+          if (setSliderVisible && setPaintingId) {
+            setPaintingId(id);
             setSliderVisible(true);
           }
         }}

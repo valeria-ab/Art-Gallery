@@ -148,7 +148,7 @@ export const AddEditArtist = ({
   }, []);
 
   return (
-    <div className={cx('modal')}>
+    <div className={cx('addEditArtistModal')}>
       <div className={cx('addModal', {
         light: theme === 'light',
         dark: theme === 'dark',
