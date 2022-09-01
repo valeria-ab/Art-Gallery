@@ -56,7 +56,7 @@ const MainPage = () => {
   const [artistsPortion, setArtistsPortion] = useState([] as ArtistResponseType[]);
   const [isSettingsMode, setSettingsMode] = useState(false);
   const [chosenGenres, setChosenGenres] = useState<string[]>(Array.from(searchParams.getAll('genres')));
-  const [order, setOrder] = useState<string| null>(searchParams.get('orderBy'));
+  const [order, setOrder] = useState<string | null>(searchParams.get('orderBy'));
   const prevParams = Object.fromEntries(searchParams);
 
   const [isGenresFiltersOpened, setGenresFiltersOpened] = useState(false);
@@ -99,7 +99,7 @@ const MainPage = () => {
   //   if (name) {
   //     setSearchParams({ ...prevParams, name });
   //   } else {
-  //     delete prevParams.name;
+  //     Delete prevParams.name;
   //     setSearchParams({ ...prevParams });
   //   }
   // }, 1000);
@@ -239,28 +239,29 @@ const MainPage = () => {
                 </button>
               </div>
               {isGenresFiltersOpened && (
-                <div className={cx('genresList')}>
-                  {genres.map((genre) => (
-                    <div
-                      className={cx('filter_genreItem', {
-                        filter_genreItem_dark: theme === 'dark',
-                        filter_genreItem_dark_chosen: !!chosenGenres.find((cg) => cg === genre._id) && theme === 'dark',
-                        filter_genreItem_light_chosen: !!chosenGenres.find((cg) => cg === genre._id) && theme === 'light',
-                        filter_genreItem_light: theme === 'light',
-                      })}
-                      key={genre._id}
-                      onClick={() => {
-                        if (chosenGenres.find((cg) => cg === genre._id)) {
-                          setChosenGenres(chosenGenres.filter((cg) => cg !== genre._id));
-                        } else {
-                          setChosenGenres([...chosenGenres, genre._id]);
-                        }
-                      }}
-                    >
-                      {genre.name}
-                    </div>
-                  ))}
-                </div>
+              <div className={cx('genresList')}>
+                {genres.map((genre) => (
+                  <button
+                    type="button"
+                    className={cx('filter_genreItem', {
+                      filter_genreItem_dark: theme === 'dark',
+                      filter_genreItem_dark_chosen: !!chosenGenres.find((cg) => cg === genre._id) && theme === 'dark',
+                      filter_genreItem_light_chosen: !!chosenGenres.find((cg) => cg === genre._id) && theme === 'light',
+                      filter_genreItem_light: theme === 'light',
+                    })}
+                    key={genre._id}
+                    onClick={() => {
+                      if (chosenGenres.find((cg) => cg === genre._id)) {
+                        setChosenGenres(chosenGenres.filter((cg) => cg !== genre._id));
+                      } else {
+                        setChosenGenres([...chosenGenres, genre._id]);
+                      }
+                    }}
+                  >
+                    {genre.name}
+                  </button>
+                ))}
+              </div>
               )}
 
               <div
@@ -309,7 +310,7 @@ const MainPage = () => {
                     >
                       Recently added
                     </div>
-                      {' '}
+                    {' '}
                     <button
                       className={cx('filter_buttons',
                         'filter_genreItem',
@@ -426,17 +427,21 @@ export const FilterInput = () => {
         value={name}
       />
       {name && (
-      <img
-        src={theme === 'light' ? cancelLightMode : cancelDarkMode}
-        alt="clearInput"
-        width="8px"
-        height="8px"
-        onClick={() => {
-          setName('');
-          delete prevParams.name;
-          setSearchParams({ ...prevParams });
-        }}
-      />
+        <button
+          type="button"
+          onClick={() => {
+            setName('');
+            delete prevParams.name;
+            setSearchParams({ ...prevParams });
+          }}
+        >
+          <img
+            src={theme === 'light' ? cancelLightMode : cancelDarkMode}
+            alt="clearInput"
+            width="8px"
+            height="8px"
+          />
+        </button>
       )}
     </div>
   );

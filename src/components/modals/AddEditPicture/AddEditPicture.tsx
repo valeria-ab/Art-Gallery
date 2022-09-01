@@ -1,18 +1,16 @@
 import React, {
-  ChangeEvent, FormEvent, useContext, useEffect, useRef, useState,
+  ChangeEvent, useContext, useEffect, useRef, useState,
 } from 'react';
 import classNames from 'classnames/bind';
 import { useParams } from 'react-router-dom';
-
 import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import style from './style.scss';
-import userIcon from '../../../assets/modals/addEditArtist/userIcon.png';
 import { Input } from '../../Input/Input';
 import { Button } from '../../Button/Button';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 import plug from '../../../assets/modals/addPicture/plug.png';
-import { addNewPaintingTC, editPaintingTC, setCurrentPainting } from '../../../store/artistPage-reducer';
+import { addNewPaintingTC, editPaintingTC } from '../../../store/artistPage-reducer';
 import { AppDispatch, IAppStore } from '../../../store/store';
 import { AuthorPaintingsType } from '../../../utils/api';
 

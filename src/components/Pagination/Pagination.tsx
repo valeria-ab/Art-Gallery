@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import classNames from 'classnames/bind';
 import style from './style.scss';
-import { ThemeContext } from '../../contexts/ThemeContext';
+import { ThemeContext, themes } from '../../contexts/ThemeContext';
 
 const cx = classNames.bind(style);
 
@@ -50,10 +50,13 @@ export const Pagination = (props: PaginationPropsType) => {
       })}
     >
       <li
+        role="presentation"
         className={cx('pagination-item', {
           disabled: currentPage === 1,
         })}
         onClick={onPrevious}
+        onKeyUp={() => console.log('1')}
+
       >
         <div className={cx('arrow left', {
           arrow_dark: theme === 'dark',
@@ -68,6 +71,8 @@ export const Pagination = (props: PaginationPropsType) => {
 
         return (
           <li
+            role="presentation"
+            key={pageNumber}
             className={cx('pagination-item', {
               selected: pageNumber === currentPage,
               selected_light: theme === 'light',
@@ -80,6 +85,7 @@ export const Pagination = (props: PaginationPropsType) => {
         );
       })}
       <li
+        role="presentation"
         className={cx('pagination-item', {
           disabled: currentPage === lastPage,
         })}
@@ -103,6 +109,7 @@ export const usePagination = ({
   siblingCount = 1,
   currentPage,
 }: PropsType) => {
+  // eslint-disable-next-line consistent-return
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize);
 
@@ -131,7 +138,6 @@ export const usePagination = ({
     const lastPageIndex = totalPageCount;
 
     if (!shouldShowLeftDots && shouldShowRightDots) {
-      // const leftItemCount = 3 + 2 * siblingCount;
       const leftItemCount = 1 + 3 * siblingCount;
       const leftRange = range(1, leftItemCount);
 

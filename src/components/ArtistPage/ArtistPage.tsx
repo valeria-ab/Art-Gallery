@@ -16,7 +16,7 @@ import style from './ArtistPage.scss';
 import ArtistArtworks from './ArtistArtworks';
 import { AddEditPicture } from '../modals/AddEditPicture/AddEditPicture';
 import { AddEditArtist } from '../modals/AddEditArtist/AddEditArtist';
-import { DeleteModal } from '../modals/delete/DeleteModal';
+import { DeleteModal } from '../modals/Delete/DeleteModal';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { ToastMessage } from '../ToastMessage/ToastMessage';
 import ArtworksSlider from '../Slider/ArtworksSlider';

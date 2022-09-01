@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import classNames from 'classnames/bind';
 // @ts-ignore
-import style from './Footer.scss';
+import style from './style.scss';
 import facebook from '../../assets/social-network-icons/lightTheme/facebook.png';
 import facebookForDark from '../../assets/social-network-icons/darkTheme/facebook_forDark.png';
 import instForDark from '../../assets/social-network-icons/darkTheme/inst_forDark.png';
