@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import classNames from 'classnames/bind';
-// @ts-ignore
 import style from './style.scss';
-import noImagePlug from '../../assets/photoItem/noImagePlug.png';
+import noImagePlug from '../../../assets/photoItem/noImagePlug.png';
 
 const cx = classNames.bind(style);
 

@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import style from './style.scss';
 import arrow from '../../assets/photoItem/arrow.png';
 import { themes } from '../../contexts/ThemeContext';
-import { NoImage } from './NoImage';
+import { NoImage } from './NoImage/NoImage';
 
 const cx = classNames.bind(style);
 

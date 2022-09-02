@@ -1,6 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
+  "homepage": "https://valeria-ab.github.io/FWT-Art-Gallery",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
@@ -16,6 +17,7 @@
     "classnames": "^2.3.1",
     "clientjs": "^0.2.1",
     "create-react-context": "^0.3.0",
+    "gh-pages": "^4.0.0",
     "js-cookie": "^3.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -34,6 +36,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

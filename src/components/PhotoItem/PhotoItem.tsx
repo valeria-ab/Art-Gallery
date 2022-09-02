@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { AppDispatch, IAppStore } from '../../store/store';
-// @ts-ignore
 import style from './style.scss';
 import { setCurrentPainting, updateMainPaintingTC } from '../../store/artistPage-reducer';
 import cogwheel from '../../assets/photoItem/cogwheel.png';
@@ -22,7 +21,7 @@ type PhotoItemPropsType = {
     onDeletePictureClick?: (paintingId: string) => void;
     setSliderVisible?: (value: boolean) => void;
     onEditPictureClick?: (mode: 'edit' | 'add') => void
-  setPaintingId?: (id: string) => void;
+    setPaintingId?: (id: string) => void;
     pictureData?: AuthorPaintingsType
 };
 
@@ -54,12 +53,11 @@ const PhotoItem = ({
 
   return (
     <div
-      className={cx('photoItem__container')}
+      role="presentation"
+      className={cx('photoItem_container')}
       onMouseOver={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onFocus={() => {
-        console.log('onFocus');
-      }}
+      onFocus={() => console.log('onFocus')}
     >
       {isInitialized && (
         <>
@@ -69,10 +67,7 @@ const PhotoItem = ({
             })}
           >
             <div
-              onKeyDown={() => {
-                console.log('keyboard listener');
-              }}
-              role="button"
+              role="presentation"
               tabIndex={-1}
               className={cx({
                 settings__hover: hover,
@@ -82,9 +77,9 @@ const PhotoItem = ({
               <img src={cogwheel} alt="cogwheel" width="24px" height="24px" />
             </div>
             <div className={cx('displayNone', {
-              settings__menu: isMenuOpened,
-              settings__menu_light: theme === themes.light,
-              settings__menu_dark: theme === themes.dark,
+              settings_menu: isMenuOpened,
+              settings_menu_light: theme === themes.light,
+              settings_menu_dark: theme === themes.dark,
             })}
             >
               <div
@@ -93,14 +88,10 @@ const PhotoItem = ({
                   menuItem_light: theme === themes.light,
                   menuItem_dark: theme === themes.dark,
                 })}
-                role="button"
-                onKeyDown={() => {
-                  console.log('keyboard listener');
-                }}
+                role="presentation"
                 tabIndex={-1}
                 onClick={() => {
-                  // eslint-disable-next-line no-unused-expressions
-                  authorId && dispatch(updateMainPaintingTC(id, authorId));
+                  if (authorId) dispatch(updateMainPaintingTC(id, authorId));
                 }}
               >
                 Make the cover
@@ -111,20 +102,14 @@ const PhotoItem = ({
                   menuItem_light: theme === themes.light,
                   menuItem_dark: theme === themes.dark,
                 })}
-                role="button"
-                onKeyDown={() => {
-                  console.log('keyboard listener');
-                }}
+                role="presentation"
                 tabIndex={-1}
                 onClick={onEditPainting}
               >
                 Edit
               </div>
               <div
-                onKeyDown={() => {
-                  console.log('keyboard listener');
-                }}
-                role="button"
+                role="presentation"
                 tabIndex={-1}
                 className={cx({
                   menuItem: hover,
@@ -141,6 +126,7 @@ const PhotoItem = ({
       )}
       <div
         className={cx('photoItem')}
+        role="presentation"
         onClick={() => {
           if (setSliderVisible && setPaintingId) {
             setPaintingId(id);
@@ -149,19 +135,19 @@ const PhotoItem = ({
         }}
       >
         <img
-          className={cx('photoItem__img')}
+          className={cx('photoItem_img')}
           src={`${process.env.REACT_APP_BASE_URL}${picture}`}
           alt="mainPicture"
         />
         <div className={cx('hoverButton', {
           'hoverButton-show': hover,
-          hoverButton__dark: theme === themes.dark,
-          hoverButton__light: theme === themes.light,
+          hoverButton_dark: theme === themes.dark,
+          hoverButton_light: theme === themes.light,
         })}
         >
           <span className={cx('hoverButtonSpan', {
-            hoverButtonSpan__dark: theme === themes.dark,
-            hoverButtonSpan__light: theme === themes.light,
+            hoverButtonSpan_dark: theme === themes.dark,
+            hoverButtonSpan_light: theme === themes.light,
           })}
           >
             Learn more

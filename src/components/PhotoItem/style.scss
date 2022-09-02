@@ -54,6 +54,15 @@
       display: block;
       min-width: 300px;
       cursor: pointer;
+      @media screen and (min-width: 1440px) {
+        width: 392px;
+      }
+      @media screen and (min-width: 769px) and (max-width: 1439px) {
+        width: 352px;
+      }
+      @media screen and (min-width: 320px) and (max-width: 768px) {
+        width: 100%;
+      }
     }
 
     .titleContainer {
@@ -124,6 +133,15 @@
 
       }
 
+    }
+    @media screen and (min-width: 1440px) {
+      width: 392px;
+    }
+    @media screen and (min-width: 769px) and (max-width: 1439px) {
+        width: 352px;
+    }
+    @media screen and (min-width: 320px) and (max-width: 768px) {
+        width: 100%;
     }
   }
 }
@@ -226,57 +244,4 @@
 
 .menuItem_dark:hover {
   color: $accentGold;
-}
-
-
-@media screen and (min-width: 320px) and (max-width: 768px) {
-  .photoItem,
-  .photoItem__img,
-  .photoItem__container {
-    width: 100%;
-  }
-}
-
-@media screen and (min-width: 769px) and (max-width: 1439px) {
-  .photoItem,
-  .photoItem__img,
-  .photoItem__container {
-    width: 352px;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .photoItem,
-  .photoItem__img,
-  .photoItem__container {
-    width: 392px;
-  }
-}
-
-.noImage {
-  height: 280px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: $Inter;
-  font-style: normal;
-  font-weight: 900;
-  font-size: 12px;
-  line-height: 15px;
-  &_light {
-    background-color: $secondaryWhite;
-  }
-  &_dark {
-    background-color: $secondaryBlack;
-  }
-  &_img {
-    margin-top: 19%;
-  }
-  .description {
-     color: $secondaryGray;
-    text-align: center;
-    text-transform: uppercase;
-    margin-top: 10px;
-  }
 }

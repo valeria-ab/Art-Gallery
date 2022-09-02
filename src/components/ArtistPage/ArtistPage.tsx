@@ -11,7 +11,6 @@ import {
   getArtistInfoTC,
 } from '../../store/artistPage-reducer';
 import { ArtistResponseType, AuthorPaintingsType } from '../../utils/api';
-// @ts-ignore
 import style from './ArtistPage.scss';
 import ArtistArtworks from './ArtistArtworks';
 import { AddEditPicture } from '../modals/AddEditPicture/AddEditPicture';
