@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/FWT-Art-Gallery/static/css/main.18407a79.css",
-    "main.js": "/FWT-Art-Gallery/static/js/main.79dc5fd2.js",
+    "main.js": "/FWT-Art-Gallery/static/js/main.c705c88f.js",
     "static/media/signUpPic.png": "/FWT-Art-Gallery/static/media/signUpPic.7d4cec654b1eb7a5ee92.png",
     "static/media/loginPic.png": "/FWT-Art-Gallery/static/media/loginPic.a7d7f3f6f507cb1d71be.png",
     "static/media/noImagePlug.png": "/FWT-Art-Gallery/static/media/noImagePlug.dfe3496373f4adab8a02.png",
     "index.html": "/FWT-Art-Gallery/index.html",
     "main.18407a79.css.map": "/FWT-Art-Gallery/static/css/main.18407a79.css.map",
-    "main.79dc5fd2.js.map": "/FWT-Art-Gallery/static/js/main.79dc5fd2.js.map"
+    "main.c705c88f.js.map": "/FWT-Art-Gallery/static/js/main.c705c88f.js.map"
   },
   "entrypoints": [
     "static/css/main.18407a79.css",
-    "static/js/main.79dc5fd2.js"
+    "static/js/main.c705c88f.js"
   ]
 }
