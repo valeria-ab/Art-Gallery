@@ -1,0 +1,72 @@
+@import "./src/common/styles/sass/baseColors.scss";
+@import "./src/common/styles/CommonStyles";
+
+.toastMessage_wrapper {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000;
+}
+.toastMessage {
+  position: absolute;
+  bottom: 30px;
+  right: 40px;
+  z-index: 10;
+  height: 90px;
+  width: 440px;
+  border-radius: 4px;
+  border-left: 8px solid $accentError;
+  color: white;
+  &_light {
+    background-color: $secondaryWhite;
+    color: $primaryDarkGray;
+    border: 1px solid $primaryLightGray;
+    border-left: 8px solid $accentError;
+  }
+  &_dark {
+    background-color: $secondaryBlack;
+    color: $primaryLightGray;
+  }
+  @media screen and (max-width: 767px) {
+    height: 40px;
+    width: 100%;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+  }
+}
+.toastMessage_container {
+  padding: 16px;
+}
+
+.toastMessage_contentBlock {
+  display: flex;
+  &_imgBlock {
+    margin-right: 10px;
+  }
+}
+
+.toastMessage_errorTitle {
+@include paragraphBaseMedium16;
+  color: $accentError;
+  display: inline-block;
+  margin-bottom: 8px;
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+.toastMessage_errorText {
+  @include paragraphSmallLight12;
+}
+.toastMessage_button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  float: right;
+}

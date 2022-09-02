@@ -1,0 +1,32 @@
+@import "../../../common/styles/sass/baseColors";
+@import "../../../common/styles/CommonStyles";
+
+.genre {
+  border-radius: 30px;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.genre__light {
+  color: $primaryDarkGray;
+  background: #F3F3F3;
+}
+
+.genre__dark {
+  border: 1px solid $primaryWhite;
+  background-color: $secondaryBlack;
+  color: $primaryWhite;
+}
+
+.genreValue {
+  @include paragraphSmallMedium12;
+}
+
+.genreMultiselect {
+  border-radius: 30px;
+  padding: 7px 16px;
+  margin-right: 10px;
+  display: inline-block;
+}

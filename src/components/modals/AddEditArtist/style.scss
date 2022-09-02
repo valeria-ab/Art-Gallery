@@ -1,0 +1,213 @@
+@import "./src/common/styles/sass/baseColors";
+@import "./src/common/styles/CommonStyles";
+
+.addEditArtistModal {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10000000000;
+  @media screen and (max-width: 670px) {
+    position: relative;
+  }
+}
+
+.addModal {
+  width: 800px;
+  min-height: 876px;
+  padding: 36px;
+  .light {
+    color: $primaryDarkGray;
+    background-color: $secondaryWhite;
+  }
+  .dark {
+    color: $primaryLightGray;
+    background-color: $primaryBlack;
+  }
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  //height: 100%;
+  margin-right: 20px;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  //min-height: 250px;
+  //padding: 20px;
+  height: 100%;
+  margin: 44px 10px 60px;
+}
+
+.contentContainer {
+  //width: 340px;
+  display: flex;
+  flex-direction: column;
+  //border: 1px solid;
+  margin-bottom: 60px;
+  height: 609px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.photoBlock {
+  height: 200px;
+  width: 200px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 44px 10px 0;
+  border: 1px gray;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23333' stroke-width='1' stroke-dasharray='10' stroke-dashoffset='5' stroke-linecap='square'/%3e%3c/svg%3e");
+  border-radius: 10px;
+  p {
+    text-align: center;
+    @include paragraphBaseLight16
+  }
+
+}
+.imageAdded {
+  padding: 0;
+}
+.input_uploader {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  width: 100%;
+  //z-index: -1;
+}
+.userIcon {
+  margin-bottom: 16px;
+}
+
+.cancel {
+  height: 16px;
+  width: 16px;
+  float: right;
+  cursor: pointer;
+}
+
+.inputsBlock {
+  height: 506px;
+}
+
+.label {
+  margin-bottom: 8px;
+  @include inputBold12;
+}
+
+.inputsBlock__light,
+.label__light {
+  color: $primaryBlack;
+}
+
+.inputsBlock__dark,
+.label__dark {
+  color: $primaryWhite;
+}
+
+.textArea {
+  width: 340px;
+  height: 150px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  @include paragraphBaseLight16;
+  padding: 12px 16px;
+  resize: none;
+}
+
+
+.input__light {
+  border: 1px solid $primaryLightGray;
+  color: $primaryDarkGray;
+}
+
+.input__dark {
+  background-color: $secondaryBlack;
+  color: $primaryLightGray;
+}
+@media screen and (max-width: 500px) {
+  .textArea {
+    width: 260px;
+  }
+  .wrap {
+ align-items: center;
+    //margin: 0;
+  }
+  .addModal {
+    padding: 20px;
+  }
+  .wrapper {
+    margin-right: 0;
+  }
+}
+
+.drop_area {
+  //width: 800px;
+  //height: 874px;
+  width: 80vw;
+  height: 80vh;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='2' ry='2' stroke='%23333' stroke-width='1' stroke-dasharray='10' stroke-dashoffset='25' stroke-linecap='square'/%3e%3c/svg%3e");
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .drop_infoBlock {
+    width: 260px;
+    height: 157px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+  }
+  .dropAreaTitle {
+    @include paragraphBaseLight16;
+  }
+  .description {
+    @include paragraphSmallLight12;
+  }
+  .description_dark {
+    color: $primaryDarkGray;
+  }
+}
+
+.browseImageButton {
+    width: 200px;
+    height: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    cursor: pointer;
+  text-decoration: underline;
+
+    @include buttonBold12;
+    text-transform: uppercase;
+
+
+  &_dark {
+    color: $primaryWhite;
+  }
+  &_light {
+    color: $primaryDarkGray;
+  }
+}

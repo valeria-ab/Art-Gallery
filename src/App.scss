@@ -1,0 +1,23 @@
+@import "./common/styles/sass/baseColors.scss";
+
+.App {
+
+}
+.dark {
+  background-color: $primaryBlack;
+  color: $primaryLightGray;
+}
+.light {
+  background-color: $primaryWhite;
+}
+.AppContainer {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+

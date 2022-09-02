@@ -1,0 +1,65 @@
+@import "../../../common/styles/sass/baseColors";
+@import "../../../common/styles/CommonStyles";
+
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10000000000;
+}
+.deleteModal {
+  width: 319px;
+  height: 397px;
+  padding: 30px 40px 70px;
+  .light {
+    color: $primaryDarkGray;
+    background-color: $secondaryWhite;
+  }
+  .dark {
+    color: $primaryLightGray;
+    background-color: $primaryBlack;
+  }
+}
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  text-align: center;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.question {
+@include paragraphBaseMedium16;
+}
+
+.warning {
+  @include paragraphSmallLight12;
+}
+.warning__dark {
+  color: $secondaryGray
+}
+.trashIcon {
+  width: 40px;
+ height: 40px
+}
+.cancelIconWrapper {
+  float: right;
+
+}
+.cancelIcon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.buttons {
+  margin-top: 20px;
+}

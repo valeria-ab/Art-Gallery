@@ -1,0 +1,98 @@
+@import "./src/common/styles/sass/baseColors";
+@import "./src/common/styles/CommonStyles";
+
+
+
+.authorization {
+  width: 100%;
+}
+
+.authorizationContainer {
+  width: 1028px;
+  height: 700px;
+  margin: 0 auto;
+  display: flex;
+}
+.light {
+  color: $primaryDarkGray;
+}
+.dark {
+  color: $primaryWhite;
+}
+.picture {
+
+}
+
+.mainBlock {
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
+  width: 100%;
+  align-items: center;
+  padding: 30px;
+}
+
+.cancelIconWrapper {
+  align-self: end;
+  cursor: pointer;
+}
+.cancelIcon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+.title {
+  @include h2Heading;
+  margin-bottom: 10px;
+  margin-top: 80px;
+}
+.title_mobile_light {
+
+}
+.text {
+  margin-top: 10px;
+  margin-bottom: 60px;
+  @include paragraphBaseLight16;
+}
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+  @include  paragraphBaseMedium16;
+}
+.link:visited.lightMode{
+  color: $primaryBlack;
+}
+.link:visited.darkMode{
+  color: $primaryWhite;
+}
+@media screen and (max-width: 1027px) {
+.picture {
+  display: none;
+}
+  .authorizationContainer {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 500px)  {
+  .title {
+    @include h3Heading;
+    margin-bottom: 60px;
+  }
+  .title_mobile_light {
+    color: $primaryBlack;
+  }
+  .authorizationContainer {
+    position: relative;
+    height: 630px;
+  }
+  .text {
+    @include paragraphSmallLight12;
+    position: absolute;
+    bottom: 30px;
+    margin-bottom: 0;
+  }
+  .signUpLink {
+    @include paragraphSmallMedium12;
+  }
+}

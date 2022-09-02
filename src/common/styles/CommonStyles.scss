@@ -1,0 +1,113 @@
+@import "./sass/fonts.scss";
+
+@mixin h1Heading {
+    font-family: $headingFontFamily;
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 73px;
+}
+@mixin h2Heading {
+  font-family: $headingFontFamily;
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 48px;
+}
+@mixin h3Heading {
+  font-family: $headingFontFamily;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 35px;
+}
+@mixin h4Heading {
+  font-family: $headingFontFamily;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19.38px;
+}
+@mixin h5Heading {
+  font-family: $headingFontFamily;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20.48px;
+}
+@mixin h6Heading {
+  font-family: $headingFontFamily;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14.53px;
+}
+
+@mixin paragraphTitle {
+  font-family: $paragraphFontFamily;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+@mixin paragraphBaseLight16 {
+  font-family: $Inter;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 140%;
+}
+
+@mixin paragraphBaseMedium16 {
+  font-family: $Inter;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22.4px;
+}
+
+@mixin paragraphSmallLight12 {
+  font-family: $Inter;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16.8px;
+}
+@mixin paragraphSmallMedium12 {
+  font-family: $Inter;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16.8px;
+}
+@mixin paragraphTinyMedium8 {
+  font-family: $Inter;
+  font-weight: 500;
+  font-size: 8px;
+  line-height: 9.68px;
+}
+
+@mixin buttonBold12 {
+  font-family: $Inter;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14.52px;
+  text-transform: uppercase;
+}
+
+@mixin inputBold12 {
+  font-family: $Inter;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14.52px;
+}
+
+@mixin captionMedium16 {
+  font-family: $headingFontFamily;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19.38px;
+}
+@mixin captionMedium12 {
+  font-family: $headingFontFamily;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14.53px;
+}
+@mixin captionBoldUppercase {
+  font-family: $Inter;
+  font-weight: 700;
+  font-size: 8px;
+  line-height: 9.68px;
+  text-transform: uppercase;
+}

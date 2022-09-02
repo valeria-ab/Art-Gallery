@@ -1,0 +1,247 @@
+@import "./src/common/styles/sass/baseColors.scss";
+@import "./src/common/styles/CommonStyles";
+
+
+.photoItem__container {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  position: relative;
+
+  .hoverButton {
+    display: none;
+  }
+
+  &.photoItem__container-active {
+    .hoverButton {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 667;
+      opacity: 0.9;
+      height: 100%;
+      width: 100%;
+
+      &.hoverButton__dark {
+        background-color: $primaryBlack;
+      }
+
+      &.hoverButton__light {
+        background-color: rgba(255, 255, 255);
+      }
+
+      .hoverButtonSpan {
+        @include buttonBold12;
+        top: 49%;
+        left: 35%;
+        position: absolute;
+
+        &.hoverButtonSpan__dark {
+          color: $primaryLightGray;
+          border-bottom: 2px solid $primaryLightGray;
+        }
+
+        &.hoverButtonSpan__light {
+          color: $primaryDarkGray;
+          border-bottom: 2px solid $primaryDarkGray;
+        }
+      }
+    }
+  }
+
+  .photoItem {
+    &__img {
+      display: block;
+      min-width: 300px;
+      cursor: pointer;
+      @media screen and (min-width: 1440px) {
+        width: 392px;
+      }
+      @media screen and (min-width: 769px) and (max-width: 1439px) {
+        width: 352px;
+      }
+      @media screen and (min-width: 320px) and (max-width: 768px) {
+        width: 100%;
+      }
+    }
+
+    .titleContainer {
+      display: block;
+      position: absolute;
+     min-height: 82px;
+      padding: 20px 20px 20px 0;
+      left: 0;
+      bottom: 0;
+      height: 20%;
+      width: 80%;
+      @media screen and (max-width: 768px) {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      &_dark {
+        background-color: $primaryBlack;
+      }
+
+      &_light {
+        background-color: $primaryWhite;
+      }
+
+      .titleBlock {
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &_dark {
+          border-left: 2px solid $accentGold;
+          @media screen and (max-width: 768px) {
+            border-left: 0;
+          }
+        }
+
+        &_light {
+          border-left: 2px solid $accentRed;
+          @media screen and (max-width: 768px) {
+            border-left: 0;
+          }
+        }
+
+        .name {
+          @include h4Heading;
+
+          &_dark {
+            color: $primaryLightGray;
+          }
+
+          &_light {
+            color: $primaryBlack;
+          }
+        }
+
+        .years {
+          @include buttonBold12;
+
+          &_light {
+            color: $accentRed;
+          }
+
+          &_dark {
+            color: $accentGold;
+          }
+        }
+
+      }
+
+    }
+    @media screen and (min-width: 1440px) {
+      width: 392px;
+    }
+    @media screen and (min-width: 769px) and (max-width: 1439px) {
+        width: 352px;
+    }
+    @media screen and (min-width: 320px) and (max-width: 768px) {
+        width: 100%;
+    }
+  }
+}
+
+.learnMore_mobile {
+  display: none;
+  width: 25px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px;
+
+  &_light {
+    background-color: $accentRed;
+  }
+
+  &_dark {
+    background-color: $accentGold;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.displayNone {
+  display: none;
+}
+
+.displayBlock {
+  display: block;
+}
+
+.settings__hover {
+  position: absolute;
+  z-index: 200;
+  top: 14px;
+  left: 14px;
+  height: 28px;
+  width: 24px;
+  display: block;
+  cursor: pointer;
+  background: rgba(26, 24, 24, 0.1);
+  border-radius: 4px;
+
+}
+
+.settings__menu {
+  width: 150px;
+  height: 105px;
+  position: absolute;
+  top: 50px;
+  left: 12px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @include inputBold12;
+
+}
+
+.settings__menu_light {
+  background-color: $primaryWhite;
+  color: $primaryWhite
+}
+
+.settings__menu_dark {
+  background-color: $secondaryBlack;
+  color: $secondaryBlack
+}
+
+.settings__menu::before {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border: 0 solid transparent;
+  border-right-width: 5px;
+  border-left-width: 5px;
+  border-bottom: 10px solid;
+  content: '';
+}
+
+
+.menuItem_light {
+  color: $primaryDarkGray;
+}
+
+.menuItem_light:hover {
+  color: $primaryBlack;
+}
+
+.menuItem_dark {
+  color: $primaryLightGray;
+}
+
+.menuItem_dark:hover {
+  color: $accentGold;
+}
