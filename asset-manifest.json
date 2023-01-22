@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/FWT-Art-Gallery/static/css/main.18407a79.css",
-    "main.js": "/FWT-Art-Gallery/static/js/main.c705c88f.js",
+    "main.css": "/FWT-Art-Gallery/static/css/main.fd9c79a0.css",
+    "main.js": "/FWT-Art-Gallery/static/js/main.7be38977.js",
     "static/media/signUpPic.png": "/FWT-Art-Gallery/static/media/signUpPic.7d4cec654b1eb7a5ee92.png",
     "static/media/loginPic.png": "/FWT-Art-Gallery/static/media/loginPic.a7d7f3f6f507cb1d71be.png",
     "static/media/noImagePlug.png": "/FWT-Art-Gallery/static/media/noImagePlug.dfe3496373f4adab8a02.png",
     "index.html": "/FWT-Art-Gallery/index.html",
-    "main.18407a79.css.map": "/FWT-Art-Gallery/static/css/main.18407a79.css.map",
-    "main.c705c88f.js.map": "/FWT-Art-Gallery/static/js/main.c705c88f.js.map"
+    "main.fd9c79a0.css.map": "/FWT-Art-Gallery/static/css/main.fd9c79a0.css.map",
+    "main.7be38977.js.map": "/FWT-Art-Gallery/static/js/main.7be38977.js.map"
   },
   "entrypoints": [
-    "static/css/main.18407a79.css",
-    "static/js/main.c705c88f.js"
+    "static/css/main.fd9c79a0.css",
+    "static/js/main.7be38977.js"
   ]
 }
