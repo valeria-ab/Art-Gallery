@@ -20,7 +20,7 @@
   @include paragraphBaseLight16;
 }
 .textMedium {
-  @include  paragraphBaseMedium16;
+  @include paragraphBaseMedium16;
 }
 
 @media screen and (max-width: 690px) {
@@ -60,9 +60,9 @@
 .fwtLink {
   text-decoration: underline;
   &_light {
-      color: $primaryBlack;
+    color: $primaryBlack;
   }
   &_dark {
-      color: $primaryWhite;
+    color: $primaryWhite;
   }
 }

@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from 'react';
 import classNames from 'classnames/bind';
-// @ts-ignore
 import style from './style.scss';
 import addLight from '../../assets/buttons/addLight.png';
 import addDark from '../../assets/buttons/addDark.png';

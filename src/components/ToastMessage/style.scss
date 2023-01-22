@@ -2,7 +2,7 @@
 @import "./src/common/styles/CommonStyles";
 
 .toastMessage_wrapper {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   position: fixed;
   top: 0;
@@ -10,34 +10,38 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100000;
+  z-index: 100000000000000000000;
 }
 .toastMessage {
   position: absolute;
   bottom: 30px;
   right: 40px;
-  z-index: 10;
-  height: 90px;
+  z-index: 10000000000000;
+  min-height: 90px;
   width: 440px;
   border-radius: 4px;
-  border-left: 8px solid $accentError;
-  color: white;
+
   &_light {
     background-color: $secondaryWhite;
     color: $primaryDarkGray;
     border: 1px solid $primaryLightGray;
-    border-left: 8px solid $accentError;
   }
   &_dark {
     background-color: $secondaryBlack;
     color: $primaryLightGray;
   }
   @media screen and (max-width: 767px) {
-    height: 40px;
+    min-height: 50px;
     width: 100%;
-    bottom: 10px;
+    bottom: 0;
     left: 0;
     right: 0;
+  }
+  &_error {
+    border-left: 8px solid $accentError;
+  }
+  &_success {
+    border-left: 8px solid rgb(20, 144, 3);
   }
 }
 .toastMessage_container {
@@ -51,17 +55,24 @@
   }
 }
 
-.toastMessage_errorTitle {
-@include paragraphBaseMedium16;
-  color: $accentError;
+.toastMessage_text {
+  @include paragraphSmallLight12;
+  word-break: break-all;
+}
+.toastMessage_title {
+  @include paragraphBaseMedium16;
+
   display: inline-block;
   margin-bottom: 8px;
   @media screen and (max-width: 767px) {
     display: none;
   }
-}
-.toastMessage_errorText {
-  @include paragraphSmallLight12;
+  &_error {
+    color: $accentError;
+  }
+  &_success {
+    color: rgb(20, 144, 3);
+  }
 }
 .toastMessage_button {
   padding: 0;

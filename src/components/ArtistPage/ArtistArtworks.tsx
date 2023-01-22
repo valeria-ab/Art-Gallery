@@ -1,15 +1,14 @@
-import React, { useContext, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
+import { useContext, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { PageSize } from '../../constants';
+import { ThemeContext } from '../../contexts/ThemeContext';
+import { setArtworksCurrentPage } from '../../store/artistPage-reducer';
+import { AppDispatch, IAppStore } from '../../store/store';
 import type { AuthorPaintingsType } from '../../utils/api';
 import Gallery from '../Gallery/Gallery';
-import { IAppStore } from '../../store/store';
-// @ts-ignore
-import style from './ArtistPage.scss';
-import { ThemeContext } from '../../contexts/ThemeContext';
 import { Pagination } from '../Pagination/Pagination';
-import { PageSize } from '../../constants';
-import { NoArtworks } from './ArtistProfile/ArtistProfile';
+import style from './ArtistPage.scss';
 
 const cx = classNames.bind(style);
 
@@ -18,6 +17,7 @@ type ArtistArtworksPropsType = {
     onDeletePictureClick: (paintingId: string) => void;
     setSliderVisible: (value: boolean) => void;
     setPaintingId: (id: string) => void;
+    isMobileMode: boolean;
 }
 
 const ArtistArtworks = ({
@@ -25,13 +25,16 @@ const ArtistArtworks = ({
   onDeletePictureClick,
   setSliderVisible,
   setPaintingId,
+  isMobileMode
 }: ArtistArtworksPropsType) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const artworks = useSelector<IAppStore, Array<AuthorPaintingsType>>(
     ({ artistPage }) => artistPage.artistInfo.paintings,
   );
-
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = useSelector<IAppStore, number>(
+    ({ artistPage }) => artistPage.artworksCurrentPage
+  );
+  const dispatch = useDispatch<AppDispatch>();
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
@@ -39,6 +42,7 @@ const ArtistArtworks = ({
     return artworks && artworks.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, artworks]);
 
+  
   return (
     <div className={cx('artistArtworks')}>
       <div className={cx('artistArtworks_heading', {
@@ -54,13 +58,14 @@ const ArtistArtworks = ({
         onDeletePictureClick={onDeletePictureClick}
         setSliderVisible={setSliderVisible}
         setPaintingId={setPaintingId}
+        isMobileMode={isMobileMode}
       />
       {artworks?.length > 0 && (
       <Pagination
         currentPage={currentPage}
         totalCount={artworks?.length}
         pageSize={PageSize}
-        onPageChange={(page: number) => setCurrentPage(page)}
+        onPageChange={(page: number) => dispatch(setArtworksCurrentPage({artworksCurrentPage: page}))}
         siblingCount={1}
       />
       )}

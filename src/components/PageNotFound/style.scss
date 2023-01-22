@@ -1,0 +1,7 @@
+@import "../../common/styles/sass/baseColors";
+@import "../../common/styles/CommonStyles";
+
+.pageNotFound {
+  @include h4Heading;
+  text-align: center;
+}

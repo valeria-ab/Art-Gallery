@@ -1,26 +1,28 @@
-import React from 'react';
+import React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { DeleteModal } from '../components/modals/Delete/DeleteModal';
+import { DeleteModal } from "../components/DeleteModal/DeleteModal";
 
 export default {
-  title: 'Example/DeleteModal',
+  title: "Example/DeleteModal",
   component: DeleteModal,
 } as ComponentMeta<typeof DeleteModal>;
 
-const Template: ComponentStory<typeof DeleteModal> = (args) => <DeleteModal {...args} />;
+const Template: ComponentStory<typeof DeleteModal> = (args) => (
+  <DeleteModal {...args} />
+);
 
 export const DeleteArtistProfile = Template.bind({});
 DeleteArtistProfile.args = {
-  primaryTitle: 'artist profile',
-  secondaryTitle: 'profile',
-  theme: 'light',
+  primaryTitle: "artist profile",
+  secondaryTitle: "profile",
+  theme: "light",
 };
 
 export const DeletePicture = Template.bind({});
 DeletePicture.args = {
-  primaryTitle: 'picture',
-  secondaryTitle: 'picture',
-  theme: 'light',
+  primaryTitle: "picture",
+  secondaryTitle: "picture",
+  theme: "light",
 };

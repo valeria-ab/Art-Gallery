@@ -1,5 +1,5 @@
-@import "../../../common/styles/sass/baseColors";
-@import "../../../common/styles/CommonStyles";
+@import "../../common/styles/sass/baseColors";
+@import "../../common/styles/CommonStyles";
 
 .modal {
   height: 100vh;
@@ -37,22 +37,21 @@
 }
 
 .question {
-@include paragraphBaseMedium16;
+  @include paragraphBaseMedium16;
 }
 
 .warning {
   @include paragraphSmallLight12;
 }
 .warning__dark {
-  color: $secondaryGray
+  color: $secondaryGray;
 }
 .trashIcon {
   width: 40px;
- height: 40px
+  height: 40px;
 }
 .cancelIconWrapper {
   float: right;
-
 }
 .cancelIcon {
   width: 16px;

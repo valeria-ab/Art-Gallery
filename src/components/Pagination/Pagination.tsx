@@ -109,7 +109,6 @@ export const usePagination = ({
   siblingCount = 1,
   currentPage,
 }: PropsType) => {
-  // eslint-disable-next-line consistent-return
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize);
 

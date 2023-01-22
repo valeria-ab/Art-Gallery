@@ -23,7 +23,7 @@
 }
 .lightMode {
   background-color: $primaryWhite;
-  color: $primaryDarkGray
+  color: $primaryDarkGray;
 }
 
 .authBlock {
@@ -125,7 +125,7 @@
     cursor: pointer;
   }
   .loginButtons {
-    @include h1Heading
+    @include h1Heading;
   }
 }
 
@@ -152,7 +152,7 @@
     width: 80%;
   }
   .loginButtons {
-    @include h3Heading
+    @include h3Heading;
   }
 }
 
@@ -173,7 +173,6 @@
   }
 }
 .button {
-  //padding: 0;
   border: none;
   background-color: transparent;
   cursor: pointer;

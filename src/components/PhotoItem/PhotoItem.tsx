@@ -1,28 +1,32 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import classNames from 'classnames/bind';
-import { AppDispatch, IAppStore } from '../../store/store';
-import style from './style.scss';
-import { setCurrentPainting, updateMainPaintingTC } from '../../store/artistPage-reducer';
-import cogwheel from '../../assets/photoItem/cogwheel.png';
-import { AuthorPaintingsType } from '../../utils/api';
-import arrow from '../../assets/photoItem/arrow.png';
-import { themes } from '../../contexts/ThemeContext';
+import classNames from "classnames/bind";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import arrow from "../../assets/photoItem/arrow.png";
+import cogwheel from "../../assets/photoItem/cogwheel.png";
+import { themes } from "../../contexts/ThemeContext";
+import {
+  setCurrentPainting,
+  updateMainPaintingTC,
+} from "../../store/artistPage-reducer";
+import { AppDispatch, IAppStore } from "../../store/store";
+import { AuthorPaintingsType } from "../../utils/api";
+import { NoImagePlug } from "../ArtistPage/ArtistProfile/ArtistProfile";
+import style from "./style.scss";
 
 const cx = classNames.bind(style);
 
 type PhotoItemPropsType = {
-    name: string;
-    years: string;
-    picture: string;
-    id: string;
-    theme: string;
-    onDeletePictureClick?: (paintingId: string) => void;
-    setSliderVisible?: (value: boolean) => void;
-    onEditPictureClick?: (mode: 'edit' | 'add') => void
-    setPaintingId?: (id: string) => void;
-    pictureData?: AuthorPaintingsType
+  name: string;
+  years: string;
+  picture: string;
+  id: string;
+  theme: string;
+  onDeletePictureClick?: (paintingId: string) => void;
+  onEditPictureClick?: (mode: "edit" | "add") => void;
+  setPaintingId?: (id: string) => void;
+  pictureData?: AuthorPaintingsType;
+  isMobileMode: boolean;
 };
 
 const PhotoItem = ({
@@ -33,54 +37,59 @@ const PhotoItem = ({
   theme,
   onDeletePictureClick,
   onEditPictureClick,
-  setSliderVisible,
   pictureData,
   setPaintingId,
+  isMobileMode,
 }: PhotoItemPropsType) => {
-  const [hover, setHover] = useState(false);
-  const [isMenuOpened, setMenuOpened] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { authorId } = useParams();
 
-  const isInitialized = useSelector<IAppStore, boolean>(
-    (state) => state.auth.isInitialized,
+  const [hover, setHover] = useState(false);
+  const [isMenuOpened, setMenuOpened] = useState(false);
+
+  const isLoggedIn = useSelector<IAppStore, boolean>(
+    (state) => state.auth.isLoggedIn
   );
 
   const onEditPainting = () => {
-    if (pictureData) dispatch(setCurrentPainting({ currentPainting: pictureData }));
-    if (onEditPictureClick) onEditPictureClick('edit');
+    if (pictureData)
+      dispatch(setCurrentPainting({ currentPainting: pictureData }));
+    if (onEditPictureClick) onEditPictureClick("edit");
   };
 
   return (
     <div
       role="presentation"
-      className={cx('photoItem_container')}
+      className={cx("photoItem__container")}
       onMouseOver={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onFocus={() => console.log('onFocus')}
+      onMouseLeave={() => {
+        setHover(false);
+        setMenuOpened(false);
+      }}
     >
-      {isInitialized && (
+      {isLoggedIn && (
         <>
           <div
-            className={cx('displayNone', {
-              displayBlock: hover,
+            className={cx("displayNone", {
+              displayBlock: isMobileMode || hover,
             })}
           >
             <div
               role="presentation"
               tabIndex={-1}
               className={cx({
-                settings__hover: hover,
+                settings__hover: isMobileMode || hover,
               })}
               onClick={() => setMenuOpened(!isMenuOpened)}
             >
               <img src={cogwheel} alt="cogwheel" width="24px" height="24px" />
             </div>
-            <div className={cx('displayNone', {
-              settings_menu: isMenuOpened,
-              settings_menu_light: theme === themes.light,
-              settings_menu_dark: theme === themes.dark,
-            })}
+            <div
+              className={cx("displayNone", {
+                settings__menu: isMenuOpened,
+                settings__menu_light: theme === themes.light,
+                settings__menu_dark: theme === themes.dark,
+              })}
             >
               <div
                 className={cx({
@@ -125,51 +134,33 @@ const PhotoItem = ({
         </>
       )}
       <div
-        className={cx('photoItem')}
+        className={cx("photoItem")}
         role="presentation"
         onClick={() => {
-          if (setSliderVisible && setPaintingId) {
-            setPaintingId(id);
-            setSliderVisible(true);
-          }
+          setPaintingId && setPaintingId(id);
         }}
       >
-        <img
-          className={cx('photoItem_img')}
-          src={`${process.env.REACT_APP_BASE_URL}${picture}`}
-          alt="mainPicture"
-        />
-        <div className={cx('hoverButton', {
-          'hoverButton-show': hover,
-          hoverButton_dark: theme === themes.dark,
-          hoverButton_light: theme === themes.light,
-        })}
-        >
-          <span className={cx('hoverButtonSpan', {
-            hoverButtonSpan_dark: theme === themes.dark,
-            hoverButtonSpan_light: theme === themes.light,
-          })}
-          >
-            Learn more
-          </span>
-        </div>
+        {picture !== "no image" ? (
+          <img
+            className={cx("photoItem__img")}
+            src={`${process.env.REACT_APP_BASE_URL}${picture}`}
+            alt="mainPicture"
+          />
+        ) : (
+          <NoImagePlug theme={theme} />
+        )}
 
-        <div className={cx('titleContainer', `titleContainer_${theme}`)}>
-          <div className={cx('titleBlock', `titleBlock_${theme}`)}>
-            <div className={cx('name', `name_${theme}`)}>
-              {name}
-            </div>
-            <div className={cx('years', `years_${theme}`)}>
-              {years}
-            </div>
+        <div className={cx("titleContainer", `titleContainer_${theme}`)}>
+          <div className={cx("titleBlock", `titleBlock_${theme}`)}>
+            <div className={cx("name", `name_${theme}`)}>{name}</div>
+            <div className={cx("years", `years_${theme}`)}>{years}</div>
           </div>
-          <div className={cx('learnMore_mobile', `learnMore_mobile_${theme}`)}>
+          <div className={cx("learnMore_mobile", `learnMore_mobile_${theme}`)}>
             <img src={arrow} alt="arrow" width="16px" height="10px" />
           </div>
         </div>
       </div>
     </div>
-
   );
 };
 

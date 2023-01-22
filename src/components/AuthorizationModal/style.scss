@@ -1,6 +1,18 @@
 @import "./src/common/styles/sass/baseColors";
 @import "./src/common/styles/CommonStyles";
 
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
 
 
 .authorization {
@@ -19,14 +31,11 @@
 .dark {
   color: $primaryWhite;
 }
-.picture {
 
-}
 
 .mainBlock {
   display: flex;
   flex-direction: column;
-  //justify-content: center;
   width: 100%;
   align-items: center;
   padding: 30px;
@@ -46,9 +55,7 @@
   margin-bottom: 10px;
   margin-top: 80px;
 }
-.title_mobile_light {
 
-}
 .text {
   margin-top: 10px;
   margin-bottom: 60px;
