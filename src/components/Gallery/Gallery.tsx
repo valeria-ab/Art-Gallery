@@ -7,7 +7,10 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import style from "./style.scss";
 import PhotoItem from "../PhotoItem/PhotoItem";
 import { Button } from "../Button/Button";
-import {  InitialGalleryStateType, setCurrentPage } from "../../store/gallery-reducer";
+import {
+  InitialGalleryStateType,
+  setCurrentPage,
+} from "../../store/gallery-reducer";
 import { PhotoItemForArtists } from "../PhotoItem/PhotoItemForArtists";
 import { setSearchFeatureShown } from "../../store/app-reducer";
 
@@ -32,7 +35,7 @@ const Gallery = React.memo(
     onDeletePictureClick,
     onLoadMore,
     setPaintingId,
-    isMobileMode
+    isMobileMode,
   }: ArtistArtworksPropsType) => {
     const { theme, toggleTheme } = useContext(ThemeContext);
     const dispatch = useDispatch<AppDispatch>();
@@ -40,21 +43,25 @@ const Gallery = React.memo(
     const isLoggedIn = useSelector<IAppStore, boolean>(
       ({ auth }) => auth.isLoggedIn
     );
-    const { portionSize, currentPage, totalArtistsCount, galleryMessage } = useSelector<
-      IAppStore,
-      InitialGalleryStateType
-    >(({ gallery }) => gallery);
-
+    const { portionSize, currentPage, totalArtistsCount, galleryMessage } =
+      useSelector<IAppStore, InitialGalleryStateType>(({ gallery }) => gallery);
 
     useEffect(() => {
-      isLoggedIn &&
-        dispatch(setSearchFeatureShown({ isSearchFeatureShown: true }));
-   return () => {
-    dispatch(setCurrentPage({ currentPage: 1 }));
-   }
-      }, [isLoggedIn]);
+      return () => {
+        dispatch(setCurrentPage({ currentPage: 1 }));
+      };
+    }, []);
 
-    
+    useEffect(() => {
+      if (isLoggedIn && artists) {
+        dispatch(setSearchFeatureShown({ isSearchFeatureShown: true }));
+      }
+      return () => {
+        if (isLoggedIn && artists) {
+          dispatch(setSearchFeatureShown({ isSearchFeatureShown: false }));
+        }
+      };
+    }, [isLoggedIn, artists]);
 
     return (
       <div className={cx("main")}>
@@ -100,7 +107,9 @@ const Gallery = React.memo(
               />
             ))}
         </div>
-        {!galleryMessage && artists?.length  && currentPage !== Math.ceil(totalArtistsCount / portionSize) && (
+        {!galleryMessage &&
+          artists?.length &&
+          currentPage !== Math.ceil(totalArtistsCount / portionSize) && (
             <div className={cx("loadMoreButton")}>
               <Button
                 value="load more"
@@ -110,9 +119,10 @@ const Gallery = React.memo(
                 callback={onLoadMore}
               />
             </div>
-          )
-       }
-       {galleryMessage && <div className={cx("galleryMessage")}>{galleryMessage}</div>}
+          )}
+        {galleryMessage && (
+          <div className={cx("galleryMessage")}>{galleryMessage}</div>
+        )}
       </div>
     );
   }

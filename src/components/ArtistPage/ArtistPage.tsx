@@ -97,9 +97,9 @@ const ArtistPage = () => {
     }
   }, [authorId, isLoggedIn]);
 
-  useEffect(() => {
-    dispatch(setSearchFeatureShown({ isSearchFeatureShown: false }));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(setSearchFeatureShown({ isSearchFeatureShown: false }));
+  // }, []);
 
   function displayWindowSize() {
     const w = document.documentElement.clientWidth;
